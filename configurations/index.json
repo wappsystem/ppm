@@ -10,23 +10,21 @@
 		{
 			"url":"/modules/static/home.html"
 		},
-		"band":
+		"program_list":
 		{
-			"url":"/modules/static/band.html"
+			"module_id" : "program",
+			"name" : "Program List",
+			"table_id" : "20000013",
+			"url" : "/modules/dynamic/program-list/program.html",
+			"form_module":"m_000_form"
 		},
-		"tour":
+		"program_form":
 		{
-			"url":"/modules/static/tour.html"
+			"module_id":"m_000_form",
+			"table_id":"20000013",
+			"url":"/modules/dynamic/program-list/program.form.html"
 		},
-		"portfolio":
-		{
-			"url":"/modules/static/portfolio.html"
-		},
-		"pricing":
-		{
-			"url":"/modules/static/pricing.html"
-		},
-		"portal":
+		"photos":
 		{
 			"url":"/configurations/photo.json"
 		},
