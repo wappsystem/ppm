@@ -1,0 +1,52 @@
+<section>
+      VmInclude:__PARTS__/grid/grid.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__PARTS__/grid/grid.js
+        VmInclude:__PARTS__/style/ease-in-out.js
+        //-------------------------------------
+		$('#new__ID').hide();
+		$('#save__ID').hide();
+		//-------------------------------------
+        _fields="_Form,Project,Project_Code,Country,Description,Sector,Start,End,Project_Status,DAC_codes_primary,Location,Approval_Status,Approval_Date,Request_Fund,Details_requested_funds,Comments";
+        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Country':
+                    var sql="with tb as (select name=@('Country') from [TABLE-"+$vm.module_list['country'].table_id+"] )";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%'  order by name ";
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_auto.js
+                    break;
+                case 'DocProgram':
+                VmInclude:__PARTS__/grid/field_file.js
+                	break;
+                case 'Sector':
+                    var sql="with tb as (select name=@('Sector') from [TABLE-"+$vm.module_list['sector'].table_id+"])";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_auto.js
+                    break;
+                case 'Approval_Status':
+                    var sql="with tb as (select name=@('Project_Status') from [TABLE-"+$vm.module_list['project_approval_status'].table_id+"] )";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
+                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_auto.js
+                    break;
+            }
+        }
+        //-------------------------------------
+        $('#D__ID').on('load',function(){ _set_req(); _request_data(); })
+        //-------------------------------------
+        //-------------------------------------
+        var _set_req=_set_req_export=function(){
+            var sql="with tb as (select Information,B1,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+_db_pid+"-@S1] where PUID=@I2)";
+            sql+="select Information,B1,ID,UID,PUID,DateTime,Author,RowNum from tb where RowNum between @I6 and @I7";
+            var sql_n="select count(ID) from [TABLE-"+_db_pid+"-@S1] where PUID=@I2";
+            _req={cmd:'query_records',db_pid:_db_pid,sql:sql,sql_n:sql_n,i2:_mobj.op.puid,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+        }
+    }
+</script>
+<style>
+    VmInclude:__PARTS__/grid/grid.css
+</style>
