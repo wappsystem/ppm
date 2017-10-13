@@ -15,34 +15,32 @@
 			"module_id" : "program",
 			"name" : "Program List",
 			"table_id" : "20000013",
-			"url" : "/modules/dynamic/program-list/program.html",
-			"form_module":"program_form"
+			"url" : "/modules/dynamic/program/program.html"
 		},
 		"program_form":
 		{
 			"module_id":"program_form",
 			"table_id":"20000013",
-			"url":"/modules/dynamic/program-list/program.form.html"
+			"url":"/modules/dynamic/program/program.form.html"
 		},
 		"project_list":
 		{
 			"module_id" : "project",
 			"name" : "Project List",
 			"table_id" : "20000012",
-			"url" : "/modules/dynamic/project-list/project.html",
-			"form_module":"project_form"
+			"url" : "/modules/dynamic/project/project.html"
 		},
 		"project_form":
 		{
 			"module_id":"project_form",
 			"table_id":"20000012",
-			"url":"/modules/dynamic/project-list/project.form.html"
+			"url":"/modules/dynamic/project/project.form.html"
 		},
 		"region":
 	   {
 		   "module_id" : "region",
 		   "name" : "Region List",
-		   "table_id" : "20003800",
+		   "table_id" : "20000018",
 		   "url" : "/modules/dynamic/Lists/region.html"
 	   },
 		   "country":
@@ -70,7 +68,7 @@
   		{
   			"module_id" : "funding_source",
   			"name" : "Funding Source List",
-  			"table_id" : "20003802",
+  			"table_id" : "20000019",
   			"url" : "/modules/dynamic/Lists/funding_source.html"
   		},
 		"theme":
@@ -94,25 +92,32 @@
 			"table_id" : "20009705",
 			"url" : "/modules/dynamic/Lists/drr_mainstreaming.html"
 		},
-		"project_approval_status":
+		"approval_status":
 		{
-			"module_id" : "project_approval_status",
+			"module_id" : "approval_status",
 			"name" : "Project Approval Status List",
-			"table_id" : "20003803",
+			"table_id" : "20000685",
 			"url" : "/modules/dynamic/Lists/project_approval_status.html"
 		},
 		"document_type":
 		{
 			"module_id" : "document_type",
 			"name" : "Document Type List",
-			"table_id" : "20003799",
+			"table_id" : "20000022",
 			"url" : "/modules/dynamic/Lists/document_type.html"
+		},
+		"program_list_sub_table":
+		{
+			"module_id" : "program_list_sub_table",
+			"name" : "Program List Sub Table",
+			"table_id" : "20004719",
+			"url" : "/modules/dynamic/Lists/program_list_sub_table.html"
 		},
 		"site":
 		{
 			"module_id" : "site",
 			"name" : "Site List",
-			"table_id" : "20003798",
+			"table_id" : "20000513",
 			"url" : "/modules/dynamic/Lists/site.html"
 		}
 	}
