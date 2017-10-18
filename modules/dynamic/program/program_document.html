@@ -26,9 +26,20 @@
             }
         }
         //-------------------------------------
-        $('#D__ID').on('load',function(){ _set_req_with_sql_where(); _request_data(); })
-        //$('#query__ID').on('click',function(){ _set_req_with_sql_where(); _request_data(); })
+        $('#D__ID').on('load',function(){ _set_req(); _request_data(); })
         //-------------------------------------
+		_set_req=function(){
+			var sql_where="";
+			var parent_uid=_mobj.op.parent_uid;
+			if(_mobj.op.parent_uid!=undefined){
+				sql_where="where PUID="+parent_uid;
+			}
+		    var sql="with tb as (select Information,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+_db_pid+"-@S1] "+sql_where+")";
+		    sql+="select Information,ID,UID,PUID,DateTime,Author,RowNum from tb where RowNum between @I6 and @I7";
+		    var sql_n="select count(ID) from [TABLE-"+_db_pid+"-@S1]"+sql_where;
+			_req={cmd:'query_records',db_pid:_db_pid,sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+		}
+		//-------------------------------------
     }
 </script>
 <style>

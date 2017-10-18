@@ -36,7 +36,9 @@
                                 puid:records[I].UID,
                                 sys:{},
                                 //------------------------
-                                child:"1",
+								parent_uid:records[I].UID,
+
+								child:"1",
                                 name:records[I].Study_ID,
                                 check_count_where:" and PUID="+records[I].UID,
                                 sql_where:"PUID="+records[I].UID,
