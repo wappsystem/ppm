@@ -23,6 +23,13 @@
 			"table_id":"20000013",
 			"url":"/modules/dynamic/program/program.form.html"
 		},
+		"program_document":
+		{
+			"module_id" : "program_document",
+			"name" : "Program Document",
+			"table_id" : "20000028",
+			"url" : "/modules/dynamic/program/program_document.html"
+		},
 		"project_list":
 		{
 			"module_id" : "project",
@@ -119,6 +126,10 @@
 			"name" : "Site List",
 			"table_id" : "20000513",
 			"url" : "/modules/dynamic/Lists/site.html"
+		},
+		"carousel-slide-b4":
+		{
+			"url" : "/modules/static/carousel-slide-b4.html"
 		}
 	}
 }

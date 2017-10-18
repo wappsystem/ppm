@@ -1,16 +1,16 @@
 <section>
-      VmInclude:__PARTS__/grid/grid.html
+      VmInclude:__COMPONENT__/grid/grid.v3.html
 </section>
 <script>
     function F__ID(){
         //-------------------------------------
-        VmInclude:__PARTS__/grid/grid.js
-        VmInclude:__PARTS__/style/ease-in-out.js
+        VmInclude:__COMPONENT__/grid/grid.v3.js
+        VmInclude:__COMPONENT__/style/ease-in-out.js
         //-------------------------------------
 	//	$('#new__ID').hide();
 	//	$('#save__ID').hide();
 		//-------------------------------------
-        _fields="_Form,_Projects,Program,Country,Code,Comments,Document|DocProgram";
+        _fields="_Form,Program Documents|_Program_Documents,Projects (Open)|_Projects_Open,Projects (Closed)|_Projects_Closed,Program,Country,Code,Comments,Document|DocProgram";
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
@@ -18,15 +18,36 @@
                 case 'Country':
                     var sql="with tb as (select name=@('Country') from [TABLE-"+$vm.module_list['country'].table_id+"] )";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
-                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_auto.js
+                    VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'DocProgram':
-                VmInclude:__PARTS__/grid/field_file.js
+                VmInclude:__COMPONENT__/grid/field_file.js
                 	break;
-                case '_Projects':
+                case '_Program_Documents':
                     records[I].vm_custom[field]=true;
                     if(_records[I].UID===undefined) return;
-                    td.html("<u style='cursor:pointer'>Projects</u>");
+                    td.html("<u style='cursor:pointer'>Documents</u>");
+                    td.find('u').on('click',function(){
+                        //$vm.module_list[_app_id+'particpant_cash_project']
+                            $vm.load_module_by_name("program_document",$vm.root_layout_content_slot,{
+                                //------------------------
+                                mobj:_mobj,
+                                record:records[I],
+                                puid:records[I].UID,
+                                sys:{},
+                                //------------------------
+                                child:"1",
+                                name:records[I].Study_ID,
+                                check_count_where:" and PUID="+records[I].UID,
+                                sql_where:"PUID="+records[I].UID,
+                            })
+                            //-----------------------------------------------
+                    });
+                	break;
+                case '_Projects_Open':
+                    records[I].vm_custom[field]=true;
+                    if(_records[I].UID===undefined) return;
+                    td.html("<u style='cursor:pointer'>Projects (Open)</u>");
                     td.find('u').on('click',function(){
                         //$vm.module_list[_app_id+'particpant_cash_project']
                             $vm.load_module_by_name("project_list",$vm.root_layout_content_slot,{
@@ -38,6 +59,28 @@
                                 //------------------------
                                 child:"1",
                                 name:records[I].Study_ID,
+                                status:"open",
+                                check_count_where:" and PUID="+records[I].UID,
+                            })
+                            //-----------------------------------------------
+                    });
+                	break;
+                case '_Projects_Closed':
+                    records[I].vm_custom[field]=true;
+                    if(_records[I].UID===undefined) return;
+                    td.html("<u style='cursor:pointer'>Projects (Closed)</u>");
+                    td.find('u').on('click',function(){
+                        //$vm.module_list[_app_id+'particpant_cash_project']
+                            $vm.load_module_by_name("project_list",$vm.root_layout_content_slot,{
+                                //------------------------
+                                mobj:_mobj,
+                                record:records[I],
+                                puid:records[I].UID,
+                                sys:{},
+                                //------------------------
+                                child:"1",
+                                name:records[I].Study_ID,
+                                status:"closed",
                                 check_count_where:" and PUID="+records[I].UID,
                             })
                             //-----------------------------------------------
@@ -51,5 +94,5 @@
     }
 </script>
 <style>
-    VmInclude:__PARTS__/grid/grid.css
+    VmInclude:__COMPONENT__/grid/grid.v3.css
 </style>

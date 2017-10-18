@@ -1,14 +1,14 @@
 <section>
-      VmInclude:__PARTS__/grid/grid.html
+      VmInclude:__COMPONENT__/grid/grid.v3.html
 </section>
 <script>
     function F__ID(){
         //-------------------------------------
-        VmInclude:__PARTS__/grid/grid.js
-        VmInclude:__PARTS__/style/ease-in-out.js
+        VmInclude:__COMPONENT__/grid/grid.v3.js
+        VmInclude:__COMPONENT__/style/ease-in-out.js
         //-------------------------------------
-		$('#new__ID').hide();
-		$('#save__ID').hide();
+		//$('#new__ID').hide();
+		//$('#save__ID').hide();
 		//-------------------------------------
         _fields="_Form,Project,Project_Code,Country,Description,Sector,_gridHidden|Secondary_Sector,_gridHidden|Implementation_Arrangement,_gridHidden|DRR_Mainstreaming,Start,End,Project_Status,DAC_codes_primary,Location,_gridHidden|Location_2,_gridHidden|Location_3,_gridHidden|Location_4,Approval_Status,Approval_Date,_gridHidden|List_people_updated,_gridHidden|New_Comments,Comments,_gridHidden|Creation_Date,_gridHidden|Created_By,Request_Fund,Requested_amount";
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
@@ -17,7 +17,7 @@
             switch(field){
                 case 'Approval_Date':
                 case 'Creation_Date':
-                    VmInclude:__PARTS__/grid/field_date.js
+                    VmInclude:__COMPONENT__/grid/field_date.js
                     break;
                 case 'Start':
                 case 'End':
@@ -33,32 +33,41 @@
                     records[I].vm_readonly[field]=true;
                     td.html(records[I][field]);
                     break;
+                case 'Project_Status':
+                    var html="<select style='border:0;''>\
+                    <option value='' ></option>\
+                    <option >Open</option>\
+                    <option >Closed</option>\
+                    </select>\
+                    ";
+                    VmInclude:__COMPONENT__/grid/field_select.js
+                    break;
                 case 'Request_Fund':
                     td.html('<input type=checkbox />');
-                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_checkbox.js
+                    VmInclude:__COMPONENT__/grid/field_checkbox.js
                     break;
                 case 'Country':
                     var sql="with tb as (select name=@('Country') from [TABLE-"+$vm.module_list['country'].table_id+"] where LEN(@('Country'))<30)";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
-                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_auto.js
+                    VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'DocProgram':
-                    VmInclude:__PARTS__/grid/field_file.js
+                    VmInclude:__COMPONENT__/grid/field_file.js
                 	break;
                 case 'Sector':
                     var sql="with tb as (select name=@('Sector') from [TABLE-"+$vm.module_list['sector'].table_id+"] where LEN(@('Sector'))<20)";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
-                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_auto.js
+                    VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'Secondary_Sector':
                     var sql="with tb as (select name=@('Sector') from [TABLE-"+$vm.module_list['sector'].table_id+"] where LEN(@('Sector'))<20)";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
-                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_auto.js
+                    VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'Approval_Status':
                     var sql="with tb as (select name=@('Approval_Status') from [TABLE-"+$vm.module_list['approval_status'].table_id+"] )";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
-                    VmInclude:__BASE__/vmiis/Common-Code/grid/field_auto.js
+                    VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
             }
         }
@@ -75,7 +84,7 @@
     }
 </script>
 <style>
-    VmInclude:__PARTS__/grid/grid.css
+    VmInclude:__COMPONENT__/grid/grid.v3.css
     .ui-datepicker-month,.ui-datepicker-year {
    color: #5c9ccc;
  }

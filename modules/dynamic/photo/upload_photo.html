@@ -18,7 +18,7 @@
 <script>
     function F__ID(){
         //-------------------------------------
-        VmInclude:__PARTS__/grid/grid.js
+        VmInclude:__COMPONENT__/grid/grid.v3.js
         //-------------------------------------
         _fields="Photo|File,Description,Department,Category,Sub_Category";
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
@@ -29,7 +29,7 @@
         _cell_render=function(records,I,field,td,set_value,source){ /*Choose,File,Last Modified|lastModified,Size,*/
             switch(field){
                 case 'File':
-                    VmInclude:__PARTS__/grid/field_image.js
+                    VmInclude:__COMPONENT__/grid/field_image.js
                     break;
                 case 'Department':
                     td_set_department(records,I,field,td,source);
@@ -177,7 +177,7 @@
     }
 </script>
 <style>
-    VmInclude:__PARTS__/grid/grid.css
+    VmInclude:__COMPONENT__/grid/grid.v3.css
     .ui-autocomplete {
          z-index: 9999 !important;
     }

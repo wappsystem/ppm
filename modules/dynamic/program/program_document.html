@@ -7,20 +7,27 @@
         VmInclude:__COMPONENT__/grid/grid.v3.js
         VmInclude:__COMPONENT__/style/ease-in-out.js
         //-------------------------------------
-		$('#new__ID').hide();
-		$('#save__ID').hide();
+	//	$('#new__ID').hide();
+	//	$('#save__ID').hide();
 		//-------------------------------------
-        _fields="_Form,Name,Email,Subject,Message";
+        _fields="_Form,PUID,Name,Description,Type,Notes";
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
-                case 'xxx':
+                case 'Type':
+                    var sql="with tb as (select name=@('Type') from [TABLE-"+$vm.module_list['document_type'].table_id+"] where LEN(@('Country'))<30)";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
+                    break;
+                case 'Name':
+                    VmInclude:__COMPONENT__/grid/field_file.js
                 	break;
             }
         }
         //-------------------------------------
-        $('#D__ID').on('load',function(){ _set_req(); _request_data(); })
+        $('#D__ID').on('load',function(){ _set_req_with_sql_where(); _request_data(); })
+        //$('#query__ID').on('click',function(){ _set_req_with_sql_where(); _request_data(); })
         //-------------------------------------
     }
 </script>

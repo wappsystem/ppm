@@ -5,7 +5,9 @@
 		    <ol class="carousel-indicators">
 		      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 		      <li data-target="#myCarousel" data-slide-to="1"></li>
-		      <li data-target="#myCarousel" data-slide-to="2"></li>
+              <li data-target="#myCarousel" data-slide-to="2"></li>
+              <li data-target="#myCarousel" data-slide-to="3"></li>
+              <li data-target="#myCarousel" data-slide-to="4"></li>
 		    </ol>
     <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
@@ -57,10 +59,10 @@ function F__ID(){
     //-----------------------
     var h=$('#'+$vm.root_layout_content_slot).css('height');
     $('div.slider_item__ID').css('height',h)
-/*    $('.carousel').carousel({
+    $('.carousel').carousel({
         interval: 3000
     })
-*/    //-----------------------
+    //-----------------------
     VmInclude:__COMPONENT__/comments/disqus.js
 }
 </script>
