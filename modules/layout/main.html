@@ -17,6 +17,7 @@ VmInclude:/modules/layout/footer.html
 		}
 		setTimeout(function (){	set_height();},100);	setTimeout(function (){	set_height();},2000);
 		//------------------------------------
+		window.onresize=function(e){set_height();};
 		window.onmessage=function(e){
 		    if(e.data.username!=undefined && e.data.user_id!=undefined){
 		        $vm.user=e.data.username;
@@ -138,6 +139,7 @@ VmInclude:/modules/layout/footer.html
 <style main-layout-css>
 	html,body{
 		height:100%;
+		overflow-y:hidden;
 	}
 	@keyframes vm_module_fadein {
 		from { opacity:0; }
