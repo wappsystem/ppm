@@ -15,27 +15,31 @@
 			"module_id" : "program",
 			"name" : "Program List",
 			"table_id" : "20000013",
-			"url" : "/modules/dynamic/program/program.html"
+			"url" : "/modules/dynamic/program/program.html",
+			"name_for_search":"Program List"
 		},
 		"program_form":
 		{
 			"module_id":"program_form",
 			"table_id":"20000013",
-			"url":"/modules/dynamic/program/program.form.html"
+			"url":"/modules/dynamic/program/program.form.html",
+			"name_for_search":""
 		},
 		"program_document":
 		{
 			"module_id" : "program_document",
 			"name" : "Program Document",
 			"table_id" : "20000028",
-			"url" : "/modules/dynamic/program/program_document.html"
+			"url" : "/modules/dynamic/program/program_document.html",
+			"name_for_search":"Program Document"
 		},
 		"project_list":
 		{
 			"module_id" : "project",
 			"name" : "Project List",
 			"table_id" : "20000012",
-			"url" : "/modules/dynamic/project/project.html"
+			"url" : "/modules/dynamic/project/project.html",
+			"name_for_search":"Project List"
 		},
 		"project_form":
 		{
