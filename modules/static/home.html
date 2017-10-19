@@ -53,24 +53,25 @@
 function F__ID(){
     //-----------------------
 	$('#D__ID').on('b4jsready',function(){
-		$('#slide__ID').css('height',$vm.min_height);
-		$('div.slider_item__ID').css('height',$vm.min_height)
 		$('.carousel').carousel({
 	        interval: 3000
 	    })
 	})
     //-----------------------
-    VmInclude:__COMPONENT__/comments/disqus.js
 }
 </script>
 <style>
-#D__ID{
-    height: 100%;
-    width: 100%;
-    overflow:auto;
-    animation: vm_module_fadein 1.0s;
-}
-#vm_top_container__ID{
-    position:relative;
-}
+	#D__ID{
+	    height: 100%;
+	    width: 100%;
+	    overflow:auto;
+	    animation: vm_module_fadein 1.0s;
+	}
+	#vm_top_container__ID{
+	    position:relative;
+		height:100%;
+	}
+	#slide__ID, #myCarousel, div.carousel-inner,div.carousel-item, div.slider_item__ID{
+		height:100%;
+	}
 </style>
