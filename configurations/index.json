@@ -5,136 +5,24 @@
 	"default_production":"No",
 	"modules":
 	{
-<<<<<<< HEAD
-		"home":
-		{
-			"url":"/modules/static/home.html"
-		},
-		"program_list":
-		{
-			"module_id" : "program",
-			"name" : "Program List",
-			"table_id" : "20000013",
-			"url" : "/modules/dynamic/program/program.html",
-			"name_for_search":"Program List"
-		},
-		"program_form":
-		{
-			"module_id":"program_form",
-			"table_id":"20000013",
-			"url":"/modules/dynamic/program/program.form.html",
-			"name_for_search":"xx"
-		},
-		"program_document":
-		{
-			"module_id" : "program_document",
-			"name" : "Program Document",
-			"table_id" : "20000028",
-			"url" : "/modules/dynamic/program/program_document.html",
-			"name_for_search":"Program Document"
-		},
-=======
 		"home":				{"url":"/modules/static/home.html"},
-		"program_list":		{"url":"/modules/dynamic/program/program.html","table_id" : "20000013","name_for_search":"Program List"},
+		"program_list":		{"url":"/modules/dynamic/program/program.html","table_id" : "20000013","name_for_search":"Program List","form_module":"program_form"},
 		"program_form":		{"url":"/modules/dynamic/program/program.form.html","table_id":"20000013"},
 		"program_document":	{"url":"/modules/dynamic/program/program_document.html","table_id" : "20000028","name_for_search":"Program Document"},
->>>>>>> 2aa93ae6b392fd267d94e735234dca8c54eefa83
-		"project_list":
-		{
-			"url" : "/modules/dynamic/project/project.html","table_id" : "20000012",
-			"name_for_search":"Project List"
-		},
-		"project_form":
-		{
-			"url":"/modules/dynamic/project/project.form.html","table_id":"20000012"
-		},
-		"region":
-	   {
-		   "module_id" : "region",
-		   "name" : "Region List",
-		   "table_id" : "20000018",
-		   "url" : "/modules/dynamic/Lists/region.html"
-	   },
-		   "country":
-		  {
-			  "module_id" : "country",
-			  "name" : "Country List",
-			  "table_id" : "20000021",
-			  "url" : "/modules/dynamic/Lists/country.html"
-		  },
-		  "sector":
-		  {
-			  "module_id" : "sector",
-			  "name" : "Sector List",
-			  "table_id" : "20000020",
-			  "url" : "/modules/dynamic/Lists/sector.html"
-		  },
-		  "location":
-		  {
-			  "module_id" : "location",
-			  "name" : "Location List",
-			  "table_id" : "20003861",
-			  "url" : "/modules/dynamic/Lists/location.html"
-		  },
-		  "funding_source":
-  		{
-  			"module_id" : "funding_source",
-  			"name" : "Funding Source List",
-  			"table_id" : "20000019",
-  			"url" : "/modules/dynamic/Lists/funding_source.html"
-  		},
-		"theme":
-		{
-			"module_id" : "theme",
-			"name" : "Theme List",
-			"table_id" : "20009703",
-			"url" : "/modules/dynamic/Lists/theme.html"
-		},
-		"implementation_arrangement":
-		{
-			"module_id" : "implementation_arrangement",
-			"name" : "Implementation Arrangement List",
-			"table_id" : "20009704",
-			"url" : "/modules/dynamic/Lists/implementation_arrangement.html"
-		},
-		"drr_mainstreaming":
-		{
-			"module_id" : "drr_mainstreaming",
-			"name" : "DRR Mainstreaming List",
-			"table_id" : "20009705",
-			"url" : "/modules/dynamic/Lists/drr_mainstreaming.html"
-		},
-		"approval_status":
-		{
-			"module_id" : "approval_status",
-			"name" : "Project Approval Status List",
-			"table_id" : "20000685",
-			"url" : "/modules/dynamic/Lists/project_approval_status.html"
-		},
-		"document_type":
-		{
-			"module_id" : "document_type",
-			"name" : "Document Type List",
-			"table_id" : "20000022",
-			"url" : "/modules/dynamic/Lists/document_type.html"
-		},
-		"program_list_sub_table":
-		{
-			"module_id" : "program_list_sub_table",
-			"name" : "Program List Sub Table",
-			"table_id" : "20004719",
-			"url" : "/modules/dynamic/Lists/program_list_sub_table.html"
-		},
-		"site":
-		{
-			"module_id" : "site",
-			"name" : "Site List",
-			"table_id" : "20000513",
-			"url" : "/modules/dynamic/Lists/site.html"
-		},
-		"carousel-slide-b4":
-		{
-			"url" : "/modules/static/carousel-slide-b4.html"
-		}
+		"project_list":		{"url" : "/modules/dynamic/project/project.html","table_id" : "20000012","name_for_search":"Project List"},
+		"project_form":		{"url":"/modules/dynamic/project/project.form.html","table_id":"20000012"},
+		"region":	   		{"url" : "/modules/dynamic/Lists/region.html","table_id" : "20000018","name_for_search":"Region"},
+		"country":			{"url" : "/modules/dynamic/Lists/country.html","table_id" : "20000021","name_for_search":"Country"},
+		"sector":			{"url" :  "/modules/dynamic/Lists/sector.html","table_id" : "20000020","name_for_search":"Sector"},
+		"location":			{"url" : "/modules/dynamic/Lists/location.html","table_id" : "20003861","name_for_search":"Location"},
+		"funding_source":	{"url" : "/modules/dynamic/Lists/funding_source.html","table_id" : "20000019","name_for_search":"Funding Source"},
+		"theme":			{"url" : "/modules/dynamic/Lists/theme.html","table_id" : "20009703","name_for_search":"Theme"},
+		"implementation_arrangement":{"url" : "/modules/dynamic/Lists/implementation_arrangement.html","table_id" : "20009704","name_for_search":"Implementation Arrangement"},
+		"drr_mainstreaming":{"url" :  "/modules/dynamic/Lists/drr_mainstreaming.html","table_id" : "20009705","name_for_search":"DRR Mainstreaming"},
+		"approval_status":	{"url" : "/modules/dynamic/Lists/approval_status.html","table_id" : "20000685","name_for_search":"Project Approval Status"},
+		"document_type":	{"url" : "/modules/dynamic/Lists/document_type.html","table_id" : "20000022","name_for_search":"Document Type"},
+		"program_list_sub_table":{"url" : "/modules/dynamic/Lists/program_list_sub_table.html","table_id" : "20004719","name_for_search":"Program List Sub Table"},
+		"site":			{"url" : "/modules/dynamic/Lists/site.html","table_id" : "20000513","name_for_search":"Site"},
+		"carousel-slide-b4":{"url" : "/modules/static/carousel-slide-b4.html"}
 	}
 }

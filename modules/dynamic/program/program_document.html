@@ -11,7 +11,7 @@
 	//	$('#new__ID').hide();
 	//	$('#save__ID').hide();
 		//-------------------------------------
-        _fields="_Form,PUID,Name,Description,Type,Notes";
+        _fields="_Form,Name,Description,Type,Notes";
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
@@ -27,7 +27,7 @@
             }
         }
         //-------------------------------------
-        $('#D__ID').on('load',function(){ _set_req(); _request_data(); })
+        $('#D__ID').on('load',function(){ _set_req(); _request_data();alert(_mobj.op.ppid) })
         //-------------------------------------
 		_set_req=function(){
 			var sql_where="";
@@ -40,7 +40,14 @@
 		    var sql_n="select count(ID) from [TABLE-"+_db_pid+"-@S1] "+sql_where;
 			_req={cmd:'query_records',db_pid:_db_pid,sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
 		}
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            if(_mobj.op.parent_uid!=='') dbv.PUID=_mobj.op.parent_uid;
+            dbv.PPID=_mobj.op.ppid;
+            return true;
+        };
 		//-------------------------------------
+
     }
 </script>
 <style>

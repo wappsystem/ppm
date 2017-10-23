@@ -11,7 +11,7 @@
 		//$('#new__ID').hide();
 		//$('#save__ID').hide();
 		//-------------------------------------
-        _fields="_Form,Project,Project_Code,Country,Description,Sector,_gridHidden|Secondary_Sector,_gridHidden|Implementation_Arrangement,_gridHidden|DRR_Mainstreaming,Start,End,Project_Status,DAC_codes_primary,Location,_gridHidden|Location_2,_gridHidden|Location_3,_gridHidden|Location_4,Approval_Status,Approval_Date,_gridHidden|List_people_updated,_gridHidden|New_Comments,Comments,_gridHidden|Creation_Date,_gridHidden|Created_By,Request_Fund,Requested_amount";
+        _fields="_Form,Project,Code|Project_Code,Country,Description,_gridHidden|Theme,Primary Sector|Sector,_gridHidden|Secondary_Sector,_gridHidden|Implementation_Arrangement,_gridHidden|DRR_Mainstreaming,Start,End,Status|Project_Status,_Hidden|DAC_codes_primary,_Hidden|DAC_codes_secondary,Location,_gridHidden|Location_2,_gridHidden|Location_3,_gridHidden|Location_4,Approval_Status,Approval_Date,_gridHidden|List_people_updated,_gridHidden|New_Comments,Comments,_gridHidden|Creation_Date,_gridHidden|Created_By,Request_Fund,Requested_amount";
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
@@ -56,10 +56,6 @@
                     VmInclude:__COMPONENT__/grid/field_file.js
                 	break;
                 case 'Sector':
-                    var sql="with tb as (select name=@('Sector') from [TABLE-"+$vm.module_list['sector'].table_id+"] where LEN(@('Sector'))<20)";
-                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
-                    VmInclude:__COMPONENT__/grid/field_auto.js
-                    break;
                 case 'Secondary_Sector':
                     var sql="with tb as (select name=@('Sector') from [TABLE-"+$vm.module_list['sector'].table_id+"] where LEN(@('Sector'))<20)";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
@@ -70,6 +66,30 @@
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
+                case 'Implementation_Arrangement':
+                    var sql="with tb as (select name=@('Implementation_Arrangement') from [TABLE-"+$vm.module_list['implementation_arrangement'].table_id+"] )";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
+                    break;
+                case 'DRR_Mainstreaming':
+                    var sql="with tb as (select name=@('DRR_Mainstreaming') from [TABLE-"+$vm.module_list['drr_mainstreaming'].table_id+"] )";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
+                    break;
+                case 'Theme':
+                    var sql="with tb as (select name=@('Theme') from [TABLE-"+$vm.module_list['theme'].table_id+"] )";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
+                    break;
+                case 'Location':
+                case 'Location_2':
+                case 'Location_3':
+                case 'Location_4':
+                    var sql="with tb as (select name=@('Location') from [TABLE-"+$vm.module_list['location'].table_id+"] )";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
+                    break;
+
             }
         }
         //-------------------------------------
@@ -77,9 +97,11 @@
         //-------------------------------------
         //-------------------------------------
         var _set_req=_set_req_export=function(){
-            var sql="with tb as (select Information,B1,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+_db_pid+"-@S1] where PUID=@I2  and  @('Project_Status')<>'Closed') ";
+            var status=" and @('Project_Status') <> 'Close'";
+            if(_mobj.op.status=="closed" ) status=" and @('Project_Status') = 'Closed'";
+            var sql="with tb as (select Information,B1,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+_db_pid+"-@S1] where PUID=@I2 "+status+" ) ";
             sql+="select Information,B1,ID,UID,PUID,DateTime,Author,RowNum from tb where RowNum between @I6 and @I7";
-            var sql_n="select count(ID) from [TABLE-"+_db_pid+"-@S1] where PUID=@I2";
+            var sql_n="select count(ID) from [TABLE-"+_db_pid+"-@S1] where PUID=@I2 "+status+"";
             _req={cmd:'query_records',db_pid:_db_pid,sql:sql,sql_n:sql_n,i2:_mobj.op.puid,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
         }
     }

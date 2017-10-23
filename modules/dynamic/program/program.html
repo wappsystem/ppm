@@ -36,13 +36,11 @@
                                 record:records[I],
                                 puid:records[I].UID,
                                 sys:{},
+                                ppid:_db_pid,
                                 //------------------------
 								parent_uid:records[I].UID,
-
 								child:"1",
-                                name:records[I].Study_ID,
                                 check_count_where:" and PUID="+records[I].UID,
-                                sql_where:"PUID="+records[I].UID,
                             })
                             //-----------------------------------------------
                     });
@@ -59,11 +57,12 @@
                                 record:records[I],
                                 puid:records[I].UID,
                                 sys:{},
+                                ppid:_db_pid,
                                 //------------------------
-                                child:"1",
-                                name:records[I].Study_ID,
-                                status:"open",
+                                parent_uid:records[I].UID,
+								child:"1",
                                 check_count_where:" and PUID="+records[I].UID,
+                                status:"open",
                             })
                             //-----------------------------------------------
                     });
@@ -80,11 +79,12 @@
                                 record:records[I],
                                 puid:records[I].UID,
                                 sys:{},
+                                ppid:_db_pid,
                                 //------------------------
-                                child:"1",
-                                name:records[I].Study_ID,
-                                status:"closed",
+                                parent_uid:records[I].UID,
+								child:"1",
                                 check_count_where:" and PUID="+records[I].UID,
+                                status:"closed",
                             })
                             //-----------------------------------------------
                     });
