@@ -1,11 +1,11 @@
 {
-	"parts_path":"https://vmiis.github.io/component",
+	"library_path":"https://cbs.wappsystem.com/dev/github",
+	"parts_path":"https://vmiis.github.io/parts",
+	"image_path":"https://image.datalinkedin.com",
 	"api_path_development":"https://cbs.wappsystem.com/dev/",
 	"api_path_production":"https://cbs.wappsystem.com/dev/",
-	"default_production":"No",
 	"modules":
 	{
-<<<<<<< HEAD
 		"home":
 		{
 			"url":"/modules/static/home.html"
@@ -23,7 +23,7 @@
 			"module_id":"program_form",
 			"table_id":"20000013",
 			"url":"/modules/dynamic/program/program.form.html",
-			"name_for_search":"xx"
+			"name_for_search":""
 		},
 		"program_document":
 		{
@@ -33,20 +33,19 @@
 			"url" : "/modules/dynamic/program/program_document.html",
 			"name_for_search":"Program Document"
 		},
-=======
-		"home":				{"url":"/modules/static/home.html"},
-		"program_list":		{"url":"/modules/dynamic/program/program.html","table_id" : "20000013","name_for_search":"Program List"},
-		"program_form":		{"url":"/modules/dynamic/program/program.form.html","table_id":"20000013"},
-		"program_document":	{"url":"/modules/dynamic/program/program_document.html","table_id" : "20000028","name_for_search":"Program Document"},
->>>>>>> 2aa93ae6b392fd267d94e735234dca8c54eefa83
 		"project_list":
 		{
-			"url" : "/modules/dynamic/project/project.html","table_id" : "20000012",
+			"module_id" : "project",
+			"name" : "Project List",
+			"table_id" : "20000012",
+			"url" : "/modules/dynamic/project/project.html",
 			"name_for_search":"Project List"
 		},
 		"project_form":
 		{
-			"url":"/modules/dynamic/project/project.form.html","table_id":"20000012"
+			"module_id":"project_form",
+			"table_id":"20000012",
+			"url":"/modules/dynamic/project/project.form.html"
 		},
 		"region":
 	   {

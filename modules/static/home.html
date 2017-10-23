@@ -10,27 +10,27 @@
     <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
               <div class="carousel-item active">
-                  <div class=slider_item__ID style="background:url('__BASE__/wappsystem/ppm/images/bike-appeal.jpg') no-repeat bottom center; background-size: cover;" ></div>
+                  <div class=slider_item__ID style="background:url('images/bike-appeal.jpg') no-repeat bottom center; background-size: cover;" ></div>
                   <div class="carousel-caption">
                   </div>
               </div>
               <div class="carousel-item">
-                  <div class=slider_item__ID style="background:url('__BASE__/wappsystem/ppm/images/cyclone-pam.jpg') no-repeat bottom center; background-size: cover;" ></div>
+                  <div class=slider_item__ID style="background:url('images/cyclone-pam.jpg') no-repeat bottom center; background-size: cover;" ></div>
                   <div class="carousel-caption">
                   </div>
               </div>
               <div class="carousel-item">
-                  <div class=slider_item__ID style="background:url('__BASE__/wappsystem/ppm/images/global-community-laos.jpg') no-repeat bottom center; background-size: cover;" ></div>
+                  <div class=slider_item__ID style="background:url('images/global-community-laos.jpg') no-repeat bottom center; background-size: cover;" ></div>
                   <div class="carousel-caption">
                   </div>
               </div>
               <div class="carousel-item">
-                  <div class=slider_item__ID style="background:url('__BASE__/wappsystem/ppm/images/kili.jpg') no-repeat bottom center; background-size: cover;" ></div>
+                  <div class=slider_item__ID style="background:url('images/kili.jpg') no-repeat bottom center; background-size: cover;" ></div>
                   <div class="carousel-caption">
                   </div>
               </div>
               <div class="carousel-item">
-                  <div class=slider_item__ID style="background:url('__BASE__/wappsystem/ppm/images/sponsor.jpg') no-repeat bottom center; background-size: cover;" ></div>
+                  <div class=slider_item__ID style="background:url('images/sponsor.jpg') no-repeat bottom center; background-size: cover;" ></div>
                   <div class="carousel-caption">
                   </div>
               </div>
@@ -53,24 +53,25 @@
 function F__ID(){
     //-----------------------
 	$('#D__ID').on('b4jsready',function(){
-		$('#slide__ID').css('height',$vm.min_height);
-		$('div.slider_item__ID').css('height',$vm.min_height)
 		$('.carousel').carousel({
 	        interval: 3000
 	    })
 	})
     //-----------------------
-    VmInclude:__COMPONENT__/comments/disqus.js
 }
 </script>
 <style>
-#D__ID{
-    height: 100%;
-    width: 100%;
-    overflow:auto;
-    animation: vm_module_fadein 1.0s;
-}
-#vm_top_container__ID{
-    position:relative;
-}
+	#D__ID{
+	    height: 100%;
+	    width: 100%;
+	    overflow:auto;
+	    animation: vm_module_fadein 1.0s;
+	}
+	#vm_top_container__ID{
+	    position:relative;
+		height:100%;
+	}
+	#slide__ID, #myCarousel, div.carousel-inner,div.carousel-item, div.slider_item__ID{
+		height:100%;
+	}
 </style>
