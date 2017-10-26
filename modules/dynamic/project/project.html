@@ -14,6 +14,13 @@
         _fields="_Form,Project,Code|Project_Code,Country,Description,_gridHidden|Theme,Primary Sector|Sector,_gridHidden|Secondary_Sector,_gridHidden|Implementation_Arrangement,_gridHidden|DRR_Mainstreaming,Start,End,Status|Project_Status,_Hidden|DAC_codes_primary,_Hidden|DAC_codes_secondary,Location,_gridHidden|Location_2,_gridHidden|Location_3,_gridHidden|Location_4,Approval_Status,Approval_Date,_gridHidden|List_people_updated,_gridHidden|New_Comments,Comments,_gridHidden|Creation_Date,_gridHidden|Created_By,Request_Fund,Requested_amount";
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
         //-------------------------------------
+        var approved=true;
+        var projectcode=true;
+        var projectcode_value="";
+        var projectstatus=true;
+        var requestfund="";
+        var requestfundconfirm="";
+        //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
                 case 'Approval_Date':
@@ -93,8 +100,7 @@
             }
         }
         //-------------------------------------
-        $('#D__ID').on('load',function(){ _set_req(); _request_data(); })
-        //-------------------------------------
+        $('#D__ID').on('load',function(){ _set_req(); _request_data();  })
         //-------------------------------------
         var _set_req=_set_req_export=function(){
             var status=" and @('Project_Status') <> 'Close'";
@@ -104,6 +110,78 @@
             var sql_n="select count(ID) from [TABLE-"+_db_pid+"-@S1] where PUID=@I2 "+status+"";
             _req={cmd:'query_records',db_pid:_db_pid,sql:sql,sql_n:sql_n,i2:_mobj.op.puid,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
         }
+        //-------------------------------------
+        _before_change=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Project_Status':
+                    if(records[I].Project_Status=="Open" && ($vm.user!="jojo" && $vm.user!="childfund")){
+                        alert("Only Administrator can Close the Project!")
+                        projectstatus=false;
+                    }
+                break;
+                case 'Project_Code':
+                    if(records[I].Project_Code!="" && ($vm.user!="jojo" && $vm.user!="childfund")){
+                        alert("Only Administrator can change Project Code!")
+                        projectcode=false;
+                        projectcode_value=records[I].Project_Code;
+                    }
+                break;
+                case 'Approval_Status':
+                    if(records[I].Approval_Status=="PA" && ($vm.user!="jojo" && $vm.user!="childfund")){
+                        alert("Only Administrator can change Approval Status when approved!")
+                        approved=false;
+                    }
+                break;
+            }
+        }
+        //-------------------------------------
+        _after_change=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'New_Comments':
+                    var old_comments=records[I].Comments;
+                    var new_comments="<span >("+new Date()+", "+$vm.user+")</span><br>"+records[I].New_Comments+"<br>"
+                    new_comments=new_comments.replace(/\n/g,'\r');
+                    new_comments=new_comments.replace(/\r\r/g,'\r');
+                    new_comments=new_comments.replace(/\r/g,'</br>');
+                    records[I].Comments=new_comments+old_comments;
+                    records[I].New_Comments="";
+                break;
+                case 'Project_Status':
+                    if(!approved){records[I].Project_Status="Open"}
+                break;
+                case 'Project_Code':
+                    if(!projectcode){records[I].Project_Code=projectcode_value;}
+                break;
+                case 'Approval_Status':
+                    if(!approved){records[I].Approval_Status="PA"}
+                break;
+            }
+        }
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            if(_mobj.op.parent_uid!=='') dbv.PUID=_mobj.op.parent_uid;
+            dbv.PPID=_mobj.op.ppid;
+            return true;
+        };
+        //-------------------------------------
+
+        //-------------------------------------
+        var process_comments=function(){
+    		if($('#New_Comments__ID').val()!==""){
+    			var old_comments="";
+    			if($('#Comments__ID').val()!=="") old_comments=$('#Comments__ID').val();
+    			var new_comments="<span class=C20000012_light_small>("+date_to_string_dmyhm(new Date())+", "+g_user+")</span><br>"+$('#New_Comments__ID').val()+"<br>";
+
+    			new_comments=new_comments.replace(/\n/g,'\r');
+    			new_comments=new_comments.replace(/\r\r/g,'\r');
+    			new_comments=new_comments.replace(/\r/g,'</br>');
+
+    			$('#Comments__ID').val(new_comments+old_comments);
+    			$('#New_Comments__ID').val('');
+    		}
+    	}
+        //-------------------------------------
+
     }
 </script>
 <style>
