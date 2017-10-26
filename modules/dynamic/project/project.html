@@ -139,7 +139,7 @@
             switch(field){
                 case 'New_Comments':
                     var old_comments=records[I].Comments;
-                    var new_comments="<span >("+new Date()+", "+$vm.user+")</span><br>"+records[I].New_Comments+"<br>"
+                    var new_comments="<span >("+get_now()+", "+$vm.user+")</span><br>"+records[I].New_Comments+"<br>"
                     new_comments=new_comments.replace(/\n/g,'\r');
                     new_comments=new_comments.replace(/\r\r/g,'\r');
                     new_comments=new_comments.replace(/\r/g,'</br>');
@@ -156,6 +156,20 @@
                     if(!approved){records[I].Approval_Status="PA"}
                 break;
             }
+        }
+        //-------------------------------------
+        var get_now=function(){
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear();
+            var hh = today.getHours();
+            var min = today.getMinutes();
+            if(dd<10) dd='0'+dd;
+            if(mm<10) mm='0'+mm;
+            if(hh<10) hh='0'+hh;
+            if(min<10) min='0'+min;
+            return dd+'/'+mm+'/'+yyyy+' '+hh+':'+min;
         }
         //-------------------------------------
         _before_submit=function(record,dbv){
