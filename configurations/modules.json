@@ -1,0 +1,25 @@
+{
+	"modules":
+	{
+		"home":				{"url":"/modules/static/home.html"},
+		"program_list":		{"url":"/modules/dynamic/program/program.html","table_id" : "20000013","name_for_search":"Program List","form_module":"program_form"},
+		"program_form":		{"url":"/modules/dynamic/program/program.form.html","table_id":"20000013"},
+		"program_document":	{"url":"/modules/dynamic/program/program_document.html","table_id" : "20000028","name_for_search":"Program Document"},
+		"project_list":		{"url" : "/modules/dynamic/project/project.html","table_id" : "20000012","name_for_search":"Project List"},
+		"project_form":		{"url":"/modules/dynamic/project/project.form.html","table_id":"20000012"},
+		"project_document":	{"url":"/modules/dynamic/project/project_document.html","table_id" : "20000017","name_for_search":"Project Document"},
+		"region":	   		{"url" : "/modules/dynamic/setup/region.html","table_id" : "20000018","name_for_search":"Region"},
+		"country":			{"url" : "/modules/dynamic/setup/country.html","table_id" : "20000021","name_for_search":"Country"},
+		"sector":			{"url" :  "/modules/dynamic/setup/sector.html","table_id" : "20000020","name_for_search":"Sector"},
+		"location":			{"url" : "/modules/dynamic/setup/location.html","table_id" : "20003861","name_for_search":"Location"},
+		"funding_source":	{"url" : "/modules/dynamic/setup/funding_source.html","table_id" : "20000019","name_for_search":"Funding Source"},
+		"theme":			{"url" : "/modules/dynamic/setup/theme.html","table_id" : "20009703","name_for_search":"Theme"},
+		"implementation_arrangement":{"url" : "/modules/dynamic/setup/implementation_arrangement.html","table_id" : "20009704","name_for_search":"Implementation Arrangement"},
+		"drr_mainstreaming":{"url" :  "/modules/dynamic/setup/drr_mainstreaming.html","table_id" : "20009705","name_for_search":"DRR Mainstreaming"},
+		"approval_status":	{"url" : "/modules/dynamic/setup/approval_status.html","table_id" : "20000685","name_for_search":"Project Approval Status"},
+		"document_type":	{"url" : "/modules/dynamic/setup/document_type.html","table_id" : "20000022","name_for_search":"Document Type"},
+		"program_list_sub_table":{"url" : "/modules/dynamic/setup/program_list_sub_table.html","table_id" : "20004719","name_for_search":"Program List Sub Table"},
+		"site":			{"url" : "/modules/dynamic/setup/site.html","table_id" : "20000513","name_for_search":"Site"},
+		"carousel-slide-b4":{"url" : "/modules/static/carousel-slide-b4.html"}
+	}
+}

@@ -1,28 +1,27 @@
 <div header id=header__ID> <!-- bg-dark-->
-    <nav id=nav__ID class="navbar navbar-expand-md navbar-dark" style='z-index:99999'>
-        <a class="navbar-brand d-none d-lg-block" onclick="$vm.nav_load_module('home');">
-            <div class=large_logo__ID>
-                <div class=large_logo_large_label__ID>
-                    <img src="images/childfund_logo.png" style="height:60px"></img>
+    <nav id=nav__ID class="navbar navbar-expand-lg navbar-dark">
+		<div id=brand__ID>
+			<a class="navbar-brand d-none d-lg-inline-block" onclick="$vm.nav_load_module('panel_main_home');">
+            	<div class=large_logo__ID>
+					<img src='images/logo.png' style='margin-top:0px;margin-bottom:0px'></img>
+    	        </div>
+            </a>
+	        <a class="navbar-brand d-lg-none" onclick="$vm.nav_load_module('panel_main_home');">
+	            <div class=small_logo__ID>
+                    <img height=50 src='images/logo.png' style='margin-top:0px;margin-bottom:0px'></img>
                 </div>
-            </div>
-        </a>
-        <a class="navbar-brand d-lg-none" onclick="$vm.nav_load_module('home');" style='cursor:pointer'>
-            <div class=small_logo_ID>
-                <img src="images/childfund_logo.png" style="height:30px"></img>
-            </div>
-        </a>
+	        </a>
+		</div>
         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbars__ID" aria-controls="navbars__ID" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-		<div id="navbars__ID" class="navbar-collapse collapse">
+        <div id="navbars__ID" class="navbar-collapse collapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('home');"><i class="fa fa-home"></i> Home</a></li>
-				<li class="nav-item dropdown">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle " id="nav_dropdown__ID" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-pencil"></i> DATA ENTRY</a>
                     <div class="dropdown-menu" aria-labelledby="nav_dropdown__ID">
-                        <a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('program_list');">Program List</a>
-                        <a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('quarterly_projection');">Quarterly Projection</a>
+                        <a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_program_list');">Program List</a>
+                        <a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_quarterly_projection');">Quarterly Projection</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -66,54 +65,91 @@
                         <a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('dev');">&bull; Project Status Change</a>
 						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('dev');">&bull; Request Fund</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('site');">Site List</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('document_type');">Document Type</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('region');">Region List</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('country');">Country List</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('sector');">Sector List</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('location');">Location List</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('funding_source');">Funding Source List</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('theme');">Theme List</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('implementation_arrangement');">Implementation Arrangement List</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('drr_mainstreaming');">DRR Mainstreaming List</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('approval_status');">Project Approval Status</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('program_list_sub_table');">Program List Sub Table</a>
-						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('dev');">Actual Spending - Spreadsheet</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_site');">Site List</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_document_type');">Document Type</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_region');">Region List</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_country');">Country List</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_sector');">Sector List</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_location');">Location List</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_funding_source');">Funding Source List</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_theme');">Theme List</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_implementation_arrangement');">Implementation Arrangement List</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_drr_mainstreaming');">DRR Mainstreaming List</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_approval_status');">Project Approval Status</a>
+						<a class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onclick="$vm.nav_load_module('panel_main_program_list_sub_table');">Program List Sub Table</a>
                     </div>
                 </li>
 
 				<li><a class="nav-link" onclick="$vm.nav_click_process('vm_signinout');" name=signinout><i class="fa fa-user"></i> Sign In/Out</a></li>
             </ul>
-			<form id=form__ID class="form-inline my-2 my-lg-0">
-				<input id=vm_system_search class="form-control mr-sm-2" type="text" placeholder="Search modules..." aria-label="Search modules..." />
-			</form>
+<!--            <form id=form__ID class="form-inline my-2 my-lg-0">
+                <input id=vm_system_search class="form-control mr-sm-2" type="text" placeholder="Search modules..." aria-label="Search modules..." />
+            </form>
+-->
         </div>
     </nav>
     <script>
         //---------------------------------------------
-        if($vm.user=='guest'){
-            $('a[name=signinout]').html('<i class="fa fa-user"></i> Sign In')
-            $('#username__ID').text('');
-        }
-        else{
-            $('a[name=signinout]').html('<i class="fa fa-user"></i> Sign Out')
-            $('#username__ID').text('Signed in as '+ $vm.user);
-        }
+		var init_loop=setInterval(function (){
+			console.log('init_loop...')
+			if($vm.init_status==1){
+				clearInterval(init_loop);
+				show_user();
+			}
+		},100);
         //---------------------------------------------
+		var show_user=function(){
+			var third=""
+			if($vm.user_puid=="1") third=" (Google)";
+			if($vm.user_puid=="2") third=" (Facebook)";
+			if($vm.user=='guest'){
+				$('#username__ID').text('');
+				$('#signin__ID').show();
+				$('#signout__ID').hide();
+			}
+			else{
+				$('#username__ID').text('Signed in as '+ $vm.user+third);
+				$('#signin__ID').hide();
+				$('#signout__ID').show();
+			}
+		}
+		//---------------------------------------------
+        if(window.location.hostname!='127.0.0.1'){
+			$vm.google_signin_setup('175539446682-l43227luihdng8j44mi8jf1ffj2g66jt.apps.googleusercontent.com','google__ID',show_user);
+            $vm.facebook_signin_setup('342009392874981','facebook__ID',show_user);
+        }
+		//---------------------------------------------
+		if(window.innerWidth <= 800 && window.innerHeight <= 600) {
+			$('#form__ID').parent().prepend($('#form__ID'));
+		}
+		//---------------------------------------------
+		$(".navbar-nav").hide();
+		var navbars_loop=setInterval(function (){
+			if($vm.js_popper==1){
+				clearInterval(navbars_loop);
+				$(".navbar-nav").show();
+                console.log((new Date().getTime()-$vm.start_time).toString()+"---"+"********************** menu is ready ************************");
+			}
+		},100);
+		//------------------------------------
     </script>
     <style>
         #header__ID{
-			background-color: #7EBA00;
+            background: rgba(126, 186, 0, 0.5);
         }
         #header__ID a{
             cursor:pointer;
+        }
+        #nav__ID{
+			padding:0;
+            z-index:99;
         }
         #navbars__ID{
 	        padding-top:30px;
         }
         .large_logo__ID{
             color:#fff;
-            padding-left:30px;
+            padding:0px 0px 0px 20px;
         }
         .large_logo_large_label__ID{
             font-size:140%;
@@ -121,22 +157,102 @@
         .large_logo_small_label__ID{
             font-size:64%;
         }
-        .small_logo__ID{
-            color:#fff;
-        }
         #navbars__ID{
-            padding-left:30px;
+            padding-left:50px;
         }
         #form__ID{
-	        padding-right:10px;
+            padding-left:80px;
         }
-		@media screen and (max-width:768px){
+		@media screen and (max-width:992px){
 			#nav__ID{
-                background-color: #7EBA00;
-			}
-	        #form__ID{
-		        padding-right:0px;
+	            z-index:99;
 	        }
+            #form__ID{
+		        padding-left:0px;
+	        }
+			#nav__ID{
+                padding: 0px 15px;
+			}
+            #navbars__ID{
+    	        padding-top:0px;
+                padding-left:10px;
+				background-color:#445a26;
+            }
+            .small_logo__ID{
+                color:#fff;
+                font-size: 140%;
+            }
 		}
+		/****************************/
+		#navbars__ID a:focus {
+			outline: none;
+		}
+		#navbars__ID .navbar-brand {
+			font-size: 1.1rem;
+			color: white;
+		}
+		#navbars__ID .navbar-brand.active,
+		#navbars__ID .navbar-brand:active,
+		#navbars__ID .navbar-brand:focus,
+		#navbars__ID .navbar-brand:hover {
+			color: white;
+		}
+		#navbars__ID .navbar-nav {
+			letter-spacing: 1px;
+		}
+		#navbars__ID .navbar-nav li.nav-item a.nav-link {
+			color: white;
+		}
+		#navbars__ID .navbar-nav li.nav-item a.nav-link:hover {
+			color: red;
+			outline: none;
+            background-color: rgba(183, 193, 193, 0.3);
+		}
+		#navbars__ID .navbar-nav li.nav-item a.nav-link:active,
+		#navbars__ID .navbar-nav li.nav-item a.nav-link:focus {
+			color: white;
+		}
+		#navbars__ID .navbar-toggler {
+			font-size: 14px;
+			padding: 11px;
+			text-transform: uppercase;
+			color: white;
+			border-color: white;
+		}
+		#navbars__ID .navbar-toggler:focus,
+		#navbars__ID .navbar-toggler:hover {
+			color: white;
+			border-color: #18BC9C;
+			background-color: #18BC9C;
+		}
+        #navbars__ID .dropdown-item:hover {
+			color: red;
+			background-color: #ddd;
+		}
+		@media (min-width: 992px) {
+			#navbars__ID {
+				-webkit-transition: padding-top 0.3s, padding-bottom 0.3s;
+				-moz-transition: padding-top 0.3s, padding-bottom 0.3s;
+				transition: padding-top 0.3s, padding-bottom 0.3s;
+			}
+			#navbars__ID .navbar-brand {
+				font-size: 2em;
+				-webkit-transition: all 0.3s;
+				-moz-transition: all 0.3s;
+				transition: all 0.3s;
+			}
+			#navbars__ID .navbar-nav > li.nav-item > a.nav-link.active {
+				color: white;
+				border-radius: 3px;
+				background: #18BC9C;
+			}
+			#navbars__ID .navbar-nav > li.nav-item > a.nav-link.active:active,
+			#navbars__ID .navbar-nav > li.nav-item > a.nav-link.active:focus,
+			#navbars__ID .navbar-nav > li.nav-item > a.nav-link.active:hover {
+				color: white;
+				background: #18BC9C;
+		  	}
+		}
+		/*********************************/
     </style>
 </div>

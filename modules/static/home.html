@@ -1,77 +1,30 @@
-<div id=vm_top_container__ID>
-	<div id=slide__ID>
-		<div id="myCarousel" class="carousel slide" data-ride="carousel">
-		    <!-- Indicators -->
-		    <ol class="carousel-indicators">
-		      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-		      <li data-target="#myCarousel" data-slide-to="1"></li>
-		      <li data-target="#myCarousel" data-slide-to="2"></li>
-		    </ol>
-    <!-- Wrapper for slides -->
-            <div class="carousel-inner" role="listbox">
-              <div class="carousel-item active">
-                  <div class=slider_item__ID style="background:url('images/bike-appeal.jpg') no-repeat bottom center; background-size: cover;" ></div>
-                  <div class="carousel-caption">
-                  </div>
-              </div>
-              <div class="carousel-item">
-                  <div class=slider_item__ID style="background:url('images/cyclone-pam.jpg') no-repeat bottom center; background-size: cover;" ></div>
-                  <div class="carousel-caption">
-                  </div>
-              </div>
-              <div class="carousel-item">
-                  <div class=slider_item__ID style="background:url('images/global-community-laos.jpg') no-repeat bottom center; background-size: cover;" ></div>
-                  <div class="carousel-caption">
-                  </div>
-              </div>
-              <div class="carousel-item">
-                  <div class=slider_item__ID style="background:url('images/kili.jpg') no-repeat bottom center; background-size: cover;" ></div>
-                  <div class="carousel-caption">
-                  </div>
-              </div>
-              <div class="carousel-item">
-                  <div class=slider_item__ID style="background:url('images/sponsor.jpg') no-repeat bottom center; background-size: cover;" ></div>
-                  <div class="carousel-caption">
-                  </div>
-              </div>
-            </div>
-        </div>
-
-            <!-- Left and right controls -->
-        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-        </div>
-    </div>
+<div id=page__ID>
+	<div class="container-fluid" style='max-width:800px'>
+		<div class="text-center">
+		  <h1>PnP</h1>
+	  	  <hr style='border-top:1px solid #005f40;'></hr>
+	  	  <h3>Programmes and Projects</h3>
+		  <br>
+		  <br><br>
+		</div>
+	</div>
 </div>
 <script>
-function F__ID(){
-    //-----------------------
-	$('#D__ID').on('b4jsready',function(){
-		$('.carousel').carousel({
-	        interval: 3000
-	    })
-	})
-    //-----------------------
-}
+	function F__ID(){
+        var color=$vm.module_list[$vm.vm['__ID'].name].color;
+        if(color!=undefined) $('#D__ID').css('color',color);
+	}
 </script>
 <style>
 	#D__ID{
-	    height: 100%;
-	    width: 100%;
-	    overflow:auto;
-	    animation: vm_module_fadein 1.0s;
-	}
-	#vm_top_container__ID{
-	    position:relative;
 		height:100%;
+        overflow:auto;
+		animation: vm_module_fadein 1.0s;
 	}
-	#slide__ID, #myCarousel, div.carousel-inner,div.carousel-item, div.slider_item__ID{
+	#page__ID{
 		height:100%;
+		display: flex;
+		align-items: center;
+		color:#fff;
 	}
 </style>

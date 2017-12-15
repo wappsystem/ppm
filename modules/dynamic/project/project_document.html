@@ -30,6 +30,7 @@
         $('#D__ID').on('load',function(){ _set_req(); _request_data(); })
         //-------------------------------------
 		_set_req=function(){
+            alert(_db_pid)
 			var sql_where="";
 			var parent_uid=_mobj.op.parent_uid;
 			if(_mobj.op.parent_uid!=undefined){
