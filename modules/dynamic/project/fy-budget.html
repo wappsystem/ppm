@@ -1,39 +1,28 @@
 <section>
-    VmInclude:/components/grid.v3.html
+      VmInclude:/components/grid.v3.html
 </section>
 <script>
     function F__ID(){
         //-------------------------------------
-        VmInclude:__COMPONENT__/grid/grid.v3.js
-        VmInclude:__COMPONENT__/style/ease-in-out.js
+        VmInclude:/components/grid.v3.js
         _json=''; //Store data as XML - NOT json
         //-------------------------------------
-	//	$('#new__ID').hide();
-	//	$('#save__ID').hide();
-		//-------------------------------------
-        _fields="_Form,Name,Description,Type,Notes";
+        _fields="_Form,FY,FY_Start,FY_End,ANCP,Comments";
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
-                case 'Type':
-                    var sql="with tb as (select name=@('Type') from [TABLE-"+$vm.module_list['panel_main_document_type'].table_id+"] where LEN(@('Type'))<25)";
-                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
-                    VmInclude:__COMPONENT__/grid/field_auto.js
-                    break;
-                case 'Name':
-                    VmInclude:__COMPONENT__/grid/field_file.js
-                	break;
             }
         }
+        //-------------------------------------
         var project='';
         //-------------------------------------
         $('#D__ID').on('load',function(){
-            project='Project Code: '+_mobj.op.project_code
-            $('#parent__ID').text(_mobj.op.program_code+' | Project Code: '+_mobj.op.project_code);
+            project=_mobj.op.project_code
+            $('#parent__ID').text(project+' | Version: '+_mobj.op.version);
             _set_req(); _request_data(); })
         //-------------------------------------
-		_set_req=function(){
+        _set_req=function(){
 			var sql_where="";
 			var parent_uid=_mobj.op.parent_uid;
 			if(_mobj.op.parent_uid!=undefined){
@@ -50,10 +39,9 @@
             dbv.PPID=_mobj.op.ppid;
             return true;
         };
-		//-------------------------------------
-
+        //-------------------------------------
     }
 </script>
 <style>
-    VmInclude:__COMPONENT__/grid/grid.v3.css
+    VmInclude:/components/grid.v3.css
 </style>

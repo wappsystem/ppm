@@ -1,11 +1,10 @@
 <section>
-      VmInclude:__COMPONENT__/grid/grid.v3.html
+    VmInclude:/components/grid.v3.html
 </section>
 <script>
     function F__ID(){
         //-------------------------------------
         VmInclude:__COMPONENT__/grid/grid.v3.js
-        VmInclude:__COMPONENT__/style/ease-in-out.js
         _json=''; //Store data as XML - NOT json
         //-------------------------------------
 	//	$('#new__ID').hide();
@@ -61,6 +60,7 @@
 							child:"1",
                             check_count_where:" and PUID="+records[I].UID,
                             status:"open",
+                            program_code:records[I].Code,
                        })
                         //-----------------------------------------------
                     });
@@ -82,6 +82,7 @@
 							child:"1",
                             check_count_where:" and PUID="+records[I].UID,
                             status:"closed",
+                            program_code:records[I].Code,
                         })
                         //-----------------------------------------------
                     });
@@ -89,7 +90,9 @@
             }
         }
         //-------------------------------------
-        $('#D__ID').on('load',function(){ _set_req(); _request_data(); })
+        $('#D__ID').on('load',function(){
+            $('#parent__ID').text('Programmes');
+            _set_req(); _request_data(); })
         //-------------------------------------
     }
 </script>
