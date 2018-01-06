@@ -19,7 +19,7 @@
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
                 case 'Amount':
-                    if(I==records.length-1) {td.css('font-weight','bold');td.css('color','#444');}
+                    //if(I==records.length-1) {td.css('font-weight','bold');td.css('color','#444');}
                     if(source=="grid") td.css("text-align","right").css('white-space','nowrap');
                     td.html(formatter.format(records[I][field]));
                 break;
@@ -39,8 +39,10 @@
 							parent_uid:records[I].UID,
 							child:"1",
                             check_count_where:" and PUID="+records[I].UID,
-                            project_code:project,
+                            program_code:_mobj.op.program_code,
+                            project_code:_mobj.op.project_code,
                             version:records[I].Version,
+                            fy:records[I].Approval_FY,
                             budget:records[I].Amount,
                         })
                         //-----------------------------------------------
@@ -75,11 +77,11 @@
             return value;
         }
         //-------------------------------------
-        var project='';
+        var title='';
         //-------------------------------------
         $('#D__ID').on('load',function(){
-            project='Project Code: '+_mobj.op.project_code
-            $('#parent__ID').text(_mobj.op.program_code+' | Project Code: '+_mobj.op.project_code);
+            title='Programme Code:'+_mobj.op.program_code+' | Project Code: '+_mobj.op.project_code+' | Proposal and Variation'
+            $('#parent__ID').text(title);
             _set_req(); _request_data(); })
         //-------------------------------------
         _set_req=function(){

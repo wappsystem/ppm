@@ -38,7 +38,7 @@
 							parent_uid:records[I].UID,
 							child:"1",
                             check_count_where:" and PUID="+records[I].UID,
-                            program_code:program,
+                            program_code:_mobj.op.program_code,
                             project_code:records[I].Project_Code,
                         })
                         //-----------------------------------------------
@@ -60,7 +60,7 @@
 							parent_uid:records[I].UID,
 							child:"1",
                             check_count_where:" and PUID="+records[I].UID,
-                            program_code:program,
+                            program_code:_mobj.op.program_code,
                             project_code:records[I].Project_Code,
                         })
                         //-----------------------------------------------
@@ -142,11 +142,11 @@
 
             }
         }
-        var program=''
+        var title=''
         //-------------------------------------
         $('#D__ID').on('load',function(){
-            program='Programme Code: '+_mobj.op.program_code+' ('+_mobj.op.status+') | Projects'
-            $('#parent__ID').text(program);
+            title='Programme Code: '+_mobj.op.program_code+' | ('+_mobj.op.status+') Projects';
+            $('#parent__ID').text(title);
             _set_req(); _request_data();  })
         //-------------------------------------
         var _set_req=_set_req_export=function(){

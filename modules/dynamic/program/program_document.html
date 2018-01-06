@@ -1,5 +1,5 @@
 <section>
-      VmInclude:__COMPONENT__/grid/grid.v3.html
+      VmInclude:/components/grid.v3.html
 </section>
 <script>
     function F__ID(){
@@ -26,8 +26,12 @@
                 	break;
             }
         }
+        var title='';
         //-------------------------------------
-        $('#D__ID').on('load',function(){ _set_req(); _request_data(); })
+        $('#D__ID').on('load',function(){
+            var title='Programme Code: '+_mobj.op.program_code+' | Documents';
+            $('#parent__ID').text(title);
+            _set_req(); _request_data(); })
         //-------------------------------------
 		_set_req=function(){
 			var sql_where="";

@@ -258,11 +258,9 @@ var _render=function(I){
             $(this).css({'color':'#666','padding-left':'8px','padding-right':'8px'})
             $(this).html("<u style='cursor:pointer'><i class='fa fa-pencil-square-o'></i></u>");
             $(this).find('u').on('click',function(){
-                alert(1)
                 _form_I=row;
                 var this_module_name=$vm.vm['__ID'].name;
                 var form_module_name=$vm.module_list[this_module_name].form_module;
-                alert(form_module_name)
                 if(form_module_name===undefined){
                     var name='grid_form__ID';
 					if($vm.module_list[name]==undefined){
