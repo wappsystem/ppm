@@ -9,6 +9,7 @@
 		"project_form":		{"url":"/modules/dynamic/project/project.form.html","table_id":"20000012"},
 		"project_document":	{"url":"/modules/dynamic/project/project_document.html","table_id" : "20000017","name_for_search":"Project Document"},
 		"proposal_and_variation":{"url":"/modules/dynamic/project/proposal-variation.html","table_id" : "20000023","name_for_search":"Project Proposal Variation"},
+		"actual_spending":{"url":"/modules/dynamic/project/actual-spending.html","table_id" : "20000015","name_for_search":"Project Actual Spending"},
 		"fy_budget":{"url":"/modules/dynamic/project/fy-budget.html","table_id" : "20000014","name_for_search":"Project FY Budget"},
 		"fy_budget_form":{"url":"/modules/dynamic/project/fy-budget.form.html","table_id" : "20000016","item_list":"20000016","name_for_search":""},
 		"fy_budget_details":{"url":"/modules/dynamic/project/fy-budget-details.html","table_id" : "20000016","name_for_search":"Project FY Budget Details"},

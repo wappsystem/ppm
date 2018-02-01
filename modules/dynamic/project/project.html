@@ -22,6 +22,28 @@
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
+                case '_Actual_Spending':
+                    records[I].vm_custom[field]=true;
+                    if(_records[I].UID===undefined) return;
+                    td.html("<u style='cursor:pointer'>Spending</u>");
+                    td.find('u').on('click',function(){
+                        $vm.load_module_by_name("panel_main_actual_spending",$vm.root_layout_content_slot,{
+                            //------------------------
+                            mobj:_mobj,
+                            record:records[I],
+                            puid:records[I].UID,
+                            sys:{},
+                            ppid:_db_pid,
+                            //------------------------
+							parent_uid:records[I].UID,
+							child:"1",
+                            check_count_where:" and PUID="+records[I].UID,
+                            program_code:_mobj.op.program_code,
+                            project_code:records[I].Project_Code,
+                        })
+                        //-----------------------------------------------
+                    });
+                	break;
                 case '_Proposal_and_Variation':
                     records[I].vm_custom[field]=true;
                     if(_records[I].UID===undefined) return;
