@@ -10,7 +10,7 @@
 		//$('#new__ID').hide();
 		//$('#save__ID').hide();
 		//-------------------------------------
-        _fields="_Form,_Project_Documents,_Proposal_and_Variation,_Actual_Spending,_Pending_Fund,Project,Code|Project_Code,Country,Description,_gridHidden|Theme,Primary Sector|Sector,_gridHidden|Secondary_Sector,_gridHidden|Implementation_Arrangement,_gridHidden|DRR_Mainstreaming,Start,End,Status|Project_Status,_Hidden|DAC_codes_primary,_Hidden|DAC_codes_secondary,Location,_gridHidden|Location_2,_gridHidden|Location_3,_gridHidden|Location_4,Approval_Status,Approval_Date,_gridHidden|List_people_updated,_gridHidden|New_Comments,Comments,_gridHidden|Creation_Date,_gridHidden|Created_By,Request_Fund,Requested_amount";
+        _fields="_Form,_Project_Documents,_Proposal_and_Variation,_Actual_Spending,_Pending_Funds,Project,Code|Project_Code,Country,Description,_gridHidden|Theme,Primary Sector|Sector,_gridHidden|Secondary_Sector,_gridHidden|Implementation_Arrangement,_gridHidden|DRR_Mainstreaming,Start,End,Status|Project_Status,_Hidden|DAC_codes_primary,_Hidden|DAC_codes_secondary,Location,_gridHidden|Location_2,_gridHidden|Location_3,_gridHidden|Location_4,Approval_Status,Approval_Date,_gridHidden|List_people_updated,_gridHidden|New_Comments,Comments,_gridHidden|Creation_Date,_gridHidden|Created_By,Request_Fund,Requested_amount";
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
         //-------------------------------------
         var approved=true;
@@ -22,6 +22,28 @@
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
+                case '_Pending_Funds':
+                    records[I].vm_custom[field]=true;
+                    if(_records[I].UID===undefined) return;
+                    td.html("<u style='cursor:pointer'>Funds</u>");
+                    td.find('u').on('click',function(){
+                        $vm.load_module_by_name("panel_main_pending_funds",$vm.root_layout_content_slot,{
+                            //------------------------
+                            mobj:_mobj,
+                            record:records[I],
+                            puid:records[I].UID,
+                            sys:{},
+                            ppid:_db_pid,
+                            //------------------------
+							parent_uid:records[I].UID,
+							child:"1",
+                            check_count_where:" and PUID="+records[I].UID,
+                            program_code:_mobj.op.program_code,
+                            project_code:records[I].Project_Code,
+                        })
+                        //-----------------------------------------------
+                    });
+                	break;
                 case '_Actual_Spending':
                     records[I].vm_custom[field]=true;
                     if(_records[I].UID===undefined) return;

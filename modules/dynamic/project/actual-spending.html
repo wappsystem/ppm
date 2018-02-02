@@ -18,6 +18,10 @@
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
+                case 'Lock':
+                    td.html('<input type=checkbox />');
+                    VmInclude:__COMPONENT__/grid/field_checkbox.js
+                    break;
                 case 'FY_Start':
                 case 'FY_End':
                     records[I].vm_readonly[field]=true;
@@ -34,9 +38,9 @@
                 case '_Details':
                     records[I].vm_custom[field]=true;
                     if(_records[I].UID===undefined) return;
-                    td.html("<u style='cursor:pointer'>Budget</u>");
+                    td.html("<u style='cursor:pointer'>Details</u>");
                     td.find('u').on('click',function(){
-                        $vm.load_module_by_name("panel_main_fy_budget",$vm.root_layout_content_slot,{
+                        $vm.load_module_by_name("panel_main_actual_spending_details",$vm.root_layout_content_slot,{
                             //------------------------
                             mobj:_mobj,
                             record:records[I],
@@ -50,8 +54,13 @@
                             program_code:_mobj.op.program_code,
                             project_code:_mobj.op.project_code,
                             version:records[I].Version,
-                            fy:records[I].Approval_FY,
-                            budget:records[I].Amount,
+                            fy:records[I].FY,
+                            amount_q1:records[I].Amount_Q1,
+                            amount_q2:records[I].Amount_Q2,
+                            amount_q3:records[I].Amount_Q3,
+                            amount_q4:records[I].Amount_Q4,
+                            amount_q4:records[I].Amount_Q4,
+                            comments:records[I].Comments,
                         })
                         //-----------------------------------------------
                     });
