@@ -1,0 +1,146 @@
+<section id=form_container__ID>
+	VmInclude:__COMPONENT__/toolbar/save.v3.html
+	<div id=header__ID>
+		Program
+	</div>
+<!-- Container (Contact Section) -->
+<form id=F__ID>
+    <div class="container">
+    <div class="row row__ID">
+        <div class="col-sm col-lg-3">
+            Program Full Name
+        </div>
+        <div class="col-sm">
+            <textarea class="form-control" name="Program" placeholder="Full Name" rows="3" id=Program__ID ></textarea><br>
+        </div>
+    </div>
+    <div class="row row__ID">
+        <div class="col-sm col-lg-3">
+            Country
+        </div>
+        <div class="col-sm">
+            <input class="form-control" name="Country" placeholder="Country" type="text" id=Country__ID required><br>
+        </div>
+    </div>
+    <div class="row row__ID">
+        <div class="col-sm col-lg-3">
+            Code
+        </div>
+        <div class="col-sm">
+            <input class="form-control" name="Code" placeholder="Code" type="text"  id=Code__ID required><br>
+        </div>
+    </div>
+    <div class="row row__ID">
+        <div class="col-sm col-lg-3">
+            Comments
+        </div>
+        <div class="col-sm">
+            <textarea class="form-control" name="Comments" placeholder="Comments" rows="3" id=Comments__ID></textarea><br>
+        </div>
+    </div>
+    <div class="row row__ID">
+        <div class="col-sm col-lg-3">
+            Document
+        </div>
+        <div class="col-sm">
+            <input class="form-control" name="DocProgram" placeholder="Document" type="file" required id=DocProgram__ID><br>
+        </div>
+    </div>
+</form>
+</section>
+
+<script>
+	function F__ID(){
+		//--------------------------------------------------------
+		VmInclude:__COMPONENT__/grid/form.v3.js
+		//--------------------------------------------------------
+		$('#Date__ID').datepicker({format: "dd/mm/yyyy", autoclose: true});
+		//--------------------------------------------------------
+		var demo_data_id=2;
+		//--------------------------------------------------------
+		$('#D__ID').on('load',function(){
+			$("#F__ID")[0].reset();
+			$('#submit__ID').show();
+		})
+		//--------------------------------------------------------
+		$('#F__ID').submit(function(event){
+			//--------------------------------------------------------
+			event.preventDefault();
+			$('#submit__ID').hide();
+			//--------------------------------------------------------
+			var data={}; var a=$("#F__ID").serializeArray(); $.each(a, function () {	data[this.name]=this.value || '';});
+			var dbv={}
+			var db_pid=$vm.module_list[$vm.vm["__ID"].name].table_id
+			//--------------------------------------------------------
+			var req={cmd:"add_record",db_pid:db_pid,data:data,dbv:dbv};
+			$VmAPI.request({data:req,callback:function(res){
+				if(res.ret<=0)	$vm.alert("Sorry there is a problem. You can try again later.")
+				else $vm.alert('Your data has been successfully submitted');
+			}});
+			//--------------------------------------------------------
+		})
+		//--------------------------------------------------------
+		$('#header__ID').on('click', function(event){
+		    if(event.ctrlKey){
+				var x=document.getElementById("F__ID");
+				var txt="";
+				for (var i=0; i < x.length; i++) {
+					var nm=x.elements[i].getAttribute("name");
+					if(nm!=null){ if(txt!="") txt+=","; txt+=nm; }
+				}
+				$vm.alert(txt)
+		    }
+		});
+		//--------------------------------------------------------
+	}
+</script>
+<style>
+	#D__ID{
+		height:100%;
+		overflow: auto;
+		animation: vm_module_fadein 1.0s;
+		background-color: #465a69;
+	}
+	#form_container__ID{
+		padding-top:50px;
+		max-width: 800px;
+		margin-left: auto;
+		margin-right: auto;
+
+		font-family: Verdana,sans-serif;
+    	font-size: 15px;
+    	line-height: 1.5;
+		color: #fff;
+	}
+	#form_container__ID .row__ID{
+		padding:6px 0;
+	}
+	#form_container__ID .row__ID:hover{
+		background-color: #203342;
+	}
+	#header__ID{
+		background-color:#727b84;
+		color:#fff;
+		padding:10px 15px 10px 15px;
+		font-size:130%'
+	}
+	#F__ID{
+		border:1px solid #bbb;
+		padding:6px 15px 20px 15px;
+	}
+	#F__ID label
+    	display: inline-block;
+    	margin: .6rem 0 .3rem 0;
+	}
+
+	#F__ID fieldset {
+	    border: 0px solid #c0c0c0;
+	    margin: 0;
+	    padding: 0;
+	}
+	@media screen and (max-width:768px){
+		#form_container__ID{
+			padding:20px 10px 50px 10px;
+		}
+	}
+</style>

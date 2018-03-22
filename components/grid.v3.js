@@ -288,11 +288,11 @@ var _render=function(I){
                     );
                 }
                 else{
-                    if($vm.module_list[form_module_name]===undefined){
+                    if($vm.module_list['panel_main_'+form_module_name]===undefined){
                         alert('Can not find "'+form_module_name+'" in the module list');
                         return;
                     }
-                    $vm.load_module_by_name(form_module_name,$vm.root_layout_content_slot,
+                    $vm.load_module_by_name('panel_main_'+form_module_name,$vm.root_layout_content_slot,
                         {
 							//----------------
 							sys:_mobj.op.sys,

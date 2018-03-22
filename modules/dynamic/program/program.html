@@ -4,13 +4,13 @@
 <script>
     function F__ID(){
         //-------------------------------------
-        VmInclude:__COMPONENT__/grid/grid.v3.js
+        VmInclude:/components/grid.v3.js
         _json=''; //Store data as XML - NOT json
         //-------------------------------------
 	//	$('#new__ID').hide();
 	//	$('#save__ID').hide();
 		//-------------------------------------
-        _fields="_Form,Program Documents|_Program_Documents,Projects (Open)|_Projects_Open,Projects (Closed)|_Projects_Closed,Program,Country,Code,Comments,Document|DocProgram";
+        _fields="_Form,Program,Country,Code,Program Documents|_Program_Documents,Projects (Open)|_Projects_Open,Projects (Closed)|_Projects_Closed,Comments,Document|DocProgram";
         _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){

@@ -1,130 +1,158 @@
-<section id=form_container__ID>
-	<div id=header__ID>
-		Program
+<section id=sec__ID>
+	<div id=form_container__ID>
+		<div id=header__ID>
+			Programme
+		</div>
+		<form id=F__ID>
+		    <div class="container">
+		    <div class="row row__ID">
+		        <div class="col-sm col-lg-3">
+		            Program Full Name
+		        </div>
+		        <div class="col-sm">
+		            <textarea class="form-control" name="Program" placeholder="Full Name" rows="3" id=Program__ID ></textarea>
+		        </div>
+		    </div>
+		    <div class="row row__ID">
+		        <div class="col-sm col-lg-3">
+		            Country
+		        </div>
+		        <div class="col-sm">
+		            <input class="form-control" name="Country" placeholder="Country" type="text" id=Country__ID required>
+		        </div>
+		    </div>
+		    <div class="row row__ID">
+		        <div class="col-sm col-lg-3">
+		            Code
+		        </div>
+		        <div class="col-sm">
+		            <input class="form-control" name="Code" placeholder="Code" type="text"  id=Code__ID required>
+		        </div>
+		    </div>
+		    <div class="row row__ID">
+		        <div class="col-sm col-lg-3">
+		            Comments
+		        </div>
+		        <div class="col-sm">
+		            <textarea class="form-control" name="Comments" placeholder="Comments" rows="3" id=Comments__ID></textarea>
+		        </div>
+		    </div>
+		    <div class="row row__ID">
+		        <div class="col-sm col-lg-3">
+		            Document
+		        </div>
+		        <div class="col-sm">
+		    <!--        <input class="form-control" name="DocProgram" placeholder="Document" type="file" id=DocProgram__ID> -->
+		        </div>
+		    </div>
+		</form>
 	</div>
-<!-- Container (Contact Section) -->
-<form id=F__ID>
-    <div class="container">
-    <div class="row row__ID">
-        <div class="col-sm col-lg-3">
-            Program Full Name
-        </div>
-        <div class="col-sm">
-            <textarea class="form-control" name="Program" placeholder="Full Name" rows="3" id=Program__ID ></textarea><br>
-        </div>
-    </div>
-    <div class="row row__ID">
-        <div class="col-sm col-lg-3">
-            Country
-        </div>
-        <div class="col-sm">
-            <input class="form-control" name="Country" placeholder="Country" type="text" id=Country__ID required><br>
-        </div>
-    </div>
-    <div class="row row__ID">
-        <div class="col-sm col-lg-3">
-            Code
-        </div>
-        <div class="col-sm">
-            <input class="form-control" name="Code" placeholder="Code" type="text"  id=Code__ID required><br>
-        </div>
-    </div>
-    <div class="row row__ID">
-        <div class="col-sm col-lg-3">
-            Comments
-        </div>
-        <div class="col-sm">
-            <textarea class="form-control" name="Comments" placeholder="Comments" rows="3" id=Comments__ID></textarea><br>
-        </div>
-    </div>
-    <div class="row row__ID">
-        <div class="col-sm col-lg-3">
-            Document
-        </div>
-        <div class="col-sm">
-            <input class="form-control" name="DocProgram" placeholder="Document" type="file" required id=DocProgram__ID><br>
-        </div>
-    </div>
-    <div class="row row__ID">
-        <div class="col-md-12 form-group">
-            <button id=submit__ID class="btn-success btn-lg pull-right" type="submit">Submit</button>
-        </div>
-    </div>
-</form>
+	<br>
+	<button id=submit__ID type="submit" class="btn btn-success">Submit</button>
 </section>
-
 <script>
-	function F__ID(){
+    function F__ID(){
 		//--------------------------------------------------------
-		$('#Date__ID').datepicker({format: "dd/mm/yyyy", autoclose: true});
+		VmInclude:__COMPONENT__/grid/form.v3.js
 		//--------------------------------------------------------
-		var demo_data_id=2;
-		//--------------------------------------------------------
+		var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix; if(prefix==undefined) prefix="";
+        //----------------------------------
 		$('#D__ID').on('load',function(){
-			$("#F__ID")[0].reset();
+			_init();
 			$('#submit__ID').show();
-		})
-		//--------------------------------------------------------
-		$('#F__ID').submit(function(event){
+			custom_field_process();
+	    })
+        //----------------------------------
+		var custom_field_process=function(){
+			//$('#F__ID input[name=Project_Name]').val(_records[I].Project_Name);
+			deserialize(_records[I]);
+		}
+		$('#submit__ID').on('click',function(event){
+
+/*		})
+		$('#F__ID').submit(function(event){*/
+	        //--------------------------------------------------------
+	        event.preventDefault();
+	        $('#submit__ID').hide();
+	        //--------------------------------------------------------
+	        var data={}, dbv={};
+			var a=$("#F__ID").serializeArray(); $.each(a, function () {	data[this.name]=this.value || '';});
+			$vm.g_project_record=data;
+			//--------------------------------------
+			$("#F__ID input[type=checkbox]").each(function(){
+				data[this.name]=this.checked ? "1" : "0";
+			})
+	        //--------------------------------------------------------
+			if(_before_submit!=''){
+				_before_submit(data,dbv)
+			}
 			//--------------------------------------------------------
-			event.preventDefault();
-			$('#submit__ID').hide();
-			//--------------------------------------------------------
-			var data={}; var a=$("#F__ID").serializeArray(); $.each(a, function () {	data[this.name]=this.value || '';});
-			var dbv={}
-			var db_pid=$vm.module_list[$vm.vm["__ID"].name].table_id
-			//--------------------------------------------------------
-			var req={cmd:"add_record",db_pid:db_pid,data:data,dbv:dbv};
-			$VmAPI.request({data:req,callback:function(res){
-				if(res.ret<=0)	$vm.alert("Sorry there is a problem. You can try again later.")
-				else $vm.alert('Your data has been successfully submitted');
-			}});
-			//--------------------------------------------------------
-		})
-		//--------------------------------------------------------
-		$('#header__ID').on('click', function(event){
-		    if(event.ctrlKey){
-				var x=document.getElementById("F__ID");
-				var txt="";
-				for (var i=0; i < x.length; i++) {
-					var nm=x.elements[i].getAttribute("name");
-					if(nm!=null){ if(txt!="") txt+=","; txt+=nm; }
-				}
-				$vm.alert(txt)
-		    }
+			var rid=_records[I].ID;
+	        if(rid==undefined){
+	            var req={cmd:"add_record",db_pid:_db_pid,data:data,dbv:dbv};
+	            $VmAPI.request({data:req,callback:function(res){
+					//alert_email();
+	            }});
+	        }
+	        else{
+	            var req={cmd:"modify_record",db_pid:_db_pid,rid:rid,data:data,dbv:dbv};
+	            $VmAPI.request({data:req,callback:function(res){
+					//alert_email();
+	            }});
+	        }
 		});
 		//--------------------------------------------------------
-	}
+		var deserialize=function(record){
+			$.each(record, function(name, value){
+				var $el = $('#F__ID *[name='+name+']');
+				var type = $el.attr('type');
+				switch(type){
+					case 'checkbox':
+						if(value=='off' || value=='0' || value=='') $el.attr('checked', false);
+						else $el.attr('checked', true);
+						break;
+					case 'radio':
+						//$('#F__ID input[name="' + name+ '"][value="' + value + '"]').prop('checked', true);
+						if($el.attr('value')==value) $el.prop('checked', true);
+						break;
+					default:
+						$el.val(value);
+				}
+			});
+		}
+//--------------------------------------------------------
+    }
 </script>
 <style>
-	#D__ID{
-		height:100%;
-		overflow: auto;
-		animation: vm_module_fadein 1.0s;
-		background-color: #465a69;
-	}
+<style>
+    #D__ID{
+        height:100%;
+        overflow:auto;
+        animation: vm_module_fadein 1.0s;
+        background:rgba(255,255,255,0.2);
+    }
 	#form_container__ID{
-		padding-top:50px;
 		max-width: 800px;
 		margin-left: auto;
 		margin-right: auto;
 
-		font-family: Verdana,sans-serif;
-    	font-size: 15px;
-    	line-height: 1.5;
-		color: #fff;
+        color:#000;
+        font-weight: normal;
+        background: rgba(255,255,255,0.8);
+        padding: 30px 20px 10px 20px;
+        border-radius: 15px;
 	}
 	#form_container__ID .row__ID{
 		padding:6px 0;
 	}
 	#form_container__ID .row__ID:hover{
-		background-color: #203342;
+		/*background-color: #203342;*/
 	}
 	#header__ID{
 		background-color:#727b84;
 		color:#fff;
 		padding:10px 15px 10px 15px;
-		font-size:130%'
+		font-size:150%;
 	}
 	#F__ID{
 		border:1px solid #bbb;
@@ -145,4 +173,79 @@
 			padding:20px 10px 50px 10px;
 		}
 	}
+    .control {
+        font-family: arial;
+        display: block;
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 5px;
+        padding-top: 3px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .control {
+        font-family: arial;
+        display: block;
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 5px;
+        padding-top: 3px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+        .control input {
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+        }
+    .control_indicator {
+        position: absolute;
+        top: 2px;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background: #e6e6e6;
+        border: 1px solid #000000;
+    }
+    .control-radio .control_indicator {
+        border-radius: 50%;
+    }
+
+    .control:hover input ~ .control_indicator,
+    .control input:focus ~ .control_indicator {
+        background: #cccccc;
+    }
+
+    .control input:checked ~ .control_indicator {
+        background: #A51C3D;
+    }
+    .control:hover input:not([disabled]):checked ~ .control_indicator,
+    .control input:checked:focus ~ .control_indicator {
+        background: #0e6647d;
+    }
+    .control input:disabled ~ .control_indicator {
+        background: #e6e6e6;
+        opacity: 0.6;
+        pointer-events: none;
+    }
+    .control_indicator:after {
+        box-sizing: unset;
+        content: '';
+        position: absolute;
+        display: none;
+    }
+    .control input:checked ~ .control_indicator:after {
+        display: block;
+    }
+    .control-radio .control_indicator:after {
+        left: 7px;
+        top: 7px;
+        height: 0px;
+        width: 0px;
+        border-radius: 50%;
+        background: #ffffff;
+    }
+    .control-radio input:disabled ~ .control_indicator:after {
+        background: #7b7b7b;
+    }
 </style>
