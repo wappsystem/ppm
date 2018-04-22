@@ -1,0 +1,7 @@
+{"modules":{
+
+    "site-list-data": {"table_id":"20000513", "url":"modules/site-list-data.html","form_module":"site-list-form"},
+    "site-list-form": {"table_id":"20000513", "url":"modules/site-list-form.html"}
+
+
+}}
