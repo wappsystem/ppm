@@ -1,7 +1,15 @@
 {"modules":{
 
     "site-list-data": {"table_id":"20000513", "url":"modules/site-list-data.html","form_module":"site-list-form"},
-    "site-list-form": {"table_id":"20000513", "url":"modules/site-list-form.html"}
-
-
+    "site-list-form": {"table_id":"20000513", "url":"modules/site-list-form.html"},
+    "region-list-form": {"table_id":"20000018", "url":"modules/region-list-form.html"},
+    "country-list-form": {"table_id":"20000021", "url":"modules/country-list-form.html"},
+    "location-list-form": {"table_id":"20003861", "url":"modules/location-list-form.html"},
+    "sector-list-form": {"table_id":"20000020", "url":"modules/sector-list-form.html"},
+    "funding-source-list-form": {"table_id":"20000019", "url":"modules/funding-source-list-form.html"},
+    "theme-list-form": {"table_id":"20009703", "url":"modules/theme-list-form.html"},
+    "implementation-arrangement-list-form": {"table_id":"20009704", "url":"modules/implementation-arrangement-list-form.html"},
+    "drr-mainstreaming-list-form": {"table_id":"20009705", "url":"modules/drr-mainstreaming-list-form.html"},
+    "project-approval-status-list-form": {"table_id":"20000685", "url":"modules/project-approval-status-list-form.html"},
+    "document-type-list-form":{"table_id":"20000022","url":"modules/document-type-list-form.html"}
 }}
