@@ -11,5 +11,7 @@
     "implementation-arrangement-list-form": {"table_id":"20009704", "url":"modules/implementation-arrangement-list-form.html"},
     "drr-mainstreaming-list-form": {"table_id":"20009705", "url":"modules/drr-mainstreaming-list-form.html"},
     "project-approval-status-list-form": {"table_id":"20000685", "url":"modules/project-approval-status-list-form.html"},
-    "document-type-list-form":{"table_id":"20000022","url":"modules/document-type-list-form.html"}
+    "document-type-list-form":{"table_id":"20000022","url":"modules/document-type-list-form.html"},
+    "program-list":{"table_id":"20000013","url":"modules/program-list.html","form_module":"program-form"},
+    "program-form":{"table_id":"20000013","url":"modules/program-form.html"}
 }}
