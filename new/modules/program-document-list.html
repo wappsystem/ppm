@@ -1,0 +1,56 @@
+<section>
+    VmInclude:__CURRENT_PATH__/grid/grid.v3.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__COMPONENT__/grid/grid.v3.js
+        VmInclude:__CURRENT_PATH__/task_data.js
+        _json=''; //Store data as XML - NOT json
+        //-------------------------------------
+        var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix; if(prefix==undefined) prefix="";
+        //-------------------------------------
+	//	$('#new__ID').hide();
+	//	$('#save__ID').hide();
+		//-------------------------------------
+        var fields="Name,Description,Type,Notes";
+        _fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
+        //-------------------------------------
+        _cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Type':
+                    var sql="select top(1) name=@('Type') from [TABLE-"+$vm.module_list[prefix+'document-type-list-form'].table_id+"] ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
+                    break;
+                case 'Name':
+                    VmInclude:__COMPONENT__/grid/field_file.js
+                	break;
+            }
+        }
+        var title='';
+        //-------------------------------------
+		_set_req=function(){
+            $("#title__ID").text('Programme Code: '+_mobj.op.program_code+' | Documents');
+			var sql_where="";
+			var parent_uid=_mobj.op.parent_uid;
+			if(_mobj.op.parent_uid!=undefined){
+				sql_where="where PUID="+parent_uid;
+			}
+		    var sql="with tb as (select Information,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+_db_pid+"-@S1] "+sql_where+")";
+		    sql+="select Information,ID,UID,PUID,DateTime,Author,RowNum from tb where RowNum between @I6 and @I7";
+		    var sql_n="select count(ID) from [TABLE-"+_db_pid+"-@S1] "+sql_where;
+			_req={cmd:'query_records',db_pid:_db_pid,sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+		}
+        //-------------------------------------
+        _before_submit=function(record,dbv){
+            if(_mobj.op.parent_uid!=='') dbv.PUID=_mobj.op.parent_uid;
+            dbv.PPID=_mobj.op.ppid;
+            return true;
+        };
+		//-------------------------------------
+
+    }
+</script>
+<style>
+    VmInclude:__COMPONENT__/grid/grid.v3.css
+</style>

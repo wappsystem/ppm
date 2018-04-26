@@ -9,6 +9,7 @@
         //-------------------------------------
         VmInclude:__COMPONENT__/grid/grid.v3.js
         VmInclude:__CURRENT_PATH__/task_data.js
+        _json=''; //Store data as XML - NOT json
         //-------------------------------------
         var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix; if(prefix==undefined) prefix="";
         //-------------------------------------
@@ -28,7 +29,7 @@
                     if(_records[I].UID===undefined) return;
                     td.html("<u style='cursor:pointer'>Documents</u>");
                     td.find('u').on('click',function(){
-                        $vm.load_module_by_name("panel_main_program_document",$vm.root_layout_content_slot,{
+                        $vm.load_module_by_name(prefix+'program-document-list',$vm.root_layout_content_slot,{
                             //------------------------
                             mobj:_mobj,
                             record:records[I],
