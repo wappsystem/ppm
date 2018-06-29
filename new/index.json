@@ -22,7 +22,10 @@
     "project-approval-status-list-form": {"table_id":"20011487", "url":"modules/project-approval-status-list-form.html"},
     "document-type-list-data": {"table_id":"20011477", "url":"modules/document-type-list-data.html","form_module":"document-type-list-form"},
     "document-type-list-form":{"table_id":"20011477","url":"modules/document-type-list-form.html"},
-    "program-list":{"table_id":"20000013","url":"modules/program-list.html","form_module":"program-form"},
-    "program-form":{"table_id":"20000013","url":"modules/program-form.html"},
-    "program-document-list":{"table_id":"20000028","url":"modules/program-document-list.html"}
+    "program-list-data":{"table_id":"20000013","url":"modules/program-list-data.html","form_module":"program-list-form"},
+    "program-list-form":{"table_id":"20000013","url":"modules/program-list-form.html"},
+    "program-document-list":{"table_id":"20000028","url":"modules/program-document-list.html"},
+    "project-list-data":	{"table_id" : "20000012","url" :"/modules/project-list-data.html","form_module":"project-list-form"},
+    "project-list-form":	{"table_id" : "20000012","url":"/modules/project-list-form.html"}
+
 }}
