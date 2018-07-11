@@ -124,7 +124,7 @@ var vm_init=function(){
 		text=text.replace(/__BASE__\/vmiis\/common-code\//g,'__COMPONENT__/');
 		text=text.replace(/__LIB__\/vmiis\/common-code\//g,'__COMPONENT__/');
 		text=text.replace(/__PARTS__\//g,'https://vmiis.github.io/component/');
-		text=text.replace(/__COMPONENT__\//g,'https://vmiis.github.io/component/');
+		text=text.replace(/__COMPONENT__\//g,'https://vmiis.github.io/component-2/');
 		text=text.replace(/https:\/\/vmiis.github.io\/modular-distributed-web-application\//g,'https://www.vmiis.com/');
 		if(window.location.hostname=='127.0.0.1' || window.location.hostname=='localhost'){
 			//use local version
