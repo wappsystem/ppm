@@ -293,11 +293,7 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 		sql="with tb as (select name=@('Approval_Status'),value2=uid from [TABLE-20000685] where (CHARINDEX(CHAR(10), @('Approval_Status')) = 0))";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Approval_Status__ID'),sql,function(key,value){
-			if(approval_status==true && ($vm.user!="jojo" && $vm.user!="childfund")){
-				alert("Only Administrator can Close the Project!");
-				$('#Approval_Status__ID').val("PA");
-			}
-			else $("#F__ID input[name="+key+"]").val($vm.text(value));
+			$("#F__ID input[name="+key+"]").val($vm.text(value));
 		})
 		$('#New_Comments__ID').change(function(){
 			process_comments();
@@ -314,6 +310,19 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 				$('#Project_Code__ID').val(project_code);
 			}
 		});
+		var app_stat=function(value){
+			if(approval_status==true && ($vm.user!="jojo" && $vm.user!="childfund")){
+				alert("Only Administrator can change Approval Status when approved!");
+				alert($('#Approval_Status__ID').val())
+				$('#Approval_Status__ID').val("AAAA")
+				//$("#F__ID input[name=Approval_Status]").val($vm.text("PA"));
+			}
+			else {
+				alert(2)
+				alert($('#Approval_Status__ID').val())
+				//$("#F__ID input[name=Approval_Status]").val($vm.text(value));
+			}
+		};
 		//-------------------------------------
 		var get_now=function(){
             var today = new Date();
