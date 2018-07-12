@@ -35,7 +35,7 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 		       		<span>Description</span>
 				</div>
 				<div class="col-sm-9">
-		            <textarea class="form-control" name="Description" rows="3" id=Description__ID></textarea>
+		            <textarea class="form-control form-control-sm" name="Description" rows="3" id=Description__ID></textarea>
 		        </div>
 		    </div>
             <div class="row row__ID">
@@ -99,7 +99,7 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 		       		<span>Status</span>
 				</div>
 				<div class="col-sm-9">
-		            <select class="form-control" name="Status"  id=Status__ID required><option value=""></option><option value="Open">Open</option><option value="Closed">Closed</option></select>
+		            <select class="form-control" name="Project_Status"  id=Project_Status__ID required><option value=""></option><option value="Open">Open</option><option value="Closed">Closed</option></select>
 		        </div>
 		    </div>
 			<div class="row row__ID">
@@ -155,7 +155,7 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 		       		<span>List of people to be updated</span>
 				</div>
 				<div class="col-sm-9">
-		            <textarea class="form-control" name="List_people_updated" placeholder="Enter your name here to receive updates of this project" rows="3" id=List_people_updated__ID></textarea>
+		            <textarea class="form-control form-control-sm" name="List_people_updated" placeholder="Enter your name here to receive updates of this project" rows="3" id=List_people_updated__ID></textarea>
 		        </div>
 		    </div>
 			<div class="row row__ID">
@@ -163,7 +163,7 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 					<span>Comments</span>
 				</div>
 				<div class="col-sm-9">
-					<textarea class="form-control" name="New_Comments" placeholder="Enter Comments here" rows="3" id=New_Comments__ID></textarea>
+					<textarea class="form-control form-control-sm" name="New_Comments" placeholder="Enter Comments here" rows="3" id=New_Comments__ID></textarea>
 				</div>
 			</div>
 			<div class="row row__ID">
@@ -171,7 +171,7 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 					<span>Comments History</span>
 				</div>
 				<div class="col-sm-9">
-					<textarea class="form-control" name="Comments_P" placeholder="" rows="3" id=Comments_P__ID></textarea>
+					<textarea class="form-control form-control-sm" name="Comments" placeholder="" rows="3" id=Comments__ID></textarea>
 				</div>
 			</div>
 			<div class="row row__ID">
@@ -203,7 +203,7 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 					<span>Requested amount &amp; FY(s)</span>
 				</div>
 				<div class="col-sm-9">
-					<textarea class="form-control" name="Requested_amount" placeholder="" rows="3" id=Requested_amount__ID></textarea>
+					<textarea class="form-control form-control-sm" name="Requested_amount" placeholder="" rows="3" id=Requested_amount__ID></textarea>
 				</div>
 			</div>
 		    <div class="row row__ID">
@@ -230,6 +230,9 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 		//-------------------------------------
 		var this_module=$vm.module_list[$vm.vm['__ID'].name];
 		var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+		var project_status=false;
+		var project_code="";
+		var approval_status=false;
 		//-------------------------------------
 		$('#D__ID').on('load',function(){
 		    $('#F__ID')[0].reset();
@@ -238,6 +241,11 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 		    $('#delete__ID').hide(); if(grid_record!=undefined && grid_record.ID!==undefined) $('#delete__ID').show();
 		    $vm.deserialize(grid_record,'#F__ID');
 			$vm.render_file_field(grid_record,'__ID',$('#DocProgram__ID'));
+			//Replace old html code
+			$('#Comments__ID').val($('#Comments__ID').val().replace(/<span class=C20000012_light_small>/g,'').replace(/<\/span>/g,'').replace(/<br>/g,'\n'));
+			if($('#Project_Status__ID').val()=='Open') project_status=true;
+			if($('#Project_Code__ID').val()!="") project_code=$('#Project_Code__ID').val();
+			if($('#Approval_Status__ID').val()=='PA') approval_status=true;
 		})
 		//-------------------------------------
 		$('#Start__ID').datepicker({dateFormat:'M yy',changeMonth:true,changeYear:true, autoclose: true});
@@ -285,9 +293,51 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 		sql="with tb as (select name=@('Approval_Status'),value2=uid from [TABLE-20000685] where (CHARINDEX(CHAR(10), @('Approval_Status')) = 0))";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Approval_Status__ID'),sql,function(key,value){
-			$("#F__ID input[name="+key+"]").val($vm.text(value));
+			if(approval_status==true && ($vm.user!="jojo" && $vm.user!="childfund")){
+				alert("Only Administrator can Close the Project!");
+				$('#Approval_Status__ID').val("PA");
+			}
+			else $("#F__ID input[name="+key+"]").val($vm.text(value));
 		})
-
+		$('#New_Comments__ID').change(function(){
+			process_comments();
+		});
+		$('#Project_Status__ID').change(function(){
+			if(project_status==true && ($vm.user!="jojo" && $vm.user!="childfund")){
+				alert("Only Administrator can Close the Project!");
+				$('#Project_Status__ID').val("Open");
+			}
+		});
+		$('#Project_Code__ID').change(function(){
+			if(project_code!=="" && ($vm.user!="jojo" && $vm.user!="childfund")){
+				alert("Only Administrator can Close the Project!");
+				$('#Project_Code__ID').val(project_code);
+			}
+		});
+		//-------------------------------------
+		var get_now=function(){
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear();
+            var hh = today.getHours();
+            var min = today.getMinutes();
+            if(dd<10) dd='0'+dd;
+            if(mm<10) mm='0'+mm;
+            if(hh<10) hh='0'+hh;
+            if(min<10) min='0'+min;
+            return dd+'/'+mm+'/'+yyyy+' '+hh+':'+min;
+        }
+		//-------------------------------------
+        var process_comments=function(){
+    		if($('#New_Comments__ID').val()!==""){
+    			var old_comments="";
+    			if($('#Comments__ID').val()!=="") old_comments=$('#Comments__ID').val();
+    			var new_comments="("+get_now()+", "+$vm.user+")\n"+$('#New_Comments__ID').val()+"\n";
+    			$('#Comments__ID').val(new_comments+old_comments);
+    			$('#New_Comments__ID').val('');
+    		}
+    	}
 		//-------------------------------------
 		$('#F__ID').submit(function(event){
 		    //--------------------------------------------------------
