@@ -75,7 +75,7 @@
                     if(_records[I].UID===undefined) return;
                     td.html("<u style='cursor:pointer'>Proposal</u>");
                     td.find('u').on('click',function(){
-                        $vm.load_module_by_name("website_proposal_and_variation",$vm.root_layout_content_slot,{
+                        $vm.load_module_by_name(prefix+"project-proposal-variation-data",$vm.root_layout_content_slot,{
                             //------------------------
                             mobj:_mobj,
                             record:records[I],
@@ -97,7 +97,7 @@
                     if(_records[I].UID===undefined) return;
                     td.html("<u style='cursor:pointer'>Documents</u>");
                     td.find('u').on('click',function(){
-                        $vm.load_module_by_name("website_project_document",$vm.root_layout_content_slot,{
+                        $vm.load_module_by_name(prefix+'project-document-data',$vm.root_layout_content_slot,{
                             //------------------------
                             mobj:_mobj,
                             record:records[I],
