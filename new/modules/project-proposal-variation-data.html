@@ -23,8 +23,8 @@
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
                 case 'Lock':
-                    td.html('<input type=checkbox />');
-                    VmInclude:__COMPONENT__/grid/field_checkbox.js
+                    if(records[I][field]=='on') td.html('Locked');
+                    records[I].vm_readonly[field]=true;
                     break;
                 case 'Approval_FY':
                     records[I].vm_readonly[field]=true;
