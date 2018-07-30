@@ -28,7 +28,6 @@
 		"document_type":	{"url" : "dynamic/setup/document_type.html","table_id" : "20000022","name_for_search":"Document Type"},
 		"program_list_sub_table":{"url" : "dynamic/setup/program_list_sub_table.html","table_id" : "20004719","name_for_search":"Program List Sub Table"},
 		"site":			{"url" : "dynamic/setup/site.html","table_id" : "20000513","name_for_search":"Site"},
-		"carousel-slide-b4":{"url" : "static/carousel-slide-b4.html"},
 
 
 
@@ -58,9 +57,9 @@
 	    "program-form":{"table_id":"20000013","url":"new/program-form.html"},
 	    "program-document-data":{"table_id":"20000028","url":"new/program-document-data.html","form_module":"program-document-form"},
 	    "program-document-form":{"table_id":"20000028","url":"new/program-document-form.html"},
-	    "project-data":	{"table_id" : "20000012","url" :"/modules/project-data.html","form_module":"project-form"},
+	    "project-data":	{"table_id" : "20000012","url" :"/new/project-data.html","form_module":"project-form"},
 	    "project-form":	{"table_id" : "20000012","url":"new/project-form.html"},
-	    "project-document-data":	{"table_id" : "20000017","url" :"/modules/project-document-data.html","form_module":"project-document-form"},
+	    "project-document-data":	{"table_id" : "20000017","url" :"/new/project-document-data.html","form_module":"project-document-form"},
 	    "project-document-form":	{"table_id" : "20000017","url":"new/project-document-form.html"},
 	    "project-proposal-variation-data":	{"table_id" : "20000023","url":"new/project-proposal-variation-data.html","form_module":"project-proposal-variation-form"},
 	    "project-proposal-variation-form":	{"table_id" : "20000023","url":"new/project-proposal-variation-form.html"}
