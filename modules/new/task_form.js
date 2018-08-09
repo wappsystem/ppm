@@ -23,8 +23,8 @@ $('#F__ID').submit(function(event){
     //--------------------------------------------------------
     var db_pid=this_module.table_id;
     var rid=undefined; if($vm.vm['__ID'].op.record!=undefined) rid=$vm.vm['__ID'].op.record.ID;
-    var req={cmd:"add_json_record",db_pid:db_pid,data:data,dbv:dbv};
-    if(rid!=undefined) req={cmd:"modify_json_record",rid:rid,db_pid:db_pid,data:data,dbv:dbv};
+    var req={cmd:"add_record",db_pid:db_pid,data:data,dbv:dbv};
+    if(rid!=undefined) req={cmd:"modify_record",rid:rid,db_pid:db_pid,data:data,dbv:dbv};
     $VmAPI.request({data:req,callback:function(res){
         $vm.refresh=1;
         if(rid!=undefined) window.history.go(-1);

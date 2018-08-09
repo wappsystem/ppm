@@ -146,7 +146,7 @@
                     VmInclude:__COMPONENT__/grid/field_checkbox.js
                     break;
                 case 'Country':
-                    var sql="with tb as (select name=@('Country') from [TABLE-"+$vm.module_list['country-data'].table_id+"] where (CHARINDEX(CHAR(10), @('Country')) = 0))";
+                    var sql="with tb as (select name=@('Country') from [TABLE-"+$vm.module_list['country-data'].table_id+"])";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
@@ -155,27 +155,27 @@
                 	break;
                 case 'Sector':
                 case 'Secondary_Sector':
-                    var sql="with tb as (select name=@('Sector') from [TABLE-"+$vm.module_list['sector-data'].table_id+"] where (CHARINDEX(CHAR(10), @('Sector')) = 0))";
+                    var sql="with tb as (select name=@('Sector') from [TABLE-"+$vm.module_list['sector-data'].table_id+"])";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'Approval_Status':
-                    var sql="with tb as (select name=@('Approval_Status') from [TABLE-"+$vm.module_list['project-approval-status-data'].table_id+"]  where (CHARINDEX(CHAR(10), @('Approval_Status')) = 0))";
+                    var sql="with tb as (select name=@('Approval_Status') from [TABLE-"+$vm.module_list['project-approval-status-data'].table_id+"])";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'Implementation_Arrangement':
-                    var sql="with tb as (select name=@('Implementation_Arrangement') from [TABLE-"+$vm.module_list['implementation-arrangement-data'].table_id+"]  where (CHARINDEX(CHAR(10), @('Implementation_Arrangement')) = 0))";
+                    var sql="with tb as (select name=@('Implementation_Arrangement') from [TABLE-"+$vm.module_list['implementation-arrangement-data'].table_id+"] )";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'DRR_Mainstreaming':
-                    var sql="with tb as (select name=@('DRR_Mainstreaming') from [TABLE-"+$vm.module_list['drr-mainstreaming-data'].table_id+"]  where (CHARINDEX(CHAR(10), @('DRR_Mainstreaming')) = 0))";
+                    var sql="with tb as (select name=@('DRR_Mainstreaming') from [TABLE-"+$vm.module_list['drr-mainstreaming-data'].table_id+"] )";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'Theme':
-                    var sql="with tb as (select name=@('Theme') from [TABLE-"+$vm.module_list['theme-data'].table_id+"]  where (CHARINDEX(CHAR(10), @('Theme')) = 0))";
+                    var sql="with tb as (select name=@('Theme') from [TABLE-"+$vm.module_list['theme-data'].table_id+"] )";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
@@ -183,7 +183,7 @@
                 case 'Location_2':
                 case 'Location_3':
                 case 'Location_4':
-                    var sql="with tb as (select name=@('Location') from [TABLE-"+$vm.module_list['location-data'].table_id+"]  where (CHARINDEX(CHAR(10), @('Location')) = 0))";
+                    var sql="with tb as (select name=@('Location') from [TABLE-"+$vm.module_list['location-data'].table_id+"] )";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;

@@ -13,13 +13,13 @@
 	//	$('#new__ID').hide();
 	//	$('#save__ID').hide();
 		//-------------------------------------
-        var fields="Name,Description,Type,Notes";
+        var fields="File|Name,Description,Type,Notes";
         _fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
         //-------------------------------------
         _cell_render=function(records,I,field,td,set_value,source){
             switch(field){
                 case 'Type':
-                    var sql="with tb as (select name=@('Type') from [TABLE-"+$vm.module_list[prefix+'document-type-form'].table_id+"] where (CHARINDEX(CHAR(10), @('Type')) = 0))";
+                    var sql="with tb as (select name=@('Type') from [TABLE-"+$vm.module_list[prefix+'document-type-form'].table_id+"])";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;

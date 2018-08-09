@@ -68,6 +68,12 @@ function F__ID(){
 		$vm.render_file_field(grid_record,'__ID',$('#DocProgram__ID'));
 	})
 	//-------------------------------------
+	var sql="with tb as (select name=@('Country'),value2=uid from [TABLE-"+$vm.module_list[prefix+'country-data'].table_id+"] )";
+	sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
+	$vm.autocomplete($('#Country__ID'),sql,function(key,value){
+		$("#F__ID input[name="+key+"]").val($vm.text(value));
+	})
+	//-------------------------------------
 	$('#F__ID').submit(function(event){
 		//--------------------------------------------------------
 		event.preventDefault();
