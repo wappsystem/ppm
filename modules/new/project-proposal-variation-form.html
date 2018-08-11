@@ -1,0 +1,233 @@
+<div id=D__ID>
+VmInclude:__COMPONENT__/toolbar/form-toolbar.html
+	<div class="container mt-95 mb-3">
+    	<div class="row" >
+			<div class="col-12 col-lg-7 col-md-11 col-sm-12 mx-auto formbox">
+        		<div class="row">
+            		<div class="col-12">
+						<form id=F__ID>
+							<h3 class="text-center">Project Proposal and Variation</h3>
+							<div class="form-group">
+								<div class="questiongroup ">
+		                           <fieldset>
+		                                <label class=""><span class="">PUID</span>
+											<input class="form-control" name="PUID" type="text">
+		                                </label>
+		                           </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+									<fieldset class="subquestions">
+                                		<label class=""><span class="">Version</span>
+											<input class="form-control" name="Version" type="text">
+                                		</label><br>
+										<label class=""><span class="">Status</span>
+											<select class="form-control" name="Status"  id=Status__ID><option value=""></option><option value="Pending">Pending</option><option value="Approved">Approved</option></select>
+                                		</label>
+                           			</fieldset>
+                          		</div>
+								<div class="questiongroup ">
+		                           <fieldset>
+		                                <label class=""><span class="">Total project budget</span>
+											<input class="form-control" name="Amount" type="text" id=Amount__ID >
+		                                </label>
+		                           </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+									<fieldset class="subquestions">
+                                		<label class=""><span class="">Approval Date</span>
+											<input class="form-control" name="Approval_Date" type="text" id=Approval_Date__ID >
+                                		</label><br>
+										<label class=""><span class="">Approved By</span>
+											<input class="form-control" name="Approved_By" type="text">
+                                		</label><br>
+										<label class=""><span class="">Approval FY</span>
+											<input class="form-control" name="Approval_FY" type="text"  id=Approval_FY__ID readonly>
+                                		</label><br>
+                           			</fieldset>
+                          		</div>
+								<div class="questiongroup ">
+		                           <fieldset>
+		                                <label style="width:100%" class=""><span class="">Comments</span>
+											<textarea class="form-control form-control-sm" name="Comments"></textarea>
+		                                </label>
+		                           </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+		                           <fieldset>
+		                                <label style="width:100%" class=""><span class="">Project Proposal/Variation Narrative</span>
+											<div id=DocBudget__ID data-id=DocBudget name=DocBudget></div>
+		                                </label>
+		                           </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+		                           <fieldset>
+		                                <label style="width:100%" class=""><span class="">Project Budget</span>
+											<div id=DocProjectBudget__ID data-id=DocProjectBudget name=DocProjectBudget></div>
+		                                </label>
+		                           </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+									<fieldset class="subquestions">
+										<label class="checkboxes">Lock record
+										  <input type="checkbox" name="Lock" id=Lock__ID >
+										  <span class="check_checkmark"></span>
+									    </label>
+									</fieldset>
+                          		</div>
+								<div class="row">
+									<div class=col>
+										<button id=submit__ID type="submit" class="btn btn-secondary">Submit</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script>
+function F__ID(){
+	//Vm Include:__COMPONENT__/module/form.v1.js
+	//-------------------------------------
+	var _json='';
+	//-------------------------------------
+	var this_module=$vm.module_list[$vm.vm['__ID'].name];
+	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+	var project_status="";
+	var project_code="";
+	var approval_status="";
+	var request_fund=false;
+	//-------------------------------------
+	$('#D__ID').on('new',function(){
+		alert(1)
+	}
+	//-------------------------------------
+	$('#D__ID').on('load',function(){
+		$('#F__ID')[0].reset();
+		$('#submit__ID').show();
+		var grid_record=$vm.vm['__ID'].op.record;
+		$('#delete__ID').hide(); if(grid_record!=undefined && grid_record.ID!==undefined) $('#delete__ID').show();
+		$vm.deserialize(grid_record,'#F__ID');
+		$vm.render_file_field(grid_record,'__ID',$('#DocBudget__ID'));
+		$vm.render_file_field(grid_record,'__ID',$('#DocProjectBudget__ID'));
+		//Replace old html code
+		//$('#Comments__ID').val($('#Comments__ID').val().replace(/<span class=C20000012_light_small>/g,'').replace(/<\/span>/g,'').replace(/<br>/g,'\n'));
+		locked=$('#Lock__ID').is(':checked');
+		if(locked==true && ($vm.user!="jojo" && $vm.user!="childfund")){
+			$('#submit__ID').hide(); $('#delete__ID').hide();
+		}
+	})
+	//-------------------------------------
+	$('#Approval_Date__ID').datepicker({dateFormat:'dd/mm/yy', autoclose: true});
+	//-------------------------------------
+	$('#Approval_Date__ID').on('change',function(){
+		var v1="FY";
+		var ap=$('#Approval_Date__ID').val().substring(8,10);
+		var app=parseInt(ap)+1; if (app<10) {app="0"+app.toString();} else {app=app.toString();}
+		var apm=parseInt(ap)-1; if (apm<10) {apm="0"+apm.toString();} else {apm=apm.toString();}
+		if($('#Approval_Date__ID').val().substring(3,5)>6){
+			v1+=ap + app;
+		}
+		else{ v1+=apm + ap}
+		$('#Approval_FY__ID').val(v1);
+	})
+	//-------------------------------------
+	$('#Amount__ID').on('change',function(){
+		var amount=$('#Amount__ID').val();
+		$('#Amount__ID').val(formatter.format(amount));
+	})
+	//-------------------------------------
+	var app_stat=function(){
+		if(approval_status!=$('#Approval_Status__ID').val() && approval_status=='PA'){
+			if($vm.user!="jojo" && $vm.user!="childfund"){
+				alert("Only Administrator can change Approval Status when approved!");
+				$('#Approval_Status__ID').val("PA")
+			}
+		}
+	};
+	//-------------------------------------
+	var formatter = new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: 'USD',
+		minimumFractionDigits: 2,
+	});
+	//-------------------------------------
+	var get_now=function(){
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		var hh = today.getHours();
+		var min = today.getMinutes();
+		if(dd<10) dd='0'+dd;
+		if(mm<10) mm='0'+mm;
+		if(hh<10) hh='0'+hh;
+		if(min<10) min='0'+min;
+		return dd+'/'+mm+'/'+yyyy+' '+hh+':'+min;
+	}
+	//-------------------------------------
+	var _before_submit=function(record,dbv){
+		record.Amount=record.Amount.replace('$','').replace(/ /g,'').replace(/,/g,'');
+		dbv.V1=record.Amount;
+		dbv.S1=record.Approval_FY;
+		dbv.PUID=record.PUID;
+	}
+	//-------------------------------------
+	$('#F__ID').submit(function(event){
+		//--------------------------------------------------------
+		event.preventDefault();
+		$('#submit__ID').hide();
+		//--------------------------------------------------------
+		var data=$vm.serialize('#F__ID');
+		//file.1. set as upload_unsuccessful
+		var num=$vm.set_file_name_as_upload_unsuccessful(data,$('#F__ID'));
+		//--------------------------------------------------------
+		var dbv={}
+		if(typeof(_before_submit)!='undefined') _before_submit(data,dbv);
+		//--------------------------------------------------------
+		var db_pid=this_module.table_id;
+		var rid=undefined; if($vm.vm['__ID'].op.record!=undefined) rid=$vm.vm['__ID'].op.record.ID;
+		var req={cmd:"add_record",db_pid:db_pid,data:data,dbv:dbv};
+		if(rid!=undefined) req={cmd:"modify_record",rid:rid,db_pid:db_pid,data:data,dbv:dbv};
+		var old_rid=rid;
+		$VmAPI.request({data:req,callback:function(res){
+			if(rid==undefined)	{
+				alert("Send Email for a new Project Proposal")
+			}
+			if(num>0){
+				//file.2. upload files
+				if(rid==undefined)	rid=res.ret;
+				$vm.upload_form_files(rid,$('#F__ID'),function(){
+					var data=$vm.get_original_file_name($('#F__ID'));
+					var req={cmd:"modify_record",rid:rid,db_pid:db_pid,data:data,dbv:{}};
+					//file.3. recorver name
+					$VmAPI.request({data:req,callback:function(res){
+						$vm.refresh=1;
+						if(old_rid!=undefined) window.history.go(-1);
+						else if($vm.vm['__ID'].op.input!=undefined && $vm.vm['__ID'].op.input.goback!=undefined) window.history.go(-1);
+						else $vm.alert('Your data has been successfully submitted');
+					}})
+				})
+			}
+			else{
+				$vm.refresh=1;
+				if(old_rid!=undefined) window.history.go(-1);
+				else if($vm.vm['__ID'].op.input!=undefined && $vm.vm['__ID'].op.input.goback!=undefined) window.history.go(-1);
+				else $vm.alert('Your data has been successfully submitted');
+			}
+		}});
+		//--------------------------------------------------------
+	})
+	//-------------------------------------
+}
+</script>
+<style>
+#D__ID{
+  height:100%;
+  animation: vm_module_fadein 1.0s;
+  overflow: auto;
+}
+</style>
+VmInclude:__CURRENT_PATH__/task-form.css
+</div>
