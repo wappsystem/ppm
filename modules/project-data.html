@@ -4,18 +4,17 @@
 <script>
     function F__ID(){
         //-------------------------------------
-        VmInclude:__COMPONENT__/grid/grid.v3.js
+        VmInclude:__COMPONENT__/module/grid.v1.js
         VmInclude:__CURRENT_PATH__/task_data.js
-        _json=''; //Store data as XML - NOT json
         //-------------------------------------
-		//$('#new__ID').hide();
-		//$('#save__ID').hide();
-		//-------------------------------------
-        _fields="_Form,Project,Code|Project_Code,Country,_Project_Documents,_Proposal_and_Variation,_Actual_Spending,_Pending_Funds,Description,_gridHidden|Theme,Primary Sector|Sector"
-        _fields+=",_gridHidden|Secondary_Sector,_gridHidden|Implementation_Arrangement,_gridHidden|DRR_Mainstreaming,Start,End,Status|Project_Status,_Hidden|DAC_codes_primary,_Hidden|DAC_codes_secondary"
-        _fields+=",Location,_gridHidden|Location_2,_gridHidden|Location_3,_gridHidden|Location_4,Approval_Status,Approval_Date,_gridHidden|List_people_updated,_gridHidden|New_Comments,Comments"
-        _fields+=",_gridHidden|Creation_Date,_gridHidden|Created_By,Request_Fund,Requested_amount";
-        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        m.xml=1; //Store data as XML - NOT json
+        //-------------------------------------
+        var fields="Program Code|I2_Code,Program|I2_Program,Project,Code|Project_Code,Country,Description,Primary Sector|Sector"
+        fields+=",Start,End,Status|Project_Status"
+        fields+=",Location,Approval_Status,Approval_Date"
+        fields+=",Request_Fund,Requested_amount";
+        m.fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
+        m.form_fields=fields+",TID";
         //-------------------------------------
         var approved=true;
         var projectcode=true;
@@ -24,96 +23,11 @@
         var requestfund="";
         var requestfundconfirm="";
         //-------------------------------------
-        _cell_render=function(records,I,field,td,set_value,source){
+        $("#title__ID").text("Projects");
+        //-------------------------------------
+        //-------------------------------------
+        m.cell_render=function(records,I,field,td,set_value,source){
             switch(field){
-                case '_Pending_Funds':
-                    records[I].vm_custom[field]=true;
-                    if(_records[I].UID===undefined) return;
-                    td.html("<u style='cursor:pointer'>Funds</u>");
-                    td.find('u').on('click',function(){
-                        $vm.load_module_by_name("website_pending_funds",$vm.root_layout_content_slot,{
-                            //------------------------
-                            mobj:_mobj,
-                            record:records[I],
-                            puid:records[I].UID,
-                            sys:{},
-                            ppid:_db_pid,
-                            //------------------------
-							parent_uid:records[I].UID,
-							child:"1",
-                            check_count_where:" and PUID="+records[I].UID,
-                            program_code:_mobj.op.program_code,
-                            project_code:records[I].Project_Code,
-                        })
-                        //-----------------------------------------------
-                    });
-                	break;
-                case '_Actual_Spending':
-                    records[I].vm_custom[field]=true;
-                    if(_records[I].UID===undefined) return;
-                    td.html("<u style='cursor:pointer'>Spending</u>");
-                    td.find('u').on('click',function(){
-                        $vm.load_module_by_name("website_actual_spending",$vm.root_layout_content_slot,{
-                            //------------------------
-                            mobj:_mobj,
-                            record:records[I],
-                            puid:records[I].UID,
-                            sys:{},
-                            ppid:_db_pid,
-                            //------------------------
-							parent_uid:records[I].UID,
-							child:"1",
-                            check_count_where:" and PUID="+records[I].UID,
-                            program_code:_mobj.op.program_code,
-                            project_code:records[I].Project_Code,
-                        })
-                        //-----------------------------------------------
-                    });
-                	break;
-                case '_Proposal_and_Variation':
-                    records[I].vm_custom[field]=true;
-                    if(_records[I].UID===undefined) return;
-                    td.html("<u style='cursor:pointer'>Proposal</u>");
-                    td.find('u').on('click',function(){
-                        $vm.load_module_by_name(prefix+"project-proposal-variation-data",$vm.root_layout_content_slot,{
-                            //------------------------
-                            mobj:_mobj,
-                            record:records[I],
-                            puid:records[I].UID,
-                            sys:{},
-                            ppid:_db_pid,
-                            //------------------------
-							parent_uid:records[I].UID,
-							child:"1",
-                            check_count_where:" and PUID="+records[I].UID,
-                            program_code:_mobj.op.program_code,
-                            project_code:records[I].Project_Code,
-                        })
-                        //-----------------------------------------------
-                    });
-                	break;
-                case '_Project_Documents':
-                    records[I].vm_custom[field]=true;
-                    if(_records[I].UID===undefined) return;
-                    td.html("<u style='cursor:pointer'>Documents</u>");
-                    td.find('u').on('click',function(){
-                        $vm.load_module_by_name(prefix+'project-document-data',$vm.root_layout_content_slot,{
-                            //------------------------
-                            mobj:_mobj,
-                            record:records[I],
-                            puid:records[I].UID,
-                            sys:{},
-                            ppid:_db_pid,
-                            //------------------------
-							parent_uid:records[I].UID,
-							child:"1",
-                            check_count_where:" and PUID="+records[I].UID,
-                            program_code:_mobj.op.program_code,
-                            project_code:records[I].Project_Code,
-                        })
-                        //-----------------------------------------------
-                    });
-                	break;
                 case 'Approval_Date':
                 case 'Creation_Date':
                     VmInclude:__COMPONENT__/grid/field_date.js
@@ -187,26 +101,46 @@
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
-
+                case 'I2_Code':
+                    sql="with tb as (select name=@('Code'),value3=@('Program'),value2=uid from [TABLE-"+$vm.module_list[prefix+'program-form'].table_id+"])";
+            		sql+=" select top 10 name,value=name,value2,value3 from tb where Name like '%'+@S1+'%' ";
+                    var val='';
+                    td.autocomplete({
+                        minLength:0,
+                        source:function(request,response){
+                            $VmAPI.request({data:{cmd:'auto',s1:request.term,sql:sql,minLength:0},callback:function(res){
+                                response($vm.autocomplete_list(res.table));
+                            }});
+                        },
+                        select: function(event,ui){
+                            m.records[I][field+'_uid']=ui.item.value2;
+                            m.records[I]['I2_Program']=ui.item.value3;
+                            val=ui.item.value3;
+                        }
+                    })
+                    td.focus(function(){td.autocomplete("search","");});
+                    m.set_value(val,m.records,I,'Project');
+                    break;
             }
         }
-        var title=''
         //-------------------------------------
-        $('#D__ID').on('load',function(){
-            title='Programme Code: '+_mobj.op.program_code+' | Projects ('+_mobj.op.status+') ';
-            $("#title__ID").text(title);
-            _set_req(); _request_data();  })
-        //-------------------------------------
-        var _set_req=_set_req_export=function(){
-            var status=" and @('Project_Status') <> 'Closed'";
-            if(_mobj.op.status=="closed" ) status=" and @('Project_Status') = 'Closed'";
-            var sql="with tb as (select Information,B1,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+_db_pid+"-@S1] where PUID=@I2 "+status+" ) ";
-            sql+="select Information,B1,ID,UID,PUID,DateTime,Author,RowNum from tb where RowNum between @I6 and @I7";
-            var sql_n="select count(ID) from [TABLE-"+_db_pid+"-@S1] where PUID=@I2 "+status+"";
-            _req={cmd:'query_records',db_pid:_db_pid,sql:sql,sql_n:sql_n,i2:_mobj.op.puid,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+        m.set_req=function(){
+            var status=" @('Project_Status') <> 'Closed'";
+            $('#save__ID').show();
+            $('#new__ID').show();
+            if($vm.module_list[$vm.vm['__ID'].name].status=="closed"){
+                $('#save__ID').hide();
+                $('#new__ID').hide();
+                status=" @('Project_Status') = 'Closed'";
+            }
+            var sql="with tb as (select Information,B1,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+m.db_pid+"-@S1] where "+status+" ) ";
+            sql+=",program as (select Information2=Information,prog_UID=UID from [TABLE-"+$vm.module_list[prefix+'program-data'].table_id+"])";
+		    sql+="select Information,Information2,B1,ID,UID,PUID,DateTime,Author,RowNum from tb left join program on PUID=prog_UID where RowNum between @I6 and @I7";
+            var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1] where "+status+"";
+            m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
         }
         //-------------------------------------
-        _before_change=function(records,I,field,td,set_value,source){
+        m.before_change=function(records,I,field,td,set_value,source){
             switch(field){
                 case 'Project_Status':
                     if(records[I].Project_Status=="Open" && ($vm.user!="jojo" && $vm.user!="childfund")){
@@ -264,9 +198,9 @@
             return dd+'/'+mm+'/'+yyyy+' '+hh+':'+min;
         }
         //-------------------------------------
-        _before_submit=function(record,dbv){
-            if(_mobj.op.parent_uid!=='') dbv.PUID=_mobj.op.parent_uid;
-            dbv.PPID=_mobj.op.ppid;
+        m.before_submit=function(record,dbv){
+            if(record.PUID!=='') dbv.PUID=record.PUID;
+            dbv.PPID=m.db_pid;
             return true;
         };
         //-------------------------------------
@@ -275,7 +209,5 @@
 </script>
 <style>
     VmInclude:__COMPONENT__/grid/grid.v3.css
-    .ui-datepicker-month,.ui-datepicker-year {
-   color: #5c9ccc;
- }
+    VmInclude:__CURRENT_PATH__/task-form.css
 </style>

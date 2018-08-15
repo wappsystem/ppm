@@ -1,0 +1,54 @@
+<section>
+    VmInclude:__CURRENT_PATH__/grid/grid.v3.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__COMPONENT__/module/grid.v1.js
+        VmInclude:__CURRENT_PATH__/task_data.js
+        //-------------------------------------
+        m.xml=1;
+        //-------------------------------------
+        var fields="Code|I2_Code,Program|I2_Program,File|Name,Description,Type,Notes";
+        m.fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
+        m.form_fields=fields+",TID";
+        //-------------------------------------
+        var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix; if(prefix==undefined) prefix="";
+        //-------------------------------------
+        $("#title__ID").text('Program Documents');
+        //-------------------------------------
+        m.cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Type':
+                    var sql="with tb as (select name=@('Type') from [TABLE-"+$vm.module_list[prefix+'document-type-data'].table_id+"])";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
+                    break;
+                case 'Name':
+                    VmInclude:__COMPONENT__/grid/field_file.js
+                	break;
+            }
+        }
+        var title='';
+        //-------------------------------------
+		m.set_req=function(){
+		    var sql="with tb as (select Information,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+m.db_pid+"-@S1] )";
+            sql+=",program as (select Information2=Information,prog_UID=UID from [TABLE-"+$vm.module_list[prefix+'program-data'].table_id+"])";
+		    sql+="select Information,Information2,ID,UID,PUID,DateTime,Author,RowNum from tb left join program on PUID=prog_UID where RowNum between @I6 and @I7";
+		    var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1] ";
+			m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+		}
+        //-------------------------------------
+        m.before_submit=function(record,dbv){
+//            if(_mobj.op.parent_uid!=='') dbv.PUID=_mobj.op.parent_uid;
+//            dbv.PPID=$vm.module_list[prefix+'program-data'].table_id;
+            return true;
+        };
+		//-------------------------------------
+
+    }
+</script>
+<style>
+    VmInclude:__COMPONENT__/grid/grid.v3.css
+    VmInclude:__CURRENT_PATH__/task-form.css
+</style>

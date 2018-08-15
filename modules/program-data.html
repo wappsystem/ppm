@@ -1,0 +1,36 @@
+<section>
+    VmInclude:__CURRENT_PATH__/grid/grid.v3.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__COMPONENT__/module/grid.v1.js
+        VmInclude:__CURRENT_PATH__/task_data.js
+        //-------------------------------------
+        m.xml=1
+        //-------------------------------------
+        var fields="UID,Program,Country,Code,Comments,Document|DocProgram";
+        m.fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
+        m.form_fields=fields+",TID";
+        //-------------------------------------
+        var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix; if(prefix==undefined) prefix="";
+        //-------------------------------------
+        $("#title__ID").text('Program List');
+        m.cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Country':
+                    var sql="with tb as (select name=@('Country') from [TABLE-"+$vm.module_list[prefix+'country-data'].table_id+"] )";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
+                    break;
+                case 'DocProgram':
+                VmInclude:__COMPONENT__/grid/field_file.js
+                	break;
+            }
+        }
+    }
+</script>
+<style>
+    VmInclude:__COMPONENT__/grid/grid.v3.css
+    VmInclude:__CURRENT_PATH__/task-form.css
+</style>

@@ -1,5 +1,4 @@
 <div id=D__ID>
-VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 	<div class="container mt-95 mb-3">
     	<div class="row" >
 			<div class="col-12 col-lg-7 col-md-11 col-sm-12 mx-auto formbox">
@@ -9,9 +8,38 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 							<h3 class="text-center">Program Documents</h3>
 							<div class="form-group">
 								<div class="questiongroup ">
+		                           <fieldset>
+		                                <label style="width:100%" class=""><span class="">Program linked to this Document</span>
+		                                </label>
+		                           </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+		                           <fieldset>
+		                                <label style="width:100%" class=""><span class="">Code</span>
+											<input class="form-control" data-id="I2_Code" name="I2_Code" id=Code__ID placeholder="" type="text" required >
+		                                </label>
+		                           </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+		                           <fieldset>
+		                                <label style="width:100%" class=""><span class="">Program</span>
+											<input class="form-control" name="I2_Program" placeholder="" type="text" readonly >
+		                                </label>
+		                           </fieldset>
+                      			</div>
+								<div class="questiongroup " style="display:none">
+		                           <fieldset>
+		                                <label style="width:100%" class=""><span class="">Program UID</span>
+											<input class="form-control" name="PUID" placeholder="" type="text" readonly >
+		                                </label>
+		                           </fieldset>
+                      			</div>
+							</div>
+							<div class="form-group">
+								<div class="questiongroup ">
 									<fieldset class="subquestions">
 										<label class=""><span class="">File</span>
-											<div id=Name__ID data-id=Name name=Name></div>
+											<div id=Name__ID data-id=Name></div>
 										</label>
 									</fieldset>
 								</div>
@@ -51,19 +79,18 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 <script>
 	function F__ID(){
 		//-------------------------------------
-		var _json='';
+		VmInclude:__COMPONENT__/module/form.v1.js
+		VmInclude:__CURRENT_PATH__/task_form.js
 		//-------------------------------------
 		var this_module=$vm.module_list[$vm.vm['__ID'].name];
 		var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+		m.xml=1;
 		//-------------------------------------
-		$('#D__ID').on('load',function(){
-			$('#F__ID')[0].reset();
-			$('#submit__ID').show();
-			var grid_record=$vm.vm['__ID'].op.record;
-			$('#delete__ID').hide(); if(grid_record!=undefined && grid_record.ID!==undefined) $('#delete__ID').show();
-			$vm.deserialize(grid_record,'#F__ID');
-			$vm.render_file_field(grid_record,'__ID',$('#Name__ID'));
-		})
+		m.default_load=m.load;
+		m.load=function(){
+			m.default_load();
+			$vm.render_file_field_v2(m.input.record,'__ID',$('#Name__ID'));
+		}
 		//-------------------------------------
 		var sql="with tb as (select name=@('Type'),value2=uid from [TABLE-"+$vm.module_list[prefix+'document-type-form'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
@@ -71,48 +98,18 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 			$("#F__ID input[name="+key+"]").val($vm.text(value));
 		})
 		//-------------------------------------
-		$('#F__ID').submit(function(event){
-			//--------------------------------------------------------
-			event.preventDefault();
-			$('#submit__ID').hide();
-			//--------------------------------------------------------
-			var data=$vm.serialize('#F__ID');
-			//file.1. set as upload_unsuccessful
-			var num=$vm.set_file_name_as_upload_unsuccessful(data,$('#F__ID'));
-			//--------------------------------------------------------
-			var dbv={}
-			if(typeof(_before_submit)!='undefined') _before_submit(record,dbv);
-			//--------------------------------------------------------
-			var db_pid=this_module.table_id;
-			var rid=undefined; if($vm.vm['__ID'].op.record!=undefined) rid=$vm.vm['__ID'].op.record.ID;
-			var req={cmd:"add_record",db_pid:db_pid,data:data,dbv:dbv};
-			if(rid!=undefined) req={cmd:"modify_record",rid:rid,db_pid:db_pid,data:data,dbv:dbv};
-			var old_rid=rid;
-			$VmAPI.request({data:req,callback:function(res){
-				if(num>0){
-					//file.2. upload files
-					if(rid==undefined)	rid=res.ret;
-					$vm.upload_form_files(rid,$('#F__ID'),function(){
-						var data=$vm.get_original_file_name($('#F__ID'));
-						var req={cmd:"modify_record",rid:rid,db_pid:db_pid,data:data,dbv:{}};
-						//file.3. recorver name
-						$VmAPI.request({data:req,callback:function(res){
-							$vm.refresh=1;
-							if(old_rid!=undefined) window.history.go(-1);
-							else if($vm.vm['__ID'].op.input!=undefined && $vm.vm['__ID'].op.input.goback!=undefined) window.history.go(-1);
-							else $vm.alert('Your data has been successfully submitted');
-						}})
-					})
-				}
-				else{
-					$vm.refresh=1;
-					if(old_rid!=undefined) window.history.go(-1);
-					else if($vm.vm['__ID'].op.input!=undefined && $vm.vm['__ID'].op.input.goback!=undefined) window.history.go(-1);
-					else $vm.alert('Your data has been successfully submitted');
-				}
-			}});
-			//--------------------------------------------------------
+		sql="with tb as (select name=@('Code'),value3=@('Program'),value2=uid from [TABLE-"+$vm.module_list[prefix+'program-form'].table_id+"])";
+		sql+=" select top 10 name,value=name,value2,value3 from tb where Name like '%'+@S1+'%' ";
+		$vm.autocomplete($('#Code__ID'),sql,function(key,value,value3){
+			$("#F__ID input[name=PUID]").val($vm.text(value))
+			$("#F__ID input[name=I2_Program]").val($vm.text(value3));
 		})
+		//-------------------------------------
+        m.before_submit=function(record,dbv){
+            if(record.PUID!=='') dbv.PUID=record.PUID;
+            dbv.PPID=$vm.module_list[prefix+'program-data'].table_id;
+            return true;
+        };
 		//-------------------------------------
 	}
 </script>
