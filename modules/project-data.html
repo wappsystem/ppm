@@ -9,10 +9,10 @@
         //-------------------------------------
         m.xml=1; //Store data as XML - NOT json
         //-------------------------------------
-        var fields="Program Code|I2_Code,Program|I2_Program,Project,Code|Project_Code,Country,Description,Primary Sector|Sector"
+        var fields="Program Code|I2_Code,Project Code|Project_Code,Project,Country,Primary Sector|Sector"
         fields+=",Start,End,Status|Project_Status"
         fields+=",Location,Approval_Status,Approval_Date"
-        fields+=",Request_Fund,Requested_amount";
+        fields+=",Request_Fund,Requested_amount,Description";
         m.fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
         m.form_fields=fields+",TID";
         //-------------------------------------
@@ -28,6 +28,9 @@
         //-------------------------------------
         m.cell_render=function(records,I,field,td,set_value,source){
             switch(field){
+                case 'I2_Code':
+                    records[I].vm_readonly[field]=true;
+                	break;
                 case 'Approval_Date':
                 case 'Creation_Date':
                     VmInclude:__COMPONENT__/grid/field_date.js
@@ -46,18 +49,29 @@
                     records[I].vm_readonly[field]=true;
                     td.html(records[I][field]);
                     break;
+                case 'Project_Code':
+                    if ($vm.user!="jojo" && $vm.user!="childfund"){
+                        records[I].vm_readonly[field]=true;
+                    }
+                    break;
                 case 'Project_Status':
-                    var html="<select style='border:0;''>\
-                    <option value='' ></option>\
-                    <option >Open</option>\
-                    <option >Closed</option>\
-                    </select>\
-                    ";
-                    VmInclude:__COMPONENT__/grid/field_select.js
+                    if ($vm.user=="jojo" || $vm.user=="childfund"){
+                        var html="<select style='border:0;''>\
+                        <option value='' ></option>\
+                        <option >Open</option>\
+                        <option >Closed</option>\
+                        </select>\
+                        ";
+                        VmInclude:__COMPONENT__/grid/field_select.js
+                    }
+                    else {
+                        records[I].vm_readonly[field]=true;
+                    }
                     break;
                 case 'Request_Fund':
-                    td.html('<input type=checkbox />');
-                    VmInclude:__COMPONENT__/grid/field_checkbox.js
+                    records[I].vm_readonly[field]=true;
+                    if(records[I][field]=='on' || records[I][field]=='1') td.text('Yes');
+                    else td.text('');
                     break;
                 case 'Country':
                     var sql="with tb as (select name=@('Country') from [TABLE-"+$vm.module_list['country-data'].table_id+"])";
@@ -74,9 +88,42 @@
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'Approval_Status':
+                if(records[I].Approval_Status=="PA" && ($vm.user!="jojo" && $vm.user!="childfund")){
+                    records[I].vm_readonly[field]=true;
+                }
+                else{
                     var sql="with tb as (select name=@('Approval_Status') from [TABLE-"+$vm.module_list['project-approval-status-data'].table_id+"])";
-                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
-                    VmInclude:__COMPONENT__/grid/field_auto.js
+                        sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' ";
+                        td.autocomplete({
+                            minLength:0,
+                            source:function(request,response){
+                                $VmAPI.request({data:{cmd:'auto',s1:request.term,sql:sql,minLength:0},callback:function(res){
+                                    for (i=0;i<res.table.length;i++){
+                                        res.table[i].name=res.table[i].name.split(';')[0]
+                                        res.table[i].value=res.table[i].value.split(';')[1]
+                                    }
+                                    response($vm.autocomplete_list(res.table));
+                                }});
+                            },
+                            select: function(event,ui){
+                                records[I][field+'_uid']=ui.item.value2;
+                                for(key in ui.item){
+                                    if(key.indexOf('field_')!==-1){
+                                        var k=key.replace('field_','')
+                                        var v=ui.item[key];
+                                        set_value(v,records,I,k);
+                                        if(source=='grid'){
+                                            td.parent().find("td[data-id='"+k+"']").html(v);
+                                        }
+                                        else{
+                                            td.parent().parent().find("td[data-id='"+k+"']").html(v);
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                        td.focus(function(){td.autocomplete("search","");});
+                    }
                     break;
                 case 'Implementation_Arrangement':
                     var sql="with tb as (select name=@('Implementation_Arrangement') from [TABLE-"+$vm.module_list['implementation-arrangement-data'].table_id+"] )";

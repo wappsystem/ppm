@@ -19,6 +19,10 @@
         //-------------------------------------
         m.cell_render=function(records,I,field,td,set_value,source){
             switch(field){
+                case 'I2_Code':
+                case 'I2_Program':
+                    records[I].vm_readonly[field]=true;
+                	break;
                 case 'Type':
                     var sql="with tb as (select name=@('Type') from [TABLE-"+$vm.module_list[prefix+'document-type-data'].table_id+"])";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";

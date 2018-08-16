@@ -40,8 +40,8 @@
                             <li><a href="?/project-open-data">Projects (Open)</a></li>
                             <li><a href="?/project-document-data">&rarr; Document</a></li>
                 		</ul>
-                        <u class=vm_folder><i class="fa fa-folder-open-o"></i>View</u>
-                        <ul>
+                        <u class=vm_folder><i class="fa fa-folder-o"></i>View</u>
+                        <ul class=vm_menu_hide_0>
                             <li><a href="?/project-closed-data">Projects (Closed)</a></li>
                             <li><a href="?/project-document-data">&rarr; Document</a></li>
                 		</ul>
@@ -117,6 +117,16 @@
                 $vm.init_v3({callback:function(){
                    $vm.init_status=1;
                    $vm.show_user();
+                   //-------------------------------------
+                   $vm.module_list['_system_export_dialog_module']={table_id:'',url:'__COMPONENT__/dialog/export_dialog_module.html',"name_for_search":""};
+                   $vm.load_module_v2('_system_export_dialog_module','hidden',{})
+                   //-------------------------------------
+                   $vm.module_list['_system_import_dialog_module']={table_id:'',url:'__COMPONENT__/dialog/import_dialog_module.html',"name_for_search":""};
+                   $vm.load_module_v2('_system_import_dialog_module','hidden',{})
+                   //-------------------------------------
+                   $vm.module_list['uploading_file_dialog_module']={table_id:'',url:'__COMPONENT__/dialog/uploading_file_dialog_module.html',"name_for_search":""};
+                   $vm.load_module_v2('uploading_file_dialog_module','hidden',{})
+                   //-------------------------------------
                }})
             }
             //------------------------------------

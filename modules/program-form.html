@@ -34,8 +34,8 @@
 								<div class="questiongroup ">
 									<fieldset class="subquestions">
                                 		<label class=""><span class="">Document</span>
-											<div id=DocProgram__ID data-id=DocProgram name=DocProgram></div>
                                 		</label>
+										<div id=DocProgram__ID data-id=DocProgram></div>
                            			</fieldset>
                           		</div>
 								<div class="row">
@@ -58,6 +58,12 @@ function F__ID(){
 	var this_module=$vm.module_list[$vm.vm['__ID'].name];
 	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
 	m.xml=1;
+	//-------------------------------------
+	m.default_load=m.load;
+	m.load=function(){
+		m.default_load();
+		$vm.render_file_field_v2(m.input.record,'__ID',$('#DocProgram__ID'));
+	}
 	//-------------------------------------
 	var sql="with tb as (select name=@('Country'),value2=uid from [TABLE-"+$vm.module_list[prefix+'country-data'].table_id+"] )";
 	sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
