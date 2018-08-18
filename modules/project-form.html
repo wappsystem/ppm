@@ -46,7 +46,7 @@
 					  			<div class="questiongroup ">
 									<fieldset class="subquestions">
                                 		<label class=""><span class="">Code</span>
-											<input class="form-control" name="Project_Code" id="Project_Status__ID" type="text" >
+											<input class="form-control" name="Project_Code" id="Project_Code__ID" type="text" >
                                 		</label><br>
                                 		<label class=""><span class="">Country</span>
 											<input class="form-control" name="Country" type="text" readonly >
@@ -214,8 +214,6 @@
 		var prefix=this_module.prefix; if(prefix==undefined) prefix="";
 		m.xml=1;
 		//-------------------------------------
-		var this_module=$vm.module_list[$vm.vm['__ID'].name];
-		var prefix=this_module.prefix; if(prefix==undefined) prefix="";
 		var project_status="";
 		var project_code="";
 		var approval_status="";
@@ -279,11 +277,12 @@
 		$vm.autocomplete_split($('#Approval_Status__ID'),sql,function(key,value){
 			$("#F__ID input[name=Approval_Status]").val($vm.text(value));
 		})
-		sql="with tb as (select name=@('Code'),value3=@('Program'),value2=uid from [TABLE-"+$vm.module_list[prefix+'program-form'].table_id+"])";
-		sql+=" select top 10 name,value=name,value2,value3 from tb where Name like '%'+@S1+'%' ";
-		$vm.autocomplete($('#Code__ID'),sql,function(key,value,value3){
+		sql="with tb as (select name=@('Code'),value3=@('Program'),value4=@('Country'),value2=uid from [TABLE-"+$vm.module_list[prefix+'program-form'].table_id+"])";
+		sql+=" select top 10 name,value=name,value2,value3,value4 from tb where Name like '%'+@S1+'%' ";
+		$vm.autocomplete($('#Code__ID'),sql,function(key,value,value3,value4){
 			$("#F__ID input[name=PUID]").val($vm.text(value));
 			$("#F__ID input[name=I2_Program]").val($vm.text(value3));
+			$("#F__ID input[name=Country]").val($vm.text(value4));
 		})
 	$('#New_Comments__ID').change(function(){
 			process_comments();
@@ -335,8 +334,11 @@
     		}
     	}
 		//-------------------------------------
-//		m.before_submit(data,dbv){
-//		}
+		m.before_submit=function(data,dbv){
+			if(data.PUID!=='') dbv.PUID=data.PUID;
+            dbv.PPID=$vm.module_list[prefix+'program-data'].table_id;
+            return true;
+		}
 		//-------------------------------------
 		m.after_add=function(record,dbv,res){
 			alert("Send Email for a new Project");

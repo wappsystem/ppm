@@ -9,7 +9,7 @@
         //-------------------------------------
         m.xml=1; //Store data as XML - NOT json
         //-------------------------------------
-        var fields="Program Code|I2_Code,Project Code|Project_Code,Project,Country,Primary Sector|Sector"
+        var fields="UID,Program Code|I2_Code,Project Code|Project_Code,Project,Country,Primary Sector|Sector"
         fields+=",Start,End,Status|Project_Status"
         fields+=",Location,Approval_Status,Approval_Date"
         fields+=",Request_Fund,Requested_amount,Description";
@@ -88,7 +88,10 @@
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'Approval_Status':
-                if(records[I].Approval_Status=="PA" && ($vm.user!="jojo" && $vm.user!="childfund")){
+                if($vm.user!="jojo" && $vm.user!="childfund"){
+                    records[I].vm_readonly[field]=true;
+                }
+/*                if(records[I].Approval_Status=="PA" && ($vm.user!="jojo" && $vm.user!="childfund")){
                     records[I].vm_readonly[field]=true;
                 }
                 else{
@@ -124,6 +127,7 @@
                         })
                         td.focus(function(){td.autocomplete("search","");});
                     }
+*/
                     break;
                 case 'Implementation_Arrangement':
                     var sql="with tb as (select name=@('Implementation_Arrangement') from [TABLE-"+$vm.module_list['implementation-arrangement-data'].table_id+"] )";

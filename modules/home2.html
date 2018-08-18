@@ -1,0 +1,76 @@
+<div id=page__ID>
+	<div class="container-fluid" style='max-width:800px'>
+		<div class="text-center">
+		  <h1>&nbsp;<br><br></h1>
+	  	  <hr style='border-top:1px solid #005f40;'></hr>
+		  <h1>PnP</h1>
+	  	  <h3>Programs and Projects</h3>
+		  <div id=D__ID>
+		  	<div class="container mt-95 mb-3">
+		      	<div class="row" >
+		  			<div class="col-12 col-lg-7 col-md-11 col-sm-12 mx-auto formbox">
+		          		<div class="row">
+		              		<div class="col-12">
+		  						<form id=F__ID>
+		  							<div class="form-group">
+		  								<div class="questiongroup ">
+		                        			</div>
+		  								<div class="questiongroup ">
+		  		                           <fieldset>
+		  		                                <label class=""><span class=""></span>
+		  											<input class="form-control" data-id="Project_Code" name="Project_Code" id=Project_Code__ID placeholder="Select Project Code" type="text" required >
+		  		                                </label>
+		  		                           </fieldset>
+		                        		</div>
+									</div>
+									<div class="row">
+										<div class=col>
+											<button id=submit__ID type="button" class="btn btn-secondary">Projects</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		  </div>
+		  <br>
+		  <br><br>
+		</div>
+	</div>
+</div>
+<script>
+	function F__ID(){
+		//-------------------------------------
+		VmInclude:__COMPONENT__/module/form.v1.js
+		VmInclude:__CURRENT_PATH__/task_form.js
+		//-------------------------------------
+		sql="with tb as (select name=@('Project_Code'),value3=@('Project'),value2=uid from [TABLE-"+$vm.module_list['project-form'].table_id+"] where @('Project_Status')<>'Closed')";
+		sql+=" select top 10 name,value=name,value2,value3 from tb where Name like '%'+@S1+'%' ";
+		$vm.autocomplete($('#Project_Code__ID'),sql,function(key,value,value3){
+			$("#F__ID input[name=PUID]").val($vm.text(value));
+			//alert(key+'-'+value+'-'+value3)
+			//alert($vm.vm['__ID'].name)
+			m.input.projuid=value;
+			$("#F__ID input[name=I2_Project]").val($vm.text(value3));
+		})
+		//-------------------------------------
+		$('#submit__ID').on('click',function(){
+			$vm.load_module_v2("project-open-data",$vm.root_layout_content_slot,{m:m});
+		})
+	}
+</script>
+<style>
+	#D__ID{
+		height:100%;
+        overflow:auto;
+		animation: vm_module_fadein 1.0s;
+	}
+	#page__ID{
+		height:100%;
+		display: flex;
+		align-items: center;
+		color:#fff;
+	}
+</style>

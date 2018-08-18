@@ -35,15 +35,17 @@
                         <a href="?/home"><i class="fa fa-home"></i>Home</a>
                         <u class=vm_folder><i class="fa fa-folder-open-o"></i>Data Entry</u>
                         <ul>
+                            <li><a href="?/home2">Predefine Project</a></li>
                             <li><a href="?/program-data">Programs</a></li>
                             <li><a href="?/program-document-data">&rarr; Document</a></li>
                             <li><a href="?/project-open-data">Projects (Open)</a></li>
-                            <li><a href="?/project-document-data">&rarr; Document</a></li>
+                            <li><a href="?/project-open-document-data">&rarr; Document</a></li>
+                            <li><a href="?/project-proposal-variation-data">&rarr; Proposal and Variation</a></li>
                 		</ul>
                         <u class=vm_folder><i class="fa fa-folder-o"></i>View</u>
                         <ul class=vm_menu_hide_0>
                             <li><a href="?/project-closed-data">Projects (Closed)</a></li>
-                            <li><a href="?/project-document-data">&rarr; Document</a></li>
+                            <li><a href="?/project-closed-document-data">&rarr; Document</a></li>
                 		</ul>
                         <a href="?/about"><i class="fa fa-info-circle"></i> About</a><br>
                         <div id=vm_signin>
@@ -81,6 +83,7 @@
             //------------------------------------
             $vm.module_list={
                 "home":   {"url":"_C_/modules/home.html"},
+                "home2":   {"url":"_C_/modules/home2.html"},
                 "program-data":{"table_id":"20000013","url":"_C_/modules/program-data.html","form_module":"program-form"},
         	    "program-form":{"table_id":"20000013","url":"_C_/modules/program-form.html"},
                 "program-document-data":{"table_id":"20000028","url":"_C_/modules/program-document-data.html","form_module":"program-document-form"},
@@ -104,8 +107,11 @@
         	    "theme-form": {"table_id":"20011484", "url":"_C_/modules/theme-form.html"},
                 "location-data": {"table_id":"20011481", "url":"_C_/modules/location-data.html","form_module":"location-form"},
         	    "location-form": {"table_id":"20011481", "url":"_C_/modules/location-form.html"},
-        	    "project-document-data":	{"table_id" : "20000017","url" :"_C_/modules/project-document-data.html","form_module":"project-document-form"},
+                "project-open-document-data":	{"table_id" : "20000017","url" :"_C_/modules/project-document-data.html","form_module":"project-document-form","status":"open"},
+                "project-closed-document-data":	{"table_id" : "20000017","url" :"_C_/modules/project-document-data.html","form_module":"project-document-form","status":"closed"},
         	    "project-document-form":	{"table_id" : "20000017","url":"_C_/modules/project-document-form.html"},
+                "project-proposal-variation-data":	{"table_id" : "20000023","url":"_C_/modules/project-proposal-variation-data.html","form_module":"project-proposal-variation-form"},
+        	    "project-proposal-variation-form":	{"table_id" : "20000023","url":"_C_/modules/project-proposal-variation-form.html"}
             }
             //------------------------------------
             for(p in $vm.module_list){

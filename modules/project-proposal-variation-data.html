@@ -4,15 +4,28 @@
 <script>
     function F__ID(){
         //-------------------------------------
-        VmInclude:__COMPONENT__/grid/grid.v3.js
+        VmInclude:__COMPONENT__/module/grid.v1.js
         VmInclude:__CURRENT_PATH__/task_data.js
-        _json=''; //Store data as XML - NOT json
         //-------------------------------------
-		//$('#new__ID').hide();
-		//$('#save__ID').hide();
+        m.xml=1;
+        $('#add_search__ID').append('<input class="form-control" data-id="I2_Project_Code" name="I2_Project_Code" id=Project_Code__ID placeholder="" type="text"/>');
+        //$('#add_search__ID').append('<input class="form-control" name="I2_Project" placeholder="" type="text" readonly >');
+
 		//-------------------------------------
-        _fields="_Form,_FY_Budget,Version,Status,Total project budget|Amount,Approval_Date,Approved_By,Approval_FY,Comments,Project Proposal/Variation Narrative|DocBudget,Project Budget|DocProjectBudget,Lock";
-        _fields+=",Submit Date|DateTime,Submitted by|Author,_Delete";
+        var fields="Code|I2_Project_Code,Status|I2_Project_Status,Version,Status,Total project budget|Amount,Approval_Date,Approved_By,Approval_FY,Project Proposal/Variation Narrative|DocBudget,Project Budget|DocProjectBudget,Lock";
+        m.fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
+        m.form_fields=fields+",TID";
+        //-------------------------------------
+        var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix; if(prefix==undefined) prefix="";
+        //-------------------------------------
+        $("#title__ID").text('Project Proposal and Variation');
+        //-------------------------------------
+        sql="with tb as (select name=@('Project_Code'),value3=@('Project'),value2=uid from [TABLE-"+$vm.module_list[prefix+'project-form'].table_id+"] where @('Project_Status')<>'Closed')";
+    	sql+=" select top 10 name,value=name,value2,value3 from tb where Name like '%'+@S1+'%' ";
+        $vm.autocomplete($('#Project_Code__ID'),sql,function(key,value,value3){
+			$("#F__ID input[name=PUID]").val($vm.text(value));
+			$("#F__ID input[name=I2_Project]").val($vm.text(value3));
+		})
         //-------------------------------------
         var formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -20,8 +33,19 @@
             minimumFractionDigits: 2,
         });
         //-------------------------------------
-        _cell_render=function(records,I,field,td,set_value,source){
+        m.cell_render=function(records,I,field,td,set_value,source){
             switch(field){
+                case 'I2_Project_Code':
+                case 'I2_Project':
+                case 'I2_Project_Status':
+                case 'Version':
+                case 'Status':
+                case 'Amount':
+                case 'Approval_Date':
+                case 'Approved_By':
+                case 'I2_Project_Status':
+                    records[I].vm_readonly[field]=true;
+                	break;
                 case 'Lock':
                     if(records[I][field]=='on') td.html('Locked');
                     records[I].vm_readonly[field]=true;
@@ -67,7 +91,7 @@
             }
         }
         //-------------------------------------
-        _cell_value_process=function(value,field){
+        m.cell_value_process=function(value,field){
             switch(field){
                 case 'Amount': //remove $ sign and ,
                     return value.replace('$','').replace(/ /g,'').replace(/,/g,'');
@@ -75,28 +99,17 @@
             return value;
         }
         //-------------------------------------
-        var title='';
-        //-------------------------------------
-        $('#D__ID').on('load',function(){
-            title='Programme Code:'+_mobj.op.program_code+' | Project Code: '+_mobj.op.project_code+' | Proposal and Variation'
-            $("#title__ID").text(title);
-            _set_req(); _request_data(); })
-        //-------------------------------------
-        _set_req=function(){
-			var sql_where="";
-			var parent_uid=_mobj.op.parent_uid;
-			if(_mobj.op.parent_uid!=undefined){
-				sql_where="where PUID="+parent_uid;
-			}
-		    var sql="with tb as (select Information,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+_db_pid+"-@S1] "+sql_where+")";
-		    sql+="select Information,ID,UID,PUID,DateTime,Author,RowNum from tb where RowNum between @I6 and @I7";
-		    var sql_n="select count(ID) from [TABLE-"+_db_pid+"-@S1] "+sql_where;
-			_req={cmd:'query_records',db_pid:_db_pid,sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+        m.set_req=function(){
+		    var sql="with tb as (select Information,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+m.db_pid+"-@S1])";
+            sql+=",projects as (select Information2=Information,prog_UID=UID from [TABLE-"+$vm.module_list[prefix+'project-form'].table_id+"])";
+            sql+="select Information,Information2,ID,UID,PUID,DateTime,Author,RowNum from tb left join projects on PUID=prog_UID where RowNum between @I6 and @I7";
+		    var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1] ";
+			m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
 		}
         //-------------------------------------
-        _before_submit=function(record,dbv){
-            if(_mobj.op.parent_uid!=='') dbv.PUID=_mobj.op.parent_uid;
-            dbv.PPID=_mobj.op.ppid;
+        m.before_submit=function(record,dbv){
+            if(record.PUID!=='') dbv.PUID=record.PUID;
+            dbv.PPID=m.db_pid;
             return true;
         };
         //-------------------------------------
@@ -104,7 +117,5 @@
 </script>
 <style>
     VmInclude:__COMPONENT__/grid/grid.v3.css
-    .ui-datepicker-month,.ui-datepicker-year {
-   color: #5c9ccc;
- }
+    VmInclude:__CURRENT_PATH__/task-form.css
 </style>

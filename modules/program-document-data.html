@@ -44,8 +44,8 @@
 		}
         //-------------------------------------
         m.before_submit=function(record,dbv){
-//            if(_mobj.op.parent_uid!=='') dbv.PUID=_mobj.op.parent_uid;
-//            dbv.PPID=$vm.module_list[prefix+'program-data'].table_id;
+            if(record.PUID!=='') dbv.PUID=record.PUID;
+            dbv.PPID=m.db_pid;
             return true;
         };
 		//-------------------------------------

@@ -11,7 +11,7 @@ $vm.autocomplete=function($div,sql,callback){
         select: function(event,ui){
             if(callback!=undefined){
                 //alert(field+'_uid')
-                callback(field+'_uid',ui.item.value2,ui.item.value3);
+                callback(field+'_uid',ui.item.value2,ui.item.value3,ui.item.value4);
                 for(key in ui.item){
                     if(key.indexOf('field_')!==-1){
                         var k=key.replace('field_','')
