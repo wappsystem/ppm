@@ -1,76 +1,105 @@
-<div id=page__ID>
-	<div class="container-fluid" style='max-width:800px'>
-		<div class="text-center">
-		  <h1>&nbsp;<br><br></h1>
-	  	  <hr style='border-top:1px solid #005f40;'></hr>
-		  <h1>PnP</h1>
-	  	  <h3>Programs and Projects</h3>
-		  <div id=D__ID>
-		  	<div class="container mt-95 mb-3">
-		      	<div class="row" >
-		  			<div class="col-12 col-lg-7 col-md-11 col-sm-12 mx-auto formbox">
-		          		<div class="row">
-		              		<div class="col-12">
-		  						<form id=F__ID>
-		  							<div class="form-group">
-		  								<div class="questiongroup ">
-		                        			</div>
-		  								<div class="questiongroup ">
-		  		                           <fieldset>
-		  		                                <label class=""><span class=""></span>
-		  											<input class="form-control" data-id="Project_Code" name="Project_Code" id=Project_Code__ID placeholder="Select Project Code" type="text" required >
-		  		                                </label>
-		  		                           </fieldset>
-		                        		</div>
-									</div>
-									<div class="row">
-										<div class=col>
-											<button id=submit__ID type="button" class="btn btn-secondary">Projects</button>
-										</div>
-									</div>
-								</form>
+<div id=D__ID>
+	<div class="container mt-95 mb-3">
+    	<div class="row" >
+			<div class="col-12 col-lg-7 col-md-11 col-sm-12 mx-auto formbox">
+        		<div class="row">
+            		<div class="col-12">
+						<form id=F__ID>
+							<h3 class="text-center">Select a Project</h3>
+							<div class="form-group">
+								<div class="questiongroup ">
+								   <fieldset class="subquestions">
+									   <label class=""><span class="">Country</span>
+										   <input class="form-control" data-id="Project_Code" name="Project_Code" id=Project_Code__ID placeholder="Select Project Code" type="text" required >
+									   </label><br>
+									   <label class=""><span class="">Financial Year</span>
+										   <select class="form-control" name="FY" id="FY__ID" ></select>
+									   </label>
+								   </fieldset>
+								   <div class="questiongroup ">
+									   <fieldset class="subquestions">
+										   <label class=""><span class=""></span>
+											 	<button id=button_project__ID type="button" class="btn btn-secondary">Project Details</button>
+										   </label>
+									   </fieldset>
+									   <fieldset class="subquestions">
+										   <label class=""><span class=""></span>
+											 	<button id=button_document__ID type="button" class="btn btn-secondary">Documents</button>
+										   </label>
+									   </fieldset>
+									   <fieldset class="subquestions">
+										   <label class=""><span class=""></span>
+											 	<button id=button_proposal__ID type="button" class="btn btn-secondary">Proposal and Variation</button>
+										   </label>
+									   </fieldset>
+								   </div>
+							   </div>
 							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
-		  </div>
-		  <br>
-		  <br><br>
 		</div>
 	</div>
-</div>
+
 <script>
 	function F__ID(){
 		//-------------------------------------
-		VmInclude:__COMPONENT__/module/form.v1.js
+		//VmI nclude:__COMPONENT__/module/form.v1.js
 		VmInclude:__CURRENT_PATH__/task_form.js
 		//-------------------------------------
-		sql="with tb as (select name=@('Project_Code'),value3=@('Project'),value2=uid from [TABLE-"+$vm.module_list['project-form'].table_id+"] where @('Project_Status')<>'Closed')";
+		if($vm.module==undefined) $vm.module={};
+		$vm.module["__ID"]={};
+		var m=$vm.module["__ID"];
+		m.name=$vm.vm['__ID'].name;
+		m.input=$vm.vm['__ID'].input; if(m.input==undefined) m.input={};
+		m.module=$vm.module_list[m.name];
+		m.preload=m.module.preload;
+		m.prefix=m.module.prefx; if(m.prefix==undefined) m.prefix="";
+		m.form_module=m.prefix+m.module.form_module;
+		m.db_pid=m.module.table_id;
+		//-------------------------------------
+		sql="with tb as (select name=@('Project_Code'),value3=@('Project_Status'),value2=uid from [TABLE-"+$vm.module_list['project-form'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2,value3 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Project_Code__ID'),sql,function(key,value,value3){
 			$("#F__ID input[name=PUID]").val($vm.text(value));
-			//alert(key+'-'+value+'-'+value3)
-			//alert($vm.vm['__ID'].name)
-			m.input.projuid=value;
-			$("#F__ID input[name=I2_Project]").val($vm.text(value3));
+			$vm.vm.proj_uid=value;
+			$vm.vm.proj_status=value3;
+		})
+		//------------------------
+		//year dropdown
+		var $List=$('#FY__ID');
+		var today = new Date();
+		var mm = today.getMonth()+1; //January is 0!
+		var m=0; if(mm>6) m=-1;
+		var y=today.getFullYear()%100;
+		for(var i=-2;i<7;i++){
+			var txt='FY'+(y-i-1).toString()+(y-i).toString();
+			if(i==m) {$List.append(  $('<option selected></option>').val(txt).html(txt));}
+			else $List.append(  $('<option></option>').val(txt).html(txt)  );
+		}
+		//---------------------------------------------
+		$('#button_project__ID').on('click',function(){
+			$vm.load_module_v2("project-single-form",$vm.root_layout_content_slot,{});
 		})
 		//-------------------------------------
-		$('#submit__ID').on('click',function(){
-			$vm.load_module_v2("project-open-data",$vm.root_layout_content_slot,{m:m});
+		$('#button_document__ID').on('click',function(){
+			$vm.vm.proj_code=$('#Project_Code__ID').val();
+			$vm.load_module_v2("project-single-document-data",$vm.root_layout_content_slot,{});
+		})
+		//-------------------------------------
+		$('#button_proposal__ID').on('click',function(){
+			$vm.vm.proj_code=$('#Project_Code__ID').val();
+			$vm.load_module_v2("project-single-proposal-variation-data",$vm.root_layout_content_slot,{});
 		})
 	}
 </script>
 <style>
-	#D__ID{
-		height:100%;
-        overflow:auto;
-		animation: vm_module_fadein 1.0s;
-	}
-	#page__ID{
-		height:100%;
-		display: flex;
-		align-items: center;
-		color:#fff;
-	}
+#D__ID{
+  height:100%;
+  animation: vm_module_fadein 1.0s;
+  overflow: auto;
+}
 </style>
+VmInclude:__CURRENT_PATH__/task-form.css
+</div>

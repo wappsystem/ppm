@@ -259,7 +259,6 @@
     #D__ID half-width{
         width:100%;
     }
-
     @media (min-width: 600px) {
         #D__ID  fieldset.subquestions br { display: none; }
         #D__ID .labelleft {
