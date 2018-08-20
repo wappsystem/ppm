@@ -32,6 +32,11 @@
 											 	<button id=button_proposal__ID type="button" class="btn btn-success">Proposal and Variation</button>
 										   </label>
 									   </fieldset>
+									   <fieldset class="subquestions">
+										   <label class=""><span class=""></span>
+											 	<button id=button_actual_spending__ID type="button" class="btn btn-success">Actual Spending</button>
+										   </label>
+									   </fieldset>
 								   </div>
 							   </div>
 							</div>
@@ -91,6 +96,11 @@
 		$('#button_proposal__ID').on('click',function(){
 			$vm.vm.proj_code=$('#Project_Code__ID').val();
 			$vm.load_module_v2("project-single-proposal-variation-data",$vm.root_layout_content_slot,{});
+		})
+		//-------------------------------------
+		$('#button_actual_spending__ID').on('click',function(){
+			$vm.vm.proj_code=$('#Project_Code__ID').val();
+			$vm.load_module_v2("project-single-actual-spending-data",$vm.root_layout_content_slot,{});
 		})
 	}
 </script>

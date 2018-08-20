@@ -1,0 +1,79 @@
+<section>
+    VmInclude:__CURRENT_PATH__/grid/grid.v3.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__COMPONENT__/module/grid.v1.js
+        VmInclude:__CURRENT_PATH__/task_data.js
+        //-------------------------------------
+        m.xml=1;
+		//-------------------------------------
+        var fields="Source,Country,Amount,Donors,Comments";
+        m.fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
+        m.form_fields=fields+",TID";
+        //-------------------------------------
+        var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix; if(prefix==undefined) prefix="";
+        //-------------------------------------
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+        });
+        //-------------------------------------
+        m.cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Country':
+                    var sql="with tb as (select name=@('Type') from [TABLE-"+$vm.module_list[prefix+'country-data'].table_id+"])";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
+                    break;
+                case 'Source':
+                    var sql="with tb as (select name=@('Type') from [TABLE-"+$vm.module_list[prefix+'funding-source-data'].table_id+"])";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
+                    break;
+                case 'Amount':
+                    if(source=="grid") td.css("text-align","right").css('white-space','nowrap');
+                    td.html(formatter.format(records[I][field]));
+                break;
+                case 'I2_FY':
+                case 'I2_Amount_Q1':
+                case 'I2_Amount_Q2':
+                case 'I2_Amount_Q3':
+                case 'I2_Amount':
+                    records[I].vm_readonly[field]=true;
+                	break;
+            }
+        }
+        //-------------------------------------
+        m.cell_value_process=function(value,field){
+            switch(field){
+                case 'Amount':
+                    return value.replace('$','').replace(/ /g,'').replace(/,/g,'');
+            }
+            return value;
+        }
+        //-------------------------------------
+        m.set_req=function(){
+            $("#title__ID").text('Project '+ $vm.vm.proj_code+' ('+$vm.vm.proj_status+') - Actual Spending - Source ');
+            //-------------------------------------
+            var sql="with tb as (select Information,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+m.db_pid+"-@S1] where PUID=@I1 )";
+		    sql+="select Information,ID,UID,PUID,DateTime,Author,RowNum from tb where RowNum between @I6 and @I7";
+		    var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1]  where PUID=@I1";
+			m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,i1:$vm.vm.proj_actual_uid,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+		}
+        //-------------------------------------
+        m.before_submit=function(record,dbv){
+            record.Amount=m.cell_value_process(record.Amount,'Amount');
+            if(record.PUID!=='') dbv.PUID=record.PUID;
+            dbv.PPID=m.db_pid;
+            return true;
+        };
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__COMPONENT__/grid/grid.v3.css
+    VmInclude:__CURRENT_PATH__/task-form.css
+</style>
