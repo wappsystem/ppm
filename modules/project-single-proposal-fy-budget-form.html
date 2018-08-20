@@ -5,7 +5,7 @@
         		<div class="row">
             		<div class="col-12">
 						<form id=F__ID>
-							<h3 class="text-center">Project Proposal and Variation</h3>
+							<h3 class="text-center">Project Proposal and Variation Financial Year Budget</h3>
 							<div class="form-group">
 								<div class="questiongroup " style="display:none">
 								   <fieldset>
@@ -19,8 +19,11 @@
  		                                <label class=""><span class="">Project Code</span>
  											<input class="form-control" name="Project_Code" id=Project_Code__ID placeholder="" type="text" readonly >
  		                                </label><br>
-		                                <label class=""><span class="">Status</span>
-											<input class="form-control" name="Project_Status" id=Project_Status__ID placeholder="" type="text" readonly >
+										<label class=""><span class="">Status</span>
+ 											<input class="form-control" name="Project_Status" id=Project_Status__ID placeholder="" style="width:100px" type="text" readonly >
+ 		                                </label><br>
+		                                <label class=""><span class="">Version</span>
+											<input class="form-control" name="Project_Version" id=Project_Version__ID placeholder="" type="text" readonly >
 		                                </label>
 		                           </fieldset>
                       			</div>
@@ -28,33 +31,31 @@
 							<div class="form-group">
 								<div class="questiongroup ">
 									<fieldset class="subquestions">
-                                		<label class=""><span class="">Version</span>
-											<input class="form-control" name="Version" id=Version__ID type="text">
+                                		<label class=""><span class="">Financial Year</span>
+											<select class="form-control" name="FY"  id=FY__ID></select>
                                 		</label><br>
-										<label class=""><span class="">Status</span>
-											<select class="form-control" name="Status"  id=Status__ID><option value=""></option><option value="Pending">Pending</option><option value="Approved">Approved</option></select>
+										<label class=""><span class="">FY Start</span>
+											<input class="form-control" name="FY_Start" id=FY_Start__ID type="text" readonly>
+										</label><br>
+										<label class=""><span class="">FY End</span>
+											<input class="form-control" name="FY_End" id=FY_End__ID type="text" readonly>
                                 		</label>
                            			</fieldset>
                           		</div>
 								<div class="questiongroup ">
 		                           <fieldset>
-		                                <label class=""><span class="">Total project budget</span>
+		                                <label class=""><span class="">Amount</span>
 											<input class="form-control" name="Amount" type="text" id=Amount__ID >
 		                                </label>
 		                           </fieldset>
                       			</div>
 								<div class="questiongroup ">
 									<fieldset class="subquestions">
-                                		<label class=""><span class="">Approval Date</span>
-											<input class="form-control" name="Approval_Date" type="text" id=Approval_Date__ID >
-                                		</label><br>
-										<label class=""><span class="">Approved By</span>
-											<input class="form-control" name="Approved_By" type="text">
-                                		</label><br>
-										<label class=""><span class="">Approval FY</span>
-											<input class="form-control" name="Approval_FY" type="text"  id=Approval_FY__ID readonly>
-                                		</label><br>
-                           			</fieldset>
+										<label class="checkboxes">ANCP
+										  <input type="checkbox" name="ANCP" id=ANCP__ID >
+										  <span class="check_checkmark"></span>
+									    </label>
+									</fieldset>
                           		</div>
 								<div class="questiongroup ">
 		                           <fieldset>
@@ -63,28 +64,6 @@
 		                                </label>
 		                           </fieldset>
                       			</div>
-								<div class="questiongroup ">
-		                           <fieldset>
-		                                <label style="width:100%" class=""><span class="">Project Proposal/Variation Narrative</span>
-		                                </label>
-										<div id=DocBudget__ID data-id=DocBudget ></div>
-		                           </fieldset>
-                      			</div>
-								<div class="questiongroup ">
-		                           <fieldset>
-		                                <label style="width:100%" class=""><span class="">Project Budget</span>
-		                                </label>
-										<div id=DocProjectBudget__ID data-id=DocProjectBudget></div>
-		                           </fieldset>
-                      			</div>
-								<div class="questiongroup ">
-									<fieldset class="subquestions">
-										<label class="checkboxes">Lock record
-										  <input type="checkbox" name="Lock" id=Lock__ID >
-										  <span class="check_checkmark"></span>
-									    </label>
-									</fieldset>
-                          		</div>
 							</div>
 							<div class="form-group">
 								<div class="questiongroup ">
@@ -95,7 +74,7 @@
 		                           </fieldset>
 								   <fieldset class="subquestions">
 									   <label class="">
-										   <button id=budget__ID type="button" class="btn btn-success">Financial Year Budget</button>
+										   <button id=funding__ID type="button" class="btn btn-success">Funding Source</button>
 									   </label>
 								   </fieldset>
                       			</div>
@@ -119,34 +98,28 @@ function F__ID(){
 	m.default_load=m.load;
 	m.load=function(){
 		m.default_load();
-		$vm.render_file_field_v2(m.input.record,'__ID',$('#DocBudget__ID'));
-		$vm.render_file_field_v2(m.input.record,'__ID',$('#DocProjectBudget__ID'));
-		if(m.input.record.Lock=='on' && ($vm.user!="jojo" && $vm.user!="childfund")){
-			$('#submit__ID').hide();
-		}
 		$('#Project_Code__ID').val($vm.vm.proj_code);
 		$('#Project_Status__ID').val($vm.vm.proj_status);
+		$('#Project_Version__ID').val($vm.vm.proj_ver);
 		$('#Amount__ID').val(formatter.format($('#Amount__ID').val()))
 	}
 	//-------------------------------------
 	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
-	var project_status="";
-	var project_code="";
-	var approval_status="";
-	var request_fund=false;
 	//-------------------------------------
-	$('#Approval_Date__ID').datepicker({dateFormat:'dd/mm/yy', autoclose: true});
+	var $List=$('#FY__ID');
+	var today = new Date();
+	var mm = today.getMonth()+1; //January is 0!
+	var m=0; if(mm>6) m=-1;
+	var y=today.getFullYear()%100;
+	for(var i=-2;i<7;i++){
+		var txt='FY'+(y-i-1).toString()+(y-i).toString();
+		if(i==m) {$List.append(  $('<option selected></option>').val(txt).html(txt));}
+		else $List.append(  $('<option></option>').val(txt).html(txt)  );
+	}
 	//-------------------------------------
-	$('#Approval_Date__ID').on('change',function(){
-		var v1="FY";
-		var ap=$('#Approval_Date__ID').val().substring(8,10);
-		var app=parseInt(ap)+1; if (app<10) {app="0"+app.toString();} else {app=app.toString();}
-		var apm=parseInt(ap)-1; if (apm<10) {apm="0"+apm.toString();} else {apm=apm.toString();}
-		if($('#Approval_Date__ID').val().substring(3,5)>6){
-			v1+=ap + app;
-		}
-		else{ v1+=apm + ap}
-		$('#Approval_FY__ID').val(v1);
+	$('#FY__ID').on('change',function(){
+		$('#FY_Start__ID').val('01/07/20'+$('#FY__ID').val().substring(2,4));
+		$('#FY_End__ID').val('30/06/20'+$('#FY__ID').val().substring(4,6));
 	})
 	//-------------------------------------
 	$('#Amount__ID').on('change',function(){
@@ -155,7 +128,6 @@ function F__ID(){
 	})
 	//-------------------------------------
 	$('#budget__ID').on('click',function(){
-		$vm.vm.proj_ver=$('#Version__ID').val();
 		$vm.load_module_v2("project-single-proposal-fy-budget-data",$vm.root_layout_content_slot,{});
 	})
 	//-------------------------------------
