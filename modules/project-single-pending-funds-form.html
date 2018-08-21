@@ -10,7 +10,7 @@
 								<div class="questiongroup " style="display:none">
 		                           <fieldset>
 		                                <label style="width:100%" class=""><span class="">Project UID</span>
-											<input class="form-control" name="PUID" placeholder="" type="text" readonly >
+											<input class="form-control" name="PUID" id="PUID__ID" placeholder="" type="text" readonly >
 		                                </label>
 		                           </fieldset>
                       			</div>
@@ -79,8 +79,8 @@
 		VmInclude:__COMPONENT__/module/form.v1.js
 		VmInclude:__CURRENT_PATH__/task_form.js
 		//-------------------------------------
-		var this_module=$vm.module_list[$vm.vm['__ID'].name];
-		var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+		
+		
 		m.xml=1;
 		//-------------------------------------
 		m.default_load=m.load;
@@ -89,11 +89,18 @@
 			$vm.render_file_field_v2(m.input.record,'__ID',$('#Name__ID'));
 			$('#Project_Code__ID').val($vm.vm.proj_code);
 			$('#Project_Status__ID').val($vm.vm.proj_status);
+			$('#PUID__ID').val($vm.vm.proj_uid);
+		}
+		//-------------------------------------
+		m.new_process=function(){
+			$('#Project_Code__ID').val($vm.vm.proj_code);
+			$('#Project_Status__ID').val($vm.vm.proj_status);
+			$('#PUID__ID').val($vm.vm.proj_uid);
 		}
 		//-------------------------------------
         m.before_submit=function(record,dbv){
             if(record.PUID!=='') dbv.PUID=record.PUID;
-            dbv.PPID=$vm.module_list[prefix+'project-form'].table_id;
+            dbv.PPID=$vm.module_list[m.prefix+'project-form'].table_id;
             return true;
         };
 		//-------------------------------------

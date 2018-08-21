@@ -153,7 +153,7 @@
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'I2_Code':
-                    sql="with tb as (select name=@('Code'),value3=@('Program'),value2=uid from [TABLE-"+$vm.module_list[prefix+'program-form'].table_id+"])";
+                    sql="with tb as (select name=@('Code'),value3=@('Program'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'program-form'].table_id+"])";
             		sql+=" select top 10 name,value=name,value2,value3 from tb where Name like '%'+@S1+'%' ";
                     var val='';
                     td.autocomplete({
@@ -185,7 +185,7 @@
                 status=" @('Project_Status') = 'Closed'";
             }
             var sql="with tb as (select Information,B1,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+m.db_pid+"-@S1] where "+status+" ) ";
-            sql+=",program as (select Information2=Information,prog_UID=UID from [TABLE-"+$vm.module_list[prefix+'program-data'].table_id+"])";
+            sql+=",program as (select Information2=Information,prog_UID=UID from [TABLE-"+$vm.module_list[m.prefix+'program-data'].table_id+"])";
 		    sql+="select Information,Information2,B1,ID,UID,PUID,DateTime,Author,RowNum from tb left join program on PUID=prog_UID where RowNum between @I6 and @I7";
             var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1] where "+status+"";
             m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}

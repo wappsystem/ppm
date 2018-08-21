@@ -9,11 +9,11 @@
         //-------------------------------------
         m.xml=1;
         //-------------------------------------
-        var fields="FY,FY_Start,FY_End,Amount,ANCP";
+        var fields="PUID,UID,FY,FY_Start,FY_End,Amount,ANCP";
         m.fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
         m.form_fields=fields+",TID";
         //-------------------------------------
-        var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix; if(prefix==undefined) prefix="";
+
         //-------------------------------------
         var formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -45,6 +45,7 @@
         //-------------------------------------
 		m.set_req=function(){
             //-------------------------------------
+            $('#help__ID').html(help);
             $("#title__ID").text('Project '+ $vm.vm.proj_code+' ('+$vm.vm.proj_status+') - Proposal and Variation '+$vm.vm.proj_ver+' FY Budget');
             //-------------------------------------
             $('#save__ID').show();
@@ -56,7 +57,7 @@
 		    var sql="with tb as (select Information,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+m.db_pid+"-@S1] where PUID=@I1 )";
 		    sql+="select Information,ID,UID,PUID,DateTime,Author,RowNum from tb where RowNum between @I6 and @I7";
 		    var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1]  where PUID=@I1";
-			m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,i1:$vm.vm.proj_uid,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+			m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,i1:$vm.vm.proj_prop_uid,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
 		}
 		//-------------------------------------
         m.before_submit=function(record,dbv){

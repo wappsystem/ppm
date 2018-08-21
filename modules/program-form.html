@@ -55,8 +55,8 @@ function F__ID(){
 	//-------------------------------------
 	VmInclude:__COMPONENT__/module/form.v1.js
 	//-------------------------------------
-	var this_module=$vm.module_list[$vm.vm['__ID'].name];
-	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+	
+	
 	m.xml=1;
 	//-------------------------------------
 	m.default_load=m.load;
@@ -65,7 +65,7 @@ function F__ID(){
 		$vm.render_file_field_v2(m.input.record,'__ID',$('#DocProgram__ID'));
 	}
 	//-------------------------------------
-	var sql="with tb as (select name=@('Country'),value2=uid from [TABLE-"+$vm.module_list[prefix+'country-data'].table_id+"] )";
+	var sql="with tb as (select name=@('Country'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'country-data'].table_id+"] )";
 	sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 	$vm.autocomplete($('#Country__ID'),sql,function(key,value){
 		$("#F__ID input[name="+key+"]").val($vm.text(value));

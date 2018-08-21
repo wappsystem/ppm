@@ -10,7 +10,7 @@
 								<div class="questiongroup " style="display:none">
 								   <fieldset>
 										<label style="width:100%" class=""><span class="">Project UID</span>
-											<input class="form-control" name="PUID" placeholder="" type="text" readonly >
+											<input class="form-control" name="PUID" id="PUID__ID" placeholder="" type="text" readonly >
 										</label>
 								   </fieldset>
 								</div>
@@ -112,8 +112,8 @@ function F__ID(){
 	VmInclude:__COMPONENT__/module/form.v1.js
 	VmInclude:__CURRENT_PATH__/task_form.js
 	//-------------------------------------
-	var this_module=$vm.module_list[$vm.vm['__ID'].name];
-	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+
+
 	m.xml=1;
 	//-------------------------------------
 	m.default_load=m.load;
@@ -121,15 +121,22 @@ function F__ID(){
 		m.default_load();
 		$vm.render_file_field_v2(m.input.record,'__ID',$('#DocBudget__ID'));
 		$vm.render_file_field_v2(m.input.record,'__ID',$('#DocProjectBudget__ID'));
-		if(m.input.record.Lock=='on' && ($vm.user!="jojo" && $vm.user!="childfund")){
-			$('#submit__ID').hide();
-		}
+		//if(m.input.record.Lock=='on' && ($vm.user!="jojo" && $vm.user!="childfund")){
+		//		$('#submit__ID').hide();
+		//}
 		$('#Project_Code__ID').val($vm.vm.proj_code);
 		$('#Project_Status__ID').val($vm.vm.proj_status);
+		$('#PUID__ID').val($vm.vm.proj_uid);
 		$('#Amount__ID').val(formatter.format($('#Amount__ID').val()))
 	}
 	//-------------------------------------
-	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+	m.new_process=function(){
+		$('#Project_Code__ID').val($vm.vm.proj_code);
+		$('#Project_Status__ID').val($vm.vm.proj_status);
+		$('#PUID__ID').val($vm.vm.proj_uid);
+	}
+	//-------------------------------------
+
 	var project_status="";
 	var project_code="";
 	var approval_status="";
@@ -156,6 +163,7 @@ function F__ID(){
 	//-------------------------------------
 	$('#budget__ID').on('click',function(){
 		$vm.vm.proj_ver=$('#Version__ID').val();
+		$vm.vm.proj_prop_uid=m.input.record.UID;
 		$vm.load_module_v2("project-single-proposal-fy-budget-data",$vm.root_layout_content_slot,{});
 	})
 	//-------------------------------------
@@ -183,7 +191,8 @@ function F__ID(){
 		record.Amount=record.Amount.replace('$','').replace(/ /g,'').replace(/,/g,'');
 		dbv.V1=record.Amount;
 		dbv.S1=record.Approval_FY;
-		dbv.PUID=record.PUID;
+		dbv.PUID=$vm.vm.proj_uid;
+		dbv.PPID=$vm.module_list[m.prefix+'project-form'].table_id;
 	}
 }
 </script>

@@ -75,8 +75,8 @@ function F__ID(){
 	VmInclude:__COMPONENT__/module/form.v1.js
 	VmInclude:__CURRENT_PATH__/task_form.js
 	//-------------------------------------
-	var this_module=$vm.module_list[$vm.vm['__ID'].name];
-	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+
+
 	m.xml=1;
 	//-------------------------------------
 	m.default_load=m.load;
@@ -94,20 +94,18 @@ function F__ID(){
 		$('#PUID__ID').val($vm.vm.proj_uid);
 	}
 	//-------------------------------------
-	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
-	//-------------------------------------
 	$('#Amount__ID').on('change',function(){
 		var amount=$('#Amount__ID').val().replace('$','').replace(/ /g,'').replace(/,/g,'');
 		$('#Amount__ID').val(formatter.format(amount));
 	})
 	//-------------------------------------
-	var sql="with tb as (select name=@('Country'),value2=uid from [TABLE-"+$vm.module_list[prefix+'country-data'].table_id+"] )";
+	var sql="with tb as (select name=@('Country'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'country-data'].table_id+"] )";
 	sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 	$vm.autocomplete($('#Country__ID'),sql,function(key,value){
 		$("#F__ID input[name="+key+"]").val($vm.text(value));
 	})
 	//-------------------------------------
-	var sql="with tb as (select name=@('Funding_Source') from [TABLE-"+$vm.module_list[prefix+'funding-source-data'].table_id+"])";
+	var sql="with tb as (select name=@('Funding_Source') from [TABLE-"+$vm.module_list[m.prefix+'funding-source-data'].table_id+"])";
 	sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
 	$vm.autocomplete($('#Source__ID'),sql,function(key,value){
 		$("#F__ID input[name="+key+"]").val($vm.text(value));
@@ -138,7 +136,7 @@ function F__ID(){
 		dbv.V1=record.Amount;
 		dbv.S1=record.Source;
 		dbv.PUID=record.PUID;
-		dbv.PPID=$vm.module_list[prefix+'project-single-actual-spending-data'].table_id;
+		dbv.PPID=$vm.module_list[m.prefix+'project-single-actual-spending-data'].table_id;
 
 	}
 }

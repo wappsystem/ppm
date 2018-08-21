@@ -30,7 +30,7 @@
 								<div class="questiongroup " style="display:none">
 		                           <fieldset>
 		                                <label style="width:100%" class=""><span class="">Program UID</span>
-											<input class="form-control" name="PUID" placeholder="" type="text" readonly >
+											<input class="form-control" name="PUID" id="PUID__ID" placeholder="" type="text" readonly >
 		                                </label>
 		                           </fieldset>
                       			</div>
@@ -82,8 +82,8 @@
 		VmInclude:__COMPONENT__/module/form.v1.js
 		VmInclude:__CURRENT_PATH__/task_form.js
 		//-------------------------------------
-		var this_module=$vm.module_list[$vm.vm['__ID'].name];
-		var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+		
+
 		m.xml=1;
 		//-------------------------------------
 		m.default_load=m.load;
@@ -92,13 +92,13 @@
 			$vm.render_file_field_v2(m.input.record,'__ID',$('#Name__ID'));
 		}
 		//-------------------------------------
-		var sql="with tb as (select name=@('Type'),value2=uid from [TABLE-"+$vm.module_list[prefix+'document-type-form'].table_id+"])";
+		var sql="with tb as (select name=@('Type'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'document-type-form'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Type__ID'),sql,function(key,value){
 			$("#F__ID input[name="+key+"]").val($vm.text(value));
 		})
 		//-------------------------------------
-		sql="with tb as (select name=@('Code'),value3=@('Program'),value2=uid from [TABLE-"+$vm.module_list[prefix+'program-form'].table_id+"])";
+		sql="with tb as (select name=@('Code'),value3=@('Program'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'program-form'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2,value3 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Code__ID'),sql,function(key,value,value3){
 			$("#F__ID input[name=PUID]").val($vm.text(value));
@@ -107,7 +107,7 @@
 		//-------------------------------------
         m.before_submit=function(record,dbv){
             if(record.PUID!=='') dbv.PUID=record.PUID;
-            dbv.PPID=$vm.module_list[prefix+'program-data'].table_id;
+            dbv.PPID=$vm.module_list[m.prefix+'program-data'].table_id;
             return true;
         };
 		//-------------------------------------

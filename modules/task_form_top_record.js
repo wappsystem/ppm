@@ -1,9 +1,6 @@
 //-------------------------------------
 var _json='';
 //-------------------------------------
-var this_module=$vm.module_list[$vm.vm['__ID'].name];
-var prefix=this_module.prefix; if(prefix==undefined) prefix="";
-var db_pid=this_module.table_id
 var rid=undefined;
 //-------------------------------------
 $('#D__ID').on('load',function(){

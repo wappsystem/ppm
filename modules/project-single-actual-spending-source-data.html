@@ -13,7 +13,7 @@
         m.fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
         m.form_fields=fields+",TID";
         //-------------------------------------
-        var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix; if(prefix==undefined) prefix="";
+        
         //-------------------------------------
         var formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -24,12 +24,12 @@
         m.cell_render=function(records,I,field,td,set_value,source){
             switch(field){
                 case 'Country':
-                    var sql="with tb as (select name=@('Country') from [TABLE-"+$vm.module_list[prefix+'country-data'].table_id+"])";
+                    var sql="with tb as (select name=@('Country') from [TABLE-"+$vm.module_list[m.prefix+'country-data'].table_id+"])";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
                 case 'Source':
-                    var sql="with tb as (select name=@('Funding_Source') from [TABLE-"+$vm.module_list[prefix+'funding-source-data'].table_id+"])";
+                    var sql="with tb as (select name=@('Funding_Source') from [TABLE-"+$vm.module_list[m.prefix+'funding-source-data'].table_id+"])";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
@@ -59,13 +59,14 @@
             //$("#title__ID").text('Project '+ $vm.vm.proj_code+' ('+$vm.vm.proj_status+') - Actual Spending - Source ');
             //-------------------------------------
             var sql="with tb as (select Information,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+m.db_pid+"-@S1] where PUID=@I1 )";
-            sql+=",actual as (select Information2=Information,act_uid=UID from [TABLE-"+$vm.module_list[prefix+'project-single-actual-spending-data'].table_id+"] where UID=@I1 )"
+            sql+=",actual as (select Information2=Information,act_uid=UID from [TABLE-"+$vm.module_list[m.prefix+'project-single-actual-spending-data'].table_id+"] where UID=@I1 )"
             sql+="select Information,Information2,ID,UID,PUID,DateTime,Author,RowNum from tb left join actual on act_uid=PUID where RowNum between @I6 and @I7";
 		    var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1]  where PUID=@I1";
 			m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,i1:$vm.vm.proj_actual_uid,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
 		}
         //-------------------------------------
         m.data_process=function(){
+            $('#help__ID').html(help);
             $("#title__ID").text('Project '+ $vm.vm.proj_code+' ('+$vm.vm.proj_status+') - Actual Spending - Source ');
             if(m.records.length>0){
                 $('#title_2__ID').show();

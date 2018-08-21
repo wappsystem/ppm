@@ -10,7 +10,7 @@
 								<div class="questiongroup " style="display:none">
 								   <fieldset>
 										<label style="width:100%" class=""><span class="">Project UID</span>
-											<input class="form-control" name="PUID" placeholder="" type="text" readonly >
+											<input class="form-control" name="PUID" id="PUID__ID" placeholder="" type="text" readonly >
 										</label>
 								   </fieldset>
 								</div>
@@ -91,9 +91,10 @@ function F__ID(){
 	VmInclude:__COMPONENT__/module/form.v1.js
 	VmInclude:__CURRENT_PATH__/task_form.js
 	//-------------------------------------
-	var this_module=$vm.module_list[$vm.vm['__ID'].name];
-	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+
+
 	m.xml=1;
+	var input_fy='';
 	//-------------------------------------
 	m.default_load=m.load;
 	m.load=function(){
@@ -101,12 +102,11 @@ function F__ID(){
 		$('#Project_Code__ID').val($vm.vm.proj_code);
 		$('#Project_Status__ID').val($vm.vm.proj_status);
 		$('#Project_Version__ID').val($vm.vm.proj_ver);
+		$('#PUID__ID').val($vm.vm.proj_uid);
 		$('#Amount__ID').val(formatter.format($('#Amount__ID').val()))
-		input_fy=m.input.record.FY
+		if(m.input.record!=undefined) input_fy=m.input.record.FY
 		update_fy_list();
 	}
-	//-------------------------------------
-	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
 	//-------------------------------------
 	var update_fy_list=function(){
 		var $List=$('#FY__ID');
@@ -132,7 +132,7 @@ function F__ID(){
 		$('#Amount__ID').val(formatter.format(amount));
 	})
 	//-------------------------------------
-	$('#budget__ID').on('click',function(){
+	$('#funding__ID').on('click',function(){
 		$vm.load_module_v2("project-single-proposal-fy-budget-data",$vm.root_layout_content_slot,{});
 	})
 	//-------------------------------------

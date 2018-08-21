@@ -30,7 +30,7 @@
 								<div class="questiongroup " style="display:none">
 		                           <fieldset>
 		                                <label style="width:100%" class=""><span class="">Project UID</span>
-											<input class="form-control" name="PUID" placeholder="" type="text" readonly >
+											<input class="form-control" name="PUID" id="PUID__ID" placeholder="" type="text" readonly >
 		                                </label>
 		                           </fieldset>
                       			</div>
@@ -113,8 +113,8 @@ function F__ID(){
 	VmInclude:__COMPONENT__/module/form.v1.js
 	VmInclude:__CURRENT_PATH__/task_form.js
 	//-------------------------------------
-	var this_module=$vm.module_list[$vm.vm['__ID'].name];
-	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+	
+	
 	m.xml=1;
 	//-------------------------------------
 	m.default_load=m.load;
@@ -127,7 +127,7 @@ function F__ID(){
 		}
 	}
 	//-------------------------------------
-	var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+	
 	var project_status="";
 	var project_code="";
 	var approval_status="";
@@ -152,7 +152,7 @@ function F__ID(){
 		$('#Amount__ID').val(formatter.format(amount));
 	})
 	//-------------------------------------
-	sql="with tb as (select name=@('Project_Code'),value3=@('Project'),value2=uid from [TABLE-"+$vm.module_list[prefix+'project-form'].table_id+"] where @('Project_Status')<>'Closed')";
+	sql="with tb as (select name=@('Project_Code'),value3=@('Project'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'project-form'].table_id+"] where @('Project_Status')<>'Closed')";
 	sql+=" select top 10 name,value=name,value2,value3 from tb where Name like '%'+@S1+'%' ";
 	$vm.autocomplete($('#Project_Code__ID'),sql,function(key,value,value3){
 		$("#F__ID input[name=PUID]").val($vm.text(value));
