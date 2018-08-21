@@ -1,0 +1,110 @@
+<div id=D__ID>
+	<div class="container mt-95 mb-3">
+    	<div class="row" >
+			<div class="col-12 col-lg-7 col-md-11 col-sm-12 mx-auto formbox">
+        		<div class="row">
+            		<div class="col-12">
+						<form id=F__ID>
+							<h3 class="text-center">Project Pending Funds</h3>
+							<div class="form-group">
+								<div class="questiongroup " style="display:none">
+		                           <fieldset>
+		                                <label style="width:100%" class=""><span class="">Project UID</span>
+											<input class="form-control" name="PUID" placeholder="" type="text" readonly >
+		                                </label>
+		                           </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+									<fieldset class="subquestions">
+ 		                                <label class=""><span class="">Project Code</span>
+ 											<input class="form-control" name="Project_Code" id=Project_Code__ID placeholder="" type="text" readonly >
+ 		                                </label><br>
+		                                <label class=""><span class="">Status</span>
+											<input class="form-control" name="Project_Status" id=Project_Status__ID placeholder="" type="text" readonly >
+		                                </label>
+		                           </fieldset>
+                      			</div>
+							</div>
+							<div class="form-group">
+								<div class="questiongroup ">
+		                           <fieldset>
+		                                <label style="width:100%" class=""><span class="">Donor Name</span>
+											<input class="form-control" name="Donor_Name" placeholder="" type="text" >
+		                                </label>
+		                           </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+								   <fieldset>
+									   <label style="width:100%" class=""><span class="">Donor Relationship Manager</span>
+										   <input class="form-control" name="Donor_Relationship_Manager" placeholder="" type="text"  id=Type__ID >
+									   </label>
+								   </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+								   <fieldset>
+									   <label style="width:100%" class=""><span class="">Donor Funding Proposed Amount and FY(s</span>
+										   <input class="form-control" name="Donor_Funding_Proposed" placeholder="" type="text"  id=Type__ID >
+									   </label>
+								   </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+								   <fieldset>
+									   <label style="width:100%" class=""><span class="">Donor Funding Confirmed Amount and FY(s)</span>
+										   <input class="form-control" name="Donor_Funding_Confirmed" placeholder="" type="text"  id=Type__ID >
+									   </label>
+								   </fieldset>
+                      			</div>
+								<div class="questiongroup ">
+		                           <fieldset>
+		                                <label style="width:100%" class=""><span class="">Comments<br><i>Please describe which components of the project are being considered for funding and updates on donor discussions and/or grants submission</i></span>
+											<textarea class="form-control form-control-sm" name="Comments" placehoder=''></textarea>
+		                                </label>
+		                           </fieldset>
+                      			</div>
+								<div class="row">
+									<div class=col>
+										<button id=submit__ID type="submit" class="btn btn-secondary">Submit</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script>
+	function F__ID(){
+		//-------------------------------------
+		VmInclude:__COMPONENT__/module/form.v1.js
+		VmInclude:__CURRENT_PATH__/task_form.js
+		//-------------------------------------
+		var this_module=$vm.module_list[$vm.vm['__ID'].name];
+		var prefix=this_module.prefix; if(prefix==undefined) prefix="";
+		m.xml=1;
+		//-------------------------------------
+		m.default_load=m.load;
+		m.load=function(){
+			m.default_load();
+			$vm.render_file_field_v2(m.input.record,'__ID',$('#Name__ID'));
+			$('#Project_Code__ID').val($vm.vm.proj_code);
+			$('#Project_Status__ID').val($vm.vm.proj_status);
+		}
+		//-------------------------------------
+        m.before_submit=function(record,dbv){
+            if(record.PUID!=='') dbv.PUID=record.PUID;
+            dbv.PPID=$vm.module_list[prefix+'project-form'].table_id;
+            return true;
+        };
+		//-------------------------------------
+	}
+</script>
+<style>
+#D__ID{
+  height:100%;
+  animation: vm_module_fadein 1.0s;
+  overflow: auto;
+}
+</style>
+VmInclude:__CURRENT_PATH__/task-form.css
+</div>

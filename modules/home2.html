@@ -37,6 +37,11 @@
 											 	<button id=button_actual_spending__ID type="button" class="btn btn-success">Actual Spending</button>
 										   </label>
 									   </fieldset>
+									   <fieldset class="subquestions">
+										   <label class=""><span class=""></span>
+											 	<button id=button_pending_funds__ID type="button" class="btn btn-success">Pending Funds</button>
+										   </label>
+									   </fieldset>
 								   </div>
 							   </div>
 							</div>
@@ -101,6 +106,11 @@
 		$('#button_actual_spending__ID').on('click',function(){
 			$vm.vm.proj_code=$('#Project_Code__ID').val();
 			$vm.load_module_v2("project-single-actual-spending-data",$vm.root_layout_content_slot,{});
+		})
+		//-------------------------------------
+		$('#button_pending_funds__ID').on('click',function(){
+			$vm.vm.proj_code=$('#Project_Code__ID').val();
+			$vm.load_module_v2("project-single-pending-funds-data",$vm.root_layout_content_slot,{});
 		})
 	}
 </script>
