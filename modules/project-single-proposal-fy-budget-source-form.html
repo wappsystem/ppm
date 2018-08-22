@@ -5,7 +5,7 @@
         		<div class="row">
             		<div class="col-12">
 						<form id=F__ID>
-							<h3 class="text-center">Project Proposal/Variation Financial Year Budget</h3>
+							<h3 class="text-center">Project Proposal/Variation FY Budget Source</h3>
 							<div class="form-group">
 								<div class="questiongroup " style="display:none">
 								   <fieldset>
@@ -17,13 +17,16 @@
 								<div class="questiongroup ">
 									<fieldset class="subquestions">
  		                                <label class=""><span class="">Project Code</span>
- 											<input class="form-control" name="Project_Code" id=Project_Code__ID placeholder="" type="text" readonly >
+ 											<input class="form-control" name="Project_Code" id=Project_Code__ID placeholder="" style="width:150px" type="text" readonly >
  		                                </label><br>
 										<label class=""><span class="">Status</span>
- 											<input class="form-control" name="Project_Status" id=Project_Status__ID placeholder="" style="width:100px" type="text" readonly >
- 		                                </label><br>
-		                                <label class=""><span class="">Version</span>
+											<input class="form-control" name="Project_Status" id=Project_Status__ID placeholder="" style="width:100px" type="text" readonly >
+										</label><br>
+										<label class=""><span class="">Version</span>
 											<input class="form-control" name="Project_Version" id=Project_Version__ID placeholder="" type="text" readonly >
+										</label>
+										<label class=""><span class="">Finacial Year</span>
+											<input class="form-control" name="Project_Prop_FY" id=Project_Prop_FY__ID placeholder="" style="width:100px" type="text" readonly >
 		                                </label>
 		                           </fieldset>
                       			</div>
@@ -31,36 +34,28 @@
 							<div class="form-group">
 								<div class="questiongroup ">
 									<fieldset class="subquestions">
-                                		<label class=""><span class="">Financial Year</span>
-											<select class="form-control" name="FY"  id=FY__ID></select>
-                                		</label><br>
-										<label class=""><span class="">FY Start</span>
-											<input class="form-control" name="FY_Start" id=FY_Start__ID type="text" readonly>
+										<label class=""><span class="">Source</span>
+											<input class="form-control" name="Source" id=Source__ID type="text">
 										</label><br>
-										<label class=""><span class="">FY End</span>
-											<input class="form-control" name="FY_End" id=FY_End__ID type="text" readonly>
-                                		</label>
-                           			</fieldset>
-                          		</div>
-								<div class="questiongroup ">
-		                           <fieldset>
-		                                <label class=""><span class="">Amount</span>
-											<input class="form-control" name="Amount" type="text" id=Amount__ID >
-		                                </label>
-		                           </fieldset>
-                      			</div>
+										<label class=""><span class="">Country</span>
+											<input class="form-control" name="Country" id=Country__ID type="text">
+										</label>
+									</fieldset>
+								</div>
 								<div class="questiongroup ">
 									<fieldset class="subquestions">
-										<label class="checkboxes">ANCP
-										  <input type="checkbox" name="ANCP" id=ANCP__ID >
-										  <span class="check_checkmark"></span>
-									    </label>
+										<label class=""><span class="">Amount</span>
+											<input class="form-control" name="Amount"  id=Amount__ID  type="text">
+										</label><br>
+										<label class=""><span class="">Donor</span>
+											<input class="form-control" name="Donors"  id=Donors__ID  type="text">
+										</label><br>
 									</fieldset>
-                          		</div>
+								</div>
 								<div class="questiongroup ">
 		                           <fieldset>
 		                                <label style="width:100%" class=""><span class="">Comments</span>
-											<textarea class="form-control form-control-sm" name="Comments"></textarea>
+											<input class="form-control" name="Comments"  id=Comments__ID  type="text">
 		                                </label>
 		                           </fieldset>
                       			</div>
@@ -72,11 +67,6 @@
 										   <button id=submit__ID type="submit" class="btn btn-secondary">Submit</button>
 									   </label>
 		                           </fieldset>
-								   <fieldset class="subquestions">
-									   <label class="">
-										   <button id=funding__ID type="button" class="btn btn-success">Funding Source</button>
-									   </label>
-								   </fieldset>
                       			</div>
 							</div>
 						</form>
@@ -94,48 +84,33 @@ function F__ID(){
 
 
 	m.xml=1;
-	var input_fy='';
 	//-------------------------------------
 	m.default_load=m.load;
 	m.load=function(){
 		m.default_load();
 		$('#Project_Code__ID').val($vm.vm.proj_code);
 		$('#Project_Status__ID').val($vm.vm.proj_status);
+		$('#PUID__ID').val($vm.vm.proj_prop_fy_uid);
+		$('#Project_Prop_FY__ID').val($vm.vm.proj_prop_budget_fy);
 		$('#Project_Version__ID').val($vm.vm.proj_ver);
-		$('#PUID__ID').val($vm.vm.proj_uid);
 		$('#Amount__ID').val(formatter.format($('#Amount__ID').val()))
-		if(m.input.record!=undefined) input_fy=m.input.record.FY
-		update_fy_list();
 	}
-	//-------------------------------------
-	var update_fy_list=function(){
-		var $List=$('#FY__ID');
-		var today = new Date();
-		var mm = today.getMonth()+1; //January is 0!
-		var m=0; if(mm>6) m=-1;
-		var y=today.getFullYear()%100;
-		for(var i=-2;i<7;i++){
-			var txt='FY'+(y-i-1).toString()+(y-i).toString();
-			if(i==m) {$List.append(  $('<option></option>').val(txt).html(txt));}
-			else $List.append(  $('<option></option>').val(txt).html(txt)  );
-		}
-		$('#FY__ID').val(input_fy)
-	}
-	//-------------------------------------
-	$('#FY__ID').on('change',function(){
-		$('#FY_Start__ID').val('01/07/20'+$('#FY__ID').val().substring(2,4));
-		$('#FY_End__ID').val('30/06/20'+$('#FY__ID').val().substring(4,6));
-	})
 	//-------------------------------------
 	$('#Amount__ID').on('change',function(){
 		var amount=$('#Amount__ID').val().replace('$','').replace(/ /g,'').replace(/,/g,'');
 		$('#Amount__ID').val(formatter.format(amount));
 	})
 	//-------------------------------------
-	$('#funding__ID').on('click',function(){
-		$vm.vm.proj_ver=$('#Project_Version__ID').val();
-		$vm.vm.proj_prop_fy_uid=m.input.record.UID;
-		$vm.load_module_v2("project-single-proposal-fy-budget-source-data",$vm.root_layout_content_slot,{});
+	var sql="with tb as (select name=@('Country'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'country-data'].table_id+"] )";
+	sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
+	$vm.autocomplete($('#Country__ID'),sql,function(key,value){
+		$("#F__ID input[name="+key+"]").val($vm.text(value));
+	})
+	//-------------------------------------
+	var sql="with tb as (select name=@('Funding_Source') from [TABLE-"+$vm.module_list[m.prefix+'funding-source-data'].table_id+"])";
+	sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
+	$vm.autocomplete($('#Source__ID'),sql,function(key,value){
+		$("#F__ID input[name="+key+"]").val($vm.text(value));
 	})
 	//-------------------------------------
 	var formatter = new Intl.NumberFormat('en-US', {
@@ -161,8 +136,10 @@ function F__ID(){
 	m.before_submit=function(record,dbv){
 		record.Amount=record.Amount.replace('$','').replace(/ /g,'').replace(/,/g,'');
 		dbv.V1=record.Amount;
-		dbv.S1=record.Approval_FY;
+		dbv.S1=record.Source;
 		dbv.PUID=record.PUID;
+		dbv.PPID=$vm.module_list[m.prefix+'project-single-proposal-fy-budget-data'].table_id;
+
 	}
 }
 </script>

@@ -13,7 +13,7 @@
         m.fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
         m.form_fields=fields+",TID";
         //-------------------------------------
-        
+
         //-------------------------------------
         var formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -76,6 +76,7 @@
         //-------------------------------------
         m.before_submit=function(record,dbv){
             record.Amount=m.cell_value_process(record.Amount,'Amount');
+            dbv.V1=record.Amount;
             if(record.PUID!=='') dbv.PUID=record.PUID;
             dbv.PPID=m.db_pid;
             return true;

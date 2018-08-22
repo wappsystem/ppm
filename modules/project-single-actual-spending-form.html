@@ -113,9 +113,9 @@ function F__ID(){
 	m.load=function(){
 		m.default_load();
 		$vm.render_file_field_v2(m.input.record,'__ID',$('#Acquittal_report__ID'));
-		if(m.input.record.Lock=='on' && ($vm.user!="jojo" && $vm.user!="childfund")){
-			$('#submit__ID').hide();
-		}
+//		if(m.input.record.Lock=='on' && ($vm.user!="jojo" && $vm.user!="childfund")){
+//			$('#submit__ID').hide();
+//		}
 		$('#Project_Code__ID').val($vm.vm.proj_code);
 		$('#Project_Status__ID').val($vm.vm.proj_status);
 		$('#PUID__ID').val($vm.vm.proj_uid);

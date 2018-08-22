@@ -9,7 +9,7 @@
         //-------------------------------------
         m.xml=1;
 		//-------------------------------------
-        var fields="PUID,UID,FY,FY_Start,FY_End,Amount_Q1,Amount_Q2,Amount_Q3,Amount,Acquittal_Report,Lock";
+        var fields="PUID,UID,Source,Country,Amount,Donors,Comments";
         m.fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
         m.form_fields=fields+",TID";
         //-------------------------------------
@@ -23,34 +23,25 @@
         //-------------------------------------
         m.cell_render=function(records,I,field,td,set_value,source){
             switch(field){
-                case 'FY_Start':
-                case 'FY_End':
-                    records[I].vm_readonly[field]=true;
-                	break;
-                case 'Lock':
-                    if(records[I][field]=='on') td.html('Locked');
-                    records[I].vm_readonly[field]=true;
+                case 'Country':
+                    var sql="with tb as (select name=@('Country') from [TABLE-"+$vm.module_list[m.prefix+'country-data'].table_id+"])";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
                     break;
-                case 'Amount_Q1':
-                case 'Amount_Q2':
-                case 'Amount_Q3':
+                case 'Source':
+                    var sql="with tb as (select name=@('Funding_Source') from [TABLE-"+$vm.module_list[m.prefix+'funding-source-data'].table_id+"])";
+                    sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
+                    VmInclude:__COMPONENT__/grid/field_auto.js
+                    break;
                 case 'Amount':
-                    //if(I==records.length-1) {td.css('font-weight','bold');td.css('color','#444');}
                     if(source=="grid") td.css("text-align","right").css('white-space','nowrap');
                     td.html(formatter.format(records[I][field]));
-                    records[I].vm_readonly[field]=true;
                 break;
-                case 'Acquittal_Report':
-                    VmInclude:__COMPONENT__/grid/field_file.js
-            	break;
             }
         }
         //-------------------------------------
         m.cell_value_process=function(value,field){
             switch(field){
-                case 'Amount_Q1':
-                case 'Amount_Q2':
-                case 'Amount_Q3':
                 case 'Amount':
                     return value.replace('$','').replace(/ /g,'').replace(/,/g,'');
             }
@@ -58,19 +49,29 @@
         }
         //-------------------------------------
         m.set_req=function(){
-            $('#help__ID').html(help);
-            $("#title__ID").text('Project '+ $vm.vm.proj_code+' ('+$vm.vm.proj_status+') - Actual Spending ');
+            //$("#title__ID").text('Project '+ $vm.vm.proj_code+' ('+$vm.vm.proj_status+') - Actual Spending - Source ');
             //-------------------------------------
             var sql="with tb as (select Information,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+m.db_pid+"-@S1] where PUID=@I1 )";
-		    sql+="select Information,ID,UID,PUID,DateTime,Author,RowNum from tb where RowNum between @I6 and @I7";
+            sql+=",prop_fy as (select Information2=Information,act_uid=UID from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-fy-budget-data'].table_id+"] where UID=@I1 )"
+            sql+="select Information,Information2,ID,UID,PUID,DateTime,Author,RowNum from tb left join prop_fy on act_uid=PUID where RowNum between @I6 and @I7";
 		    var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1]  where PUID=@I1";
-			m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,i1:$vm.vm.proj_uid,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
+			m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,i1:$vm.vm.proj_prop_fy_uid,s1:'"'+$('#keyword__ID').val()+'"',I:$('#I__ID').text(),page_size:$('#page_size__ID').val()}
 		}
         //-------------------------------------
+        m.data_process=function(){
+            $('#help__ID').html(help);
+            $("#title__ID").text('Project '+ $vm.vm.proj_code+' ('+$vm.vm.proj_status+') - Proposal/Variation - FY ');
+            if(m.records.length>0){
+                $('#title_2__ID').show();
+                var ancp=m.records[0].I2_ANCP
+                if(ancp=='on') ancp="Yes";
+                else ancp='No'
+                $('#title_2__ID').text(m.records[0].I2_FY+' | Amount: '+formatter.format(m.records[0].I2_Amount)+' | ANCP Project: '+ancp);
+                $vm.vm.proj_prop_budget_fy=m.records[0].I2_FY
+            }
+        }
+        //-------------------------------------
         m.before_submit=function(record,dbv){
-            record.Amount_Q1=m.cell_value_process(record.Amount,'Amount_Q1');
-            record.Amount_Q2=m.cell_value_process(record.Amount,'Amount_Q2');
-            record.Amount_Q3=m.cell_value_process(record.Amount,'Amount_Q3');
             record.Amount=m.cell_value_process(record.Amount,'Amount');
             if(record.PUID!=='') dbv.PUID=record.PUID;
             dbv.PPID=m.db_pid;
