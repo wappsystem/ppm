@@ -47,6 +47,11 @@
 											 	<button id=button_budget_history__ID type="button" class="btn btn-info">Budget History</button>
 										   </label>
 									   </fieldset>
+									   <fieldset class="subquestions">
+										   <label class=""><span class=""></span>
+											 	<button id=budget_and_actual_by_source__ID type="button" class="btn btn-info">Budget and Actual by Source</button>
+										   </label>
+									   </fieldset>
 								   </div>
 							   </div>
 							</div>
@@ -120,6 +125,11 @@
 		$('#button_budget_history__ID').on('click',function(){
 			$vm.vm.proj_code=$('#Project_Code__ID').val();
 			$vm.load_module_v2("budget-history",$vm.root_layout_content_slot,{});
+		})
+		$('#budget_and_actual_by_source__ID').on('click',function(){
+			$vm.vm.proj_code=$('#Project_Code__ID').val();
+			$vm.vm.fy=$('#FY__ID').val();
+			$vm.load_module_v2("budget-and-actual-by-source",$vm.root_layout_content_slot,{});
 		})
 	}
 </script>
