@@ -120,7 +120,7 @@ function F__ID(){
 		$('#Project_Status__ID').val($vm.vm.proj_status);
 		$('#PUID__ID').val($vm.vm.proj_uid);
 		$('#Amount__ID').val(formatter.format($('#Amount__ID').val()))
-		input_fy=m.input.record.FY
+		if(m.input.record!=undefined) input_fy=m.input.record.FY
 		update_fy_list();
 	}
 	//-------------------------------------
@@ -142,6 +142,8 @@ function F__ID(){
 			else $List.append(  $('<option></option>').val(txt).html(txt)  );
 		}
 		$('#FY__ID').val(input_fy)
+		$('#FY_Start__ID').val('01/07/20'+$('#FY__ID').val().substring(2,4));
+		$('#FY_End__ID').val('30/06/20'+$('#FY__ID').val().substring(4,6));
 	}
 	//-------------------------------------
 	$('#FY__ID').on('change',function(){
@@ -177,7 +179,7 @@ function F__ID(){
 	var formatter = new Intl.NumberFormat('en-US', {
 		style: 'currency',
 		currency: 'USD',
-		minimumFractionDigits: 2,
+		minimumFractionDigits: 0,
 	});
 	//-------------------------------------
 	var get_now=function(){
@@ -195,6 +197,9 @@ function F__ID(){
 	}
 	//-------------------------------------
 	m.before_submit=function(record,dbv){
+		record.Amount_Q1=record.Amount_Q1.replace('$','').replace(/ /g,'').replace(/,/g,'');
+		record.Amount_Q2=record.Amount_Q2.replace('$','').replace(/ /g,'').replace(/,/g,'');
+		record.Amount_Q3=record.Amount_Q3.replace('$','').replace(/ /g,'').replace(/,/g,'');
 		record.Amount=record.Amount.replace('$','').replace(/ /g,'').replace(/,/g,'');
 		dbv.V1=record.Amount;
 		dbv.S1=record.Approval_FY;

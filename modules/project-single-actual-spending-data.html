@@ -18,7 +18,7 @@
         var formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
-            minimumFractionDigits: 2,
+            minimumFractionDigits: 0,
         });
         //-------------------------------------
         m.cell_render=function(records,I,field,td,set_value,source){
@@ -52,6 +52,7 @@
                 case 'Amount_Q2':
                 case 'Amount_Q3':
                 case 'Amount':
+                    alert(value)
                     return value.replace('$','').replace(/ /g,'').replace(/,/g,'');
             }
             return value;
@@ -68,9 +69,9 @@
 		}
         //-------------------------------------
         m.before_submit=function(record,dbv){
-            record.Amount_Q1=m.cell_value_process(record.Amount,'Amount_Q1');
-            record.Amount_Q2=m.cell_value_process(record.Amount,'Amount_Q2');
-            record.Amount_Q3=m.cell_value_process(record.Amount,'Amount_Q3');
+            record.Amount_Q1=m.cell_value_process(record.Amount_Q1,'Amount_Q1');
+            record.Amount_Q2=m.cell_value_process(record.Amount_Q2,'Amount_Q2');
+            record.Amount_Q3=m.cell_value_process(record.Amount_Q3,'Amount_Q3');
             record.Amount=m.cell_value_process(record.Amount,'Amount');
             if(record.PUID!=='') dbv.PUID=record.PUID;
             dbv.PPID=m.db_pid;

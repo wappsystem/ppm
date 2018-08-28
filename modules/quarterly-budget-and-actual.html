@@ -22,45 +22,63 @@
             var BudgetID="";
             var projects={};
             tb+="<table class='table table-bordered'>";
-            tb+="<colgroup><col /><col style='width:100px'  /><col style='width:150px' /><col style='width:150px' /><col /></colgroup>";
+            tb+="<colgroup><col /><col /><col /><col /><col /><col /><col /><col /><col /><col /><col /><col /><col /></colgroup>";
             tb+="<thead class='thead-light'>"
-            tb+="<tr><th>Version</th><th>Date</th><th>Total Approved Project Budget</th><th>Fiscal Year Change</th><th>	Supporting Document - Please refer to Data view</th></tr>"
+            tb+="<tr><th>Project</th><th>Project Code</th><th>ANCP</th><th>Approval Status</th>"
+            tb+="<th>FY Approved Project Budget</th><th>FY Accumulated Actual Expenditure Q1</th><th>Q1%</th><th>FY Accumulated Actual Expenditure Q2</th>"
+            tb+="<th>Q2%</th><th>FY Accumulated Actual Expenditure Q3</th><th>Q3%</th><th>FY Accumulated YTD Actual Expenditure</th><th>YTD %</th>"
+            tb+="</tr>"
             tb+="</thead>";
             var sql="with project as (select  pc=@('Project_Code'),Information,PUID,UID from [TABLE-"+$vm.module_list[m.prefix+'project-form'].table_id+"] where @('Country')=@S1 )\
-                    ,budget as (select PUID,Information2=Information  from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-data'].table_id+"] where S1<>'' /* S1=@S2 */ and @('Status')='Approved' )\
-                    select Information,Information2 from project \
-                    join budget on project.UID=budget.PUID order by pc\
+                    ,budget as (select PUID,Information2=Information,AT=@T('Approval_Date')  from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-data'].table_id+"] where @('Approval_FY')=@S2  and @('Status')='Approved')\
+                    ,spending as (select PUID,Q1=@('Amount_Q1'),Q2=@('Amount_Q2'),Q3=@('Amount_Q3'),Q4=@('Amount') from [TABLE-"+$vm.module_list[m.prefix+'project-single-actual-spending-data'].table_id+"] where @('FY')=@S2)\
+                    select Information,Information2,Q1,Q2,Q3,Q4 from project \
+                    join budget on project.UID=budget.PUID \
+                    join spending on project.UID=spending.PUID order by pc,AT desc \
             ";
             $VmAPI.request({data:{cmd:'read',qid:m.qid,sql:sql,s1:country,s2:fy},callback:function(res){
                 projects=res.records;
                 if(projects.length>0){
-
+                    var last_pc='';
+                    var tot_i2_amount=0;
+                    var i2_amount=0;
+                    var amount_q1=0,amount_q2=0,amount_q3=0,amount_q4=0;
+                    var tot_amount_q1=0,tot_amount_q2=0,tot_amount_q3=0,tot_amount_q4=0;
                     for (var i=0;i<projects.length;i++){
-                        tb+="<tr><td>"+projects[i].Project+"</td><td>"+projects[i].Project_Code+"</td></tr>";
+                        if(last_pc!=projects[i].Project_Code){
+                            i2_amount=parseInt(projects[i].I2_Amount);tot_i2_amount+=parseInt(projects[i].I2_Amount);
+                            amount_q1=parseInt(projects[i].Q1);tot_amount_q1+=parseInt(projects[i].Q1)
+                            amount_q2=parseInt(projects[i].Q2);tot_amount_q2+=parseInt(projects[i].Q2)
+                            amount_q3=parseInt(projects[i].Q3);tot_amount_q3+=parseInt(projects[i].Q3)
+                            amount_q4=parseInt(projects[i].Q4);tot_amount_q4+=parseInt(projects[i].Q4)
+                            var Q1p=(100*amount_q1/i2_amount).toFixed(0)+'%';
+                            var Q2p=(100*amount_q2/i2_amount).toFixed(0)+'%';
+                            var Q3p=(100*amount_q3/i2_amount).toFixed(0)+'%';
+                            var Q4p=(100*amount_q4/i2_amount).toFixed(0)+'%';
+                            if(projects[i].ANCP=='on' || projects[i].ANCP=='true') projects[i].ANCP="Yes"
+                            else projects[i].ANCP="No"
+                            tb+="<tr><td>"+projects[i].Project+"</td><td>"+projects[i].Project_Code+"</td><td>"+projects[i].ANCP+"</td><td>"+projects[i].Approval_Status+"</td>";
+                            tb+="<td style='text-align:right'>"+formatter.format(projects[i].I2_Amount)+"</td><td style='text-align:right'>"+formatter.format(projects[i].Q1)+"</td><td>"+Q1p+"</td><td style='text-align:right'>"+formatter.format(projects[i].Q2)+"</td>"
+                            tb+="<td>"+Q2p+"</td><td style='text-align:right'>"+formatter.format(projects[i].Q3)+"</td><td>"+Q3p+"</td><td style='text-align:right'>"+formatter.format(projects[i].Q4)+"</td><td>"+Q4p+"</td></tr>"
+                            last_pc=projects[i].Project_Code;
+                        }
                     }
+                    var tot_Q1p=(100*tot_amount_q1/tot_i2_amount).toFixed(0)+'%';
+                    var tot_Q2p=(100*tot_amount_q2/tot_i2_amount).toFixed(0)+'%';
+                    var tot_Q3p=(100*tot_amount_q3/tot_i2_amount).toFixed(0)+'%';
+                    var tot_Q4p=(100*tot_amount_q4/tot_i2_amount).toFixed(0)+'%';
+                    tb+="<tr class=font-weight-bold><td>TOTAL</td><td></td><td></td><td></td>";
+                    tb+="<td style='text-align:right'>"+formatter.format(tot_i2_amount)+"</td><td style='text-align:right'>"+formatter.format(tot_amount_q1)+"</td><td>"+tot_Q1p+"</td><td style='text-align:right'>"+formatter.format(tot_amount_q2)+"</td>"
+                    tb+="<td>"+tot_Q2p+"</td><td style='text-align:right'>"+formatter.format(tot_amount_q3)+"</td><td>"+tot_Q3p+"</td><td style='text-align:right'>"+formatter.format(tot_amount_q4)+"</td><td>"+tot_Q4p+"</td></tr>"
                 }
-            }});
+/*              Projected spending
+               sql=
+                $VmAPI.request({data:{cmd:'read',qid:m.qid,sql:sql,s1:country,s2:fy},callback:function(res){
+                }});
+*/            }});
             tb+="</table>";
             //-------------------------------------
-/*            tb+="<h6 class='font-weight-bold'>Project Budget History</h6>";
-            tb+="<table class='table table-bordered'>";
-            tb+="<colgroup><col /><col style='width:100px'  /><col style='width:150px' /><col style='width:150px' /><col /></colgroup>";
-            tb+="<thead class='thead-light'>"
-            tb+="<tr><th>Version</th><th>Date</th><th>Total Approved Project Budget</th><th>Fiscal Year Change</th><th>	Supporting Document - Please refer to Data view</th></tr>"
-            tb+="</thead>";
-            //-------------------------------------
-            sql="with project as (select UID,PUID from [TABLE-"+$vm.module_list[m.prefix+'project-form'].table_id+"] where UID=@I2 ),\
-            budget as ( select PUID,Version=@('Version'),Approval_Date=@('Approval_Date'),Amount=@('Amount'),DocBudget=@('DocBudget'),Approval_FY =@('Approval_FY') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-form'].table_id+"] where @('Status')='Approved')\
-            select Version,Approval_Date, Budget=Amount,Approval_FY,DocBudget from project join budget on project.UID=budget.PUID";
-            $VmAPI.request({data:{cmd:'query_records',sql:sql,i2:$vm.vm.proj_uid},callback:function(res3){
-                if(res3.records.length>0){
-                    for (var i=0;i<res3.records.length;i++){
-                        tb+="<tr><td>"+res3.records[i].Version+"</td><td>"+res3.records[i].Approval_Date+"</td><td style='text-align:right' >"+formatter.format(res3.records[i].Budget)+"</td><td>"+res3.records[i].Approval_FY+"</td><td>"+res3.records[i].DocBudget+"</td></tr>";
-                    }
-                }
-            }});
-            tb+="</table>";
-*/            tb+="</div>";
+            tb+="</div>";
             return tb;
         }
         //--------------------------------------------------------
