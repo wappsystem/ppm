@@ -1,0 +1,91 @@
+<section>
+    <div id=pvdiv__ID>
+        <form id=F__ID>
+        </form>
+    </div>
+</section>
+<script>
+    function F__ID(){
+        //---------------------------------------------
+//        VmI nclude:__COMPONENT__/toolbar/day_v2.js
+            VmInclude:__COMPONENT__/module/form.v1.js
+        //---------------------------------------------
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+        });
+        //-------------------------------------
+	        var table=function(country,fy){
+            var tb="<div style='padding:20px;'>";
+            var name="";
+            var BudgetID="";
+            var projects={};
+            tb+="<table class='table table-bordered'>";
+            tb+="<colgroup><col /><col style='width:100px'  /><col style='width:150px' /><col style='width:150px' /><col /></colgroup>";
+            tb+="<thead class='thead-light'>"
+            tb+="<tr><th>Version</th><th>Date</th><th>Total Approved Project Budget</th><th>Fiscal Year Change</th><th>	Supporting Document - Please refer to Data view</th></tr>"
+            tb+="</thead>";
+            var sql="with project as (select  pc=@('Project_Code'),Information,PUID,UID from [TABLE-"+$vm.module_list[m.prefix+'project-form'].table_id+"] where @('Country')=@S1 )\
+                    ,budget as (select PUID,Information2=Information  from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-data'].table_id+"] where S1<>'' /* S1=@S2 */ and @('Status')='Approved' )\
+                    select Information,Information2 from project \
+                    join budget on project.UID=budget.PUID order by pc\
+            ";
+            $VmAPI.request({data:{cmd:'read',qid:m.qid,sql:sql,s1:country,s2:fy},callback:function(res){
+                projects=res.records;
+                if(projects.length>0){
+
+                    for (var i=0;i<projects.length;i++){
+                        tb+="<tr><td>"+projects[i].Project+"</td><td>"+projects[i].Project_Code+"</td></tr>";
+                    }
+                }
+            }});
+            tb+="</table>";
+            //-------------------------------------
+/*            tb+="<h6 class='font-weight-bold'>Project Budget History</h6>";
+            tb+="<table class='table table-bordered'>";
+            tb+="<colgroup><col /><col style='width:100px'  /><col style='width:150px' /><col style='width:150px' /><col /></colgroup>";
+            tb+="<thead class='thead-light'>"
+            tb+="<tr><th>Version</th><th>Date</th><th>Total Approved Project Budget</th><th>Fiscal Year Change</th><th>	Supporting Document - Please refer to Data view</th></tr>"
+            tb+="</thead>";
+            //-------------------------------------
+            sql="with project as (select UID,PUID from [TABLE-"+$vm.module_list[m.prefix+'project-form'].table_id+"] where UID=@I2 ),\
+            budget as ( select PUID,Version=@('Version'),Approval_Date=@('Approval_Date'),Amount=@('Amount'),DocBudget=@('DocBudget'),Approval_FY =@('Approval_FY') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-form'].table_id+"] where @('Status')='Approved')\
+            select Version,Approval_Date, Budget=Amount,Approval_FY,DocBudget from project join budget on project.UID=budget.PUID";
+            $VmAPI.request({data:{cmd:'query_records',sql:sql,i2:$vm.vm.proj_uid},callback:function(res3){
+                if(res3.records.length>0){
+                    for (var i=0;i<res3.records.length;i++){
+                        tb+="<tr><td>"+res3.records[i].Version+"</td><td>"+res3.records[i].Approval_Date+"</td><td style='text-align:right' >"+formatter.format(res3.records[i].Budget)+"</td><td>"+res3.records[i].Approval_FY+"</td><td>"+res3.records[i].DocBudget+"</td></tr>";
+                    }
+                }
+            }});
+            tb+="</table>";
+*/            tb+="</div>";
+            return tb;
+        }
+        //--------------------------------------------------------
+        m.xml=1; //Store data as XML - NOT json
+        //--------------------------------------------------------
+        var country='';
+        var fy='';
+        $('#D__ID').on('load',function(){
+            country=$vm.vm.country;
+            fy=$vm.vm.fy;
+            jQuery.ajaxSetup({async:false});
+            load_data(country,fy);
+            jQuery.ajaxSetup({async:true});
+            //m.set_req();m.request_data();m.render();
+        })
+        //-------------------------------------
+        var load_data=function(country,fy){
+            var tbl="";
+            tbl+=table(country,fy);
+            $('#F__ID').html(tbl)
+        }
+        //-------------------------------------
+    }
+</script>
+<style>
+    VmInclude:__COMPONENT__/style/default.css
+
+</style>
