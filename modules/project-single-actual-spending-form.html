@@ -131,15 +131,17 @@ function F__ID(){
 	}
 	//-------------------------------------
 	var update_fy_list=function(){
-		var $List=$('#FY__ID');
-		var today = new Date();
-		var mm = today.getMonth()+1; //January is 0!
-		var m=0; if(mm>6) m=-1;
-		var y=today.getFullYear()%100;
-		for(var i=-2;i<7;i++){
-			var txt='FY'+(y-i-1).toString()+(y-i).toString();
-			if(i==m) {$List.append(  $('<option></option>').val(txt).html(txt));}
-			else $List.append(  $('<option></option>').val(txt).html(txt)  );
+		if($('#FY__ID').val()==null){
+			var $List=$('#FY__ID');
+			var today = new Date();
+			var mm = today.getMonth()+1; //January is 0!
+			var m=0; if(mm>6) m=-1;
+			var y=today.getFullYear()%100;
+			for(var i=-2;i<7;i++){
+				var txt='FY'+(y-i-1).toString()+(y-i).toString();
+				if(i==m) {$List.append(  $('<option></option>').val(txt).html(txt));}
+				else $List.append(  $('<option></option>').val(txt).html(txt)  );
+			}
 		}
 		$('#FY__ID').val(input_fy)
 		$('#FY_Start__ID').val('01/07/20'+$('#FY__ID').val().substring(2,4));

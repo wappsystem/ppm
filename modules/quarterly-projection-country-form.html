@@ -1,0 +1,59 @@
+<div id=D__ID>
+	<div class="container mt-95 mb-3">
+    	<div class="row" >
+			<div class="col-12 col-lg-7 col-md-11 col-sm-12 mx-auto formbox">
+        		<div class="row">
+            		<div class="col-12">
+						<form id=F__ID>
+							<h3 class="text-center">Quarterly Projection - Country</h3>
+							<div class="form-group">
+								<div class="questiongroup ">
+								   <fieldset class="subquestions">
+									   <label class=""><span class="">Country</span>
+										   <input class="form-control" name="Country" type="text" id="Country__ID" required >
+									   </label><br>
+								   </fieldset>
+                      			</div>
+								<div class="row">
+									<div class=col>
+										<button id=submit__ID type="submit" class="btn btn-secondary">Submit</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script>
+function F__ID(){
+	//-------------------------------------
+	VmInclude:__COMPONENT__/module/form.v1.js
+	//-------------------------------------
+
+
+	m.xml=1;
+	//-------------------------------------
+	m.default_load=m.load;
+	m.load=function(){
+		m.default_load();
+	}
+	//-------------------------------------
+	var sql="with tb as (select name=@('Country'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'country-data'].table_id+"] )";
+	sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
+	$vm.autocomplete($('#Country__ID'),sql,function(key,value){
+		$("#F__ID input[name="+key+"]").val($vm.text(value));
+	})
+	//-------------------------------------
+}
+</script>
+<style>
+#D__ID{
+  height:100%;
+  animation: vm_module_fadein 1.0s;
+  overflow: auto;
+}
+</style>
+VmInclude:__CURRENT_PATH__/task-form.css
+</div>

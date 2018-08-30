@@ -46,19 +46,28 @@
 									   </label>
 								   </fieldset>
 								   <fieldset class="subquestions">
-									   <label class=""><span class=""></span>
-										   <button id=budget_and_actual_by_source__ID type="button" class="btn btn-info">Budget and Actual by Source</button>
-									   </label>
 									   <label class=""><span class="">Financial Year</span>
 										   <select class="form-control" name="FY" id="FY__ID" ></select>
 									   </label>
 								   </fieldset>
 								   <fieldset class="subquestions">
 									   <label class=""><span class=""></span>
-										 	<button id=quarterly_budget_and_actual__ID type="button" class="btn btn-info">Quarterly budget and actual</button>
+										   <button id=budget_and_actual_by_source__ID type="button" class="btn btn-info">Budget and Actual by Source</button>
 									   </label>
+								   </fieldset>
+								   <fieldset class="subquestions">
 									   <label class=""><span class="">Country</span>
 										   <input class="form-control" data-id="Country" name="Country" id=Country__ID placeholder="Select Country" type="text" >
+									   </label>
+								   </fieldset>
+								   <fieldset class="subquestions">
+									   <label class=""><span class=""></span>
+										 	<button id=quarterly_budget_and_actual__ID type="button" class="btn btn-info">Quarterly budget and actual</button>
+									   </label>
+								   </fieldset>
+								   <fieldset class="subquestions">
+									   <label class=""><span class=""></span>
+										 	<button id=button_quarterly_projection__ID type="button" class="btn btn-success">Quarterly Projection</button>
 									   </label>
 								   </fieldset>
 						   		</div>
@@ -149,6 +158,10 @@
 			$vm.vm.country=$('#Country__ID').val();
 			$vm.vm.fy=$('#FY__ID').val();
 			$vm.load_module_v2("quarterly-budget-and-actual",$vm.root_layout_content_slot,{});
+		})
+		$('#button_quarterly_projection__ID').on('click',function(){
+			$vm.vm.country=$('#Country__ID').val();
+			$vm.load_module_v2("quarterly-projection-single-data",$vm.root_layout_content_slot,{});
 		})
 	}
 </script>

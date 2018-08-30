@@ -1,3 +1,4 @@
+$('#D__ID').on('load',function(){$('#help__ID').html(help)});
 //-------------------------------------
 var help='<div class="form-group">\
                         <div class="row">\

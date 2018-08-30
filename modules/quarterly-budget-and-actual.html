@@ -71,11 +71,17 @@
                     tb+="<td style='text-align:right'>"+formatter.format(tot_i2_amount)+"</td><td style='text-align:right'>"+formatter.format(tot_amount_q1)+"</td><td>"+tot_Q1p+"</td><td style='text-align:right'>"+formatter.format(tot_amount_q2)+"</td>"
                     tb+="<td>"+tot_Q2p+"</td><td style='text-align:right'>"+formatter.format(tot_amount_q3)+"</td><td>"+tot_Q3p+"</td><td style='text-align:right'>"+formatter.format(tot_amount_q4)+"</td><td>"+tot_Q4p+"</td></tr>"
                 }
-/*              Projected spending
-               sql=
-                $VmAPI.request({data:{cmd:'read',qid:m.qid,sql:sql,s1:country,s2:fy},callback:function(res){
+//              Projected spending
+                var sql="with tb as (select Information,ID,UID,PUID from [TABLE-"+$vm.module_list[m.prefix+'quarterly-projection-data'].table_id+"] where @('FY')=@S3)";
+                sql+=",country_tb as (select Country=@('Country'),country_uid=UID from [TABLE-"+$vm.module_list[m.prefix+'quarterly-projection-country-data'].table_id+"] where @('Country')=@S2) ";
+                sql+="select Information,ID,UID,PUID from tb join country_tb on PUID=country_uid";
+                $VmAPI.request({data:{cmd:'read',qid:m.qid,sql:sql,s2:country,s3:fy},callback:function(res1){
+                    if(res1.records.length>0){
+                        tb+="<tr class=font-weight-bold><td>Planned Quarterly Spending Percentage</td><td></td><td></td><td></td>";
+                        tb+="<td></td><td></td><td>"+res1.records[0].Q1+"</td><td></td><td>"+res1.records[0].Q2+"</td><td></td><td>"+res1.records[0].Q3+"</td><td></td><td>"+res1.records[0].Q4+"</td></tr>"
+                    }
                 }});
-*/            }});
+            }});
             tb+="</table>";
             //-------------------------------------
             tb+="</div>";
