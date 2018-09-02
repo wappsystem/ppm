@@ -1,5 +1,4 @@
 <div id=D__ID>
-VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 	<div class="container mt-95 mb-3">
     	<div class="row" >
 			<div class="col-12 col-lg-7 col-md-11 col-sm-12 mx-auto formbox">
@@ -27,13 +26,15 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 			</div>
 		</div>
 	</div>
-<script>
-	function F__ID(){
-		//-------------------------------------
-		VmInclude:__CURRENT_PATH__/task_form.js
-		//-------------------------------------
-	}
-</script>
+	<script>
+		function F__ID(){
+			//-------------------------------------
+			VmInclude:__COMPONENT__/module/form.v1.js
+			//-------------------------------------
+			m.xml=1;
+			//-------------------------------------
+		}
+	</script>
 <style>
 #D__ID{
   height:100%;

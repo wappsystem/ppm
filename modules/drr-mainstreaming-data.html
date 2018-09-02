@@ -4,14 +4,18 @@
 <script>
     function F__ID(){
         //-------------------------------------
-        var fields="DRR_Mainstreaming";
-        _fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
-        //-------------------------------------
-        VmInclude:__COMPONENT__/grid/grid.v3.js
+        VmInclude:__COMPONENT__/module/grid.v1.js
         VmInclude:__CURRENT_PATH__/task_data.js
+        //-------------------------------------
+        m.xml=1
+        //-------------------------------------
+        var fields="DRR_Mainstreaming";
+        m.fields="_Form,"+fields+",Submit Date|DateTime,Submitted by|Author,_Delete";
+        m.form_fields=fields+",TID";
         //-------------------------------------
     }
 </script>
 <style>
-    VmInclude:__COMPONENT__/grid/grid.v3.css
+VmInclude:__COMPONENT__/grid/grid.v3.css
+VmInclude:__CURRENT_PATH__/task-form.css
 </style>

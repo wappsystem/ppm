@@ -60,14 +60,36 @@
                 case 'FY':
                 case 'tot_budget':
                 //alert(field)
-                records[I].vm_readonly[field]=true;
+                    records[I].vm_readonly[field]=true;
                     //if(I==records.length-1) {td.css('font-weight','bold');td.css('color','#444');}
                     if(records[I][field]!='' && records[I][field]!=undefined){
                         if(source=="grid") td.css("text-align","right").css('white-space','nowrap');
+                        records[I][field]=records[I][field].replace('$','').replace(/ /g,'').replace(/,/g,'');
                         td.html(formatter.format(records[I][field]));
                     }
                     break;
             }
+        }
+        m.data_process=function(){
+            var total_budget=0.0;
+            var i=0;
+            var fy=dynamic_columns().split(',')
+            var fy_tot=[fy.length];
+            for (i=0;i<m.records.length;i++){
+                m.records[i].Project=m.records[i].Project.replace(/\n/g,'').trim();
+                if(m.records[i].tot_budget!='' && m.records[i].tot_budget!=undefined){
+                    total_budget+=parseFloat(m.records[i].tot_budget);
+                }
+                alert(m.records[i].fy[0])
+                for(var j=0;j<fy.length;j++){
+                //    if(m.records[i].tot_budget!='' && m.records[i].tot_budget!=undefined){
+                //        total_budget+=parseFloat(m.records[i].tot_budget);
+                //    }
+                }
+            }
+            m.records.push(m.records)
+            m.records[i].Project='Total';
+            m.records[i].tot_budget=total_budget.toFixed(0);
         }
         //-------------------------------------
         m.set_req=function(){
@@ -75,7 +97,7 @@
             var fields="Project,Code|Project_Code,Project_Status,Approval_Status,Start,End,Total Approved Project Budget|tot_budget,"+dynamic_fields+"";
             m.fields=fields;
             m.form_fields=fields+",TID";
-            var sql="with tbProject as ( select PUID,UID,Project=@('Project'),Project_Code=@('Project_Code'),Project_Status=@('Project_Status'),Approval_Status=@('Approval_Status') ,[PStart]=@('Start'),[PEnd]=@('End') from [TABLE-"+m.db_pid+"-@S1] where @('Country')=@S2 )";
+            var sql="with tbProject as ( select PUID,UID,Project=@('Project'),Project_Code=@('Project_Code'),Project_Status=@('Project_Status'),Approval_Status=@('Approval_Status') ,[PStart]=@('Start'),[PEnd]=@('End') from [TABLE-"+m.db_pid+"-@S1] where @('Country')=@S2 and @('Project_Code')<>'' )";
             sql+=",tbBudget as (select PUID,UID,ID,Version=@('Version'),Amount=@('Amount'),Approval_Date=@T('Approval_Date') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-data'].table_id+"] )";
             sql+=",tbBudget_max_date as ( select PUID,Approval_Date=MAX(Approval_Date) from tbBudget group by PUID )";
             sql+=",tbBudget2 as (select tbBudget.PUID,UID,ID,Version,Amount from tbBudget join tbBudget_max_date on tbBudget.PUID=tbBudget_max_date.PUID and tbBudget.Approval_Date=tbBudget_max_date.Approval_Date )";
