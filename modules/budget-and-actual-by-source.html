@@ -30,6 +30,7 @@
                             report_day=report_day.getDate() + '/'+ (((report_day.getMonth()+1) < 10)?"0":"")+ (report_day.getMonth()+1)+ '/' +  report_day.getFullYear();
                             tb+="<table class=width__ID>";
                             tb+="<colgroup><col style='width:150px' /><col style='width:75px'  /><col /></colgroup>";
+                            tb+="<tr><td  style='font-size:140%' colspan=3>Project Budget and actual by source "+res.records[0].Project_Code+"</td></tr>";
                             tb+="<tr><td>Date of Report:</td><td colspan=2>"+report_day+"</td></tr>"
                             tb+="<tr><td>Report Created By:</td><td colspan=2>"+$vm.user+"</td></tr>"
                             tb+="<tr><td colspan=3>&nbsp</td></tr>";
@@ -58,26 +59,43 @@
                             tb+="<tr><td>Expenditure Q3:</td><td style='text-align:right'>"+formatter.format(res2.records[0].Amount_Q3)+"</td><td></td></tr>";
                             tb+="<tr><td>Expenditure Q4:</td><td style='text-align:right'>"+formatter.format(res2.records[0].Amount_Q4)+"</td><td></td></tr>";
                             tb+="</table><br>";
-                        }
-                        sql="with budget_fund as (select B_Source=@('Source'), B_Country=@('Country'),B_Amount=@('Amount') from [FORM-20000016] where PUID=@I3 )\
-        		              ,spending_fund as (select S_Source=@('Source'), S_Country=@('Country'),S_Amount=@('Amount') from [FORM-20000024] where PUID=@I2  )\
-        		              select [Funding_Sources]=S_Source,[Countries]=S_Country,[FY_Approved_Budget]=B_Amount, [FY_Actual_Expenditure]=S_Amount from spending_fund\
-        		              left join  budget_fund on S_Source=B_Source and B_Country=S_Country";
-                        $VmAPI.request({data:{cmd:'read',qid:m.qid,sql:sql,i2:res2.records[0].SpendingUID,i3:res2.records[0].budget_uid},callback:function(res3){
-                            if(res3.records.length>0){
-                                tb+="<table class='table table-bordered' style='width:500px'>";
-                                tb+="<colgroup><col style='width:100px' /><col style='width:100px'  /><col style='width:150px' /><col style='width:150px' /></colgroup>";
-                                tb+="<thead class='thead-light'>"
-                                tb+="<tr><th>Funding Source</th><th>Countries</th><th>FY Approved Budget</th><th>FY Actual Expenditure</th></tr>"
-                                tb+="</thead>";
+
+                            sql="with budget_fund as (select B_Source=@('Source'), B_Country=@('Country'),B_Amount=@('Amount') from [FORM-20000016] where PUID=@I3 )\
+            		              ,spending_fund as (select S_Source=@('Source'), S_Country=@('Country'),S_Amount=@('Amount') from [FORM-20000024] where PUID=@I2  )\
+            		              select [Funding_Sources]=S_Source,[Countries]=S_Country,[FY_Approved_Budget]=B_Amount, [FY_Actual_Expenditure]=S_Amount from spending_fund\
+            		              left join  budget_fund on S_Source=B_Source and B_Country=S_Country";
+                            $VmAPI.request({data:{cmd:'read',qid:m.qid,sql:sql,i2:res2.records[0].SpendingUID,i3:res2.records[0].budget_uid},callback:function(res3){
                                 if(res3.records.length>0){
-                                    for (var i=0;i<res3.records.length;i++){
-                                        tb+="<tr><td>"+res3.records[i].Funding_Sources+"</td><td>"+res3.records[i].Countries+"</td><td style='text-align:right' >"+formatter.format(res3.records[i].FY_Approved_Budget)+"</td><td style='text-align:right' >"+formatter.format(res3.records[i].FY_Actual_Expenditure)+"</td></tr>";
+                                    tb+="<table class='table table-bordered' style='width:500px'>";
+                                    tb+="<colgroup><col style='width:100px' /><col style='width:100px'  /><col style='width:150px' /><col style='width:150px' /></colgroup>";
+                                    tb+="<thead class='thead-light'>"
+                                    tb+="<tr><th>Funding Source</th><th>Countries</th><th>FY Approved Budget</th><th>FY Actual Expenditure</th></tr>"
+                                    tb+="</thead>";
+                                    if(res3.records.length>0){
+                                        for (var i=0;i<res3.records.length;i++){
+                                            tb+="<tr><td>"+res3.records[i].Funding_Sources+"</td><td>"+res3.records[i].Countries+"</td><td style='text-align:right' >"+formatter.format(res3.records[i].FY_Approved_Budget)+"</td><td style='text-align:right' >"+formatter.format(res3.records[i].FY_Actual_Expenditure)+"</td></tr>";
+                                        }
                                     }
+                                    tb+="</table><br>";
                                 }
-                                tb+="</table><br>";
-                            }
-                        }});
+                            }});
+                        }
+                        else{
+                            tb+="<tr><th colspan=3>Project Finance</th></tr>";
+                            tb+="<tr><td>Finance Year:</td><td colspan=2></td></tr>"
+                            tb+="<tr><td>FY Budget</td><td style='text-align:right'></td><td></td></tr>"
+                            tb+="<tr><td>Expenditure Q1:</td><td style='text-align:right'></td><td></td></tr>";
+                            tb+="<tr><td>Expenditure Q2:</td><td style='text-align:right'></td><td></td></tr>";
+                            tb+="<tr><td>Expenditure Q3:</td><td style='text-align:right'></td><td></td></tr>";
+                            tb+="<tr><td>Expenditure Q4:</td><td style='text-align:right'></td><td></td></tr>";
+                            tb+="</table><br>";
+                            tb+="<table class='table table-bordered' style='width:500px'>";
+                            tb+="<colgroup><col style='width:100px' /><col style='width:100px'  /><col style='width:150px' /><col style='width:150px' /></colgroup>";
+                            tb+="<thead class='thead-light'>"
+                            tb+="<tr><th>Funding Source</th><th>Countries</th><th>FY Approved Budget</th><th>FY Actual Expenditure</th></tr>"
+                            tb+="</thead>";
+                            tb+="</table><br>";
+                        }
                     }});
                     tb+="<table class='table table-bordered'>";
                     tb+="<colgroup><col /><col /><col /><col /><col /></colgroup>";
@@ -94,7 +112,6 @@
                         }
                     }});
                     tb+="</table>";
-
                 }
             }});
             //-------------------------------------
@@ -140,5 +157,61 @@
 </script>
 <style>
     VmInclude:__COMPONENT__/style/default.css
-
+    #D__ID,#D__ID table,#pvdiv__ID table{
+        font-size:10pt;
+        font-family: Verdana,Helvetica,Arial,sans-serif;;
+    }
+    .subheader_l__ID{text-align:left!Important;font-size:12px;font-weight:bold;background-color:#aaa;}
+    .subheader_m__ID{text-align:center!Important;font-size:12px;font-weight:bold;background-color:#aaa;vertical-align:middle!important;}
+    .subheader_r__ID{text-align:right!Important;font-size:12px;font-weight:bold;background-color:#aaa;vertical-align:middle!important;}
+    .text_l__ID{text-align:left!Important;vertical-align:middle!important;}
+    .text_m__ID{text-align:center!Important;vertical-align:middle!important;}
+    .text_r__ID{text-align:right!Important;vertical-align:middle!important;}
+    #table_form_noborder__ID {width:100%;font-size:9pt; font-family:Verdana; margin:0; border-spacing:0; border-collapse: collapse; table-layout: auto;}
+    #table_form_noborder__ID td{vertical-align:bottom; border: 0 #069 solid; color: #333; border-collapse: collapse; text-align: left; padding: 1px;padding-right:4px;}
+    #table_form1__ID {border: 3px #000 solid;font-size:9pt;font-family:Verdana;border-spacing:0;border-collapse: collapse; table-layout: automatic;}
+    #table_form1__ID td{ border: 1px #000 solid;}
+    #table_form1__ID td:first-child{padding:3px;}
+    .item_footer__ID{font-size:9pt; font-family:Verdana;text-align:right;padding-top:3px;padding-right:0px;}
+    .width__ID{
+        width:800px;
+    }
+    @media print{
+        #content_container_0{
+            position:absolute;
+            overflow:visible;
+        }
+        html,body{
+            width:100%;
+            height:100%;
+            overflow:visible;
+        }
+        #D__ID{
+            width:100%;
+            height:100px;
+            overflow:visible;
+        }
+        .width__ID{
+            width:100%;
+        }
+        body * {
+            visibility: hidden;
+        }
+        #pvdiv__ID, #pvdiv__ID * {
+            visibility: visible;
+        }
+        /*
+        #pvdiv__ID {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        */
+        .c_print {
+            display: none;
+        }
+        .file_buttons{
+            display:none;
+        }
+    }
 </style>
