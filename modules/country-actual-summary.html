@@ -9,7 +9,7 @@
         //-------------------------------------
         m.xml=1; //Store data as XML - NOT json
         //-------------------------------------
-        $("#title__ID").text("Country Project Summary - "+$vm.vm.country+"");
+        $("#title__ID").text("Country Actual Summary - "+$vm.vm.country+"");
         $('#new__ID').hide();
         $('#save__ID').hide();
         $('#query__ID').hide();
@@ -17,7 +17,6 @@
         $('#p__ID').hide();
         $('#n__ID').hide();
         $('#keyword__ID').hide();
-
         //-------------------------------------
         var dynamic_columns=function(){
             var y1=$vm.vm.fy_start.substring(2,4);
@@ -65,10 +64,21 @@
                 case 'Approval_Status':
                 case 'Start':
                 case 'End':
+                case 'Location':
+                case 'Location_2':
+                case 'Location_3':
+                case 'Location_4':
+                case 'Theme':
+                case 'Sector':
+                case 'Secondary_Sector':
+                case 'Implementation_Arrangement':
+                case 'DRR_Mainstreaming':
                     records[I].vm_readonly[field]=true;
                 	break;
                 case 'FY':
                 case 'tot_budget':
+                case 'tot_exp':
+                case 'Balance':
                 //alert(field)
                     records[I].vm_readonly[field]=true;
                     //if(I==records.length-1) {td.css('font-weight','bold');td.css('color','#444');}
@@ -86,6 +96,7 @@
         }
         m.data_process=function(){
             var total_budget=0.0,fy1112=0.0,fy1213=0.0,fy1314=0.0,fy1415=0.0,fy1516=0.0,fy1617=0.0,fy1718=0.0,fy1819=0.0,fy1920=0.0,fy2021=0.0,fy2122=0.0,fy2223=0.0,fy2324=0.0,fy2425=0.0;
+            var total_exp=0.0;
             var i=0;
             var fy=dynamic_columns().split(',')
             var fy_tot=[fy.length];
@@ -93,6 +104,9 @@
                 m.records[i].Project=m.records[i].Project.replace(/\n/g,'').trim();
                 if(m.records[i].tot_budget!='' && m.records[i].tot_budget!=undefined){
                     total_budget+=parseFloat(m.records[i].tot_budget);
+                }
+                if(m.records[i].tot_exp!='' && m.records[i].tot_exp!=undefined){
+                    total_exp+=parseFloat(m.records[i].tot_exp);
                 }
                 for(var j=0;j<fy.length;j++){
                     switch(fy[j]){
@@ -116,6 +130,8 @@
             m.records.push(m.records)
             m.records[i].Project='Total';
             m.records[i].tot_budget=total_budget.toFixed(0);
+            m.records[i].tot_exp=total_exp.toFixed(0);
+            m.records[i].Balance=(total_budget-total_exp).toFixed(0);
             m.records[i].FY1112=fy1112.toFixed(0);
             m.records[i].FY1213=fy1213.toFixed(0);
             m.records[i].FY1314=fy1314.toFixed(0);
@@ -134,35 +150,39 @@
         //-------------------------------------
         m.set_req=function(){
             var dynamic_fields=dynamic_columns();
-            var fields="Project,Code|Project_Code,Project_Status,Approval_Status,Start,End,Total Approved Project Budget|tot_budget,"+dynamic_fields+"";
+            var fields="Project,Code|Project_Code,Location 1|Location,Location_2,Location_3,Location_4,Theme,Primary Sector|Sector,Secondary_Sector,Implementation_Arrangement,DRR_Mainstreaming,Project_Status,Approval_Status,Start,End,Total Approved Project Budget|tot_budget,Total Project Actual Expenditure|tot_exp,Balance,"+dynamic_fields+"";
             m.fields=fields;
             m.form_fields=fields+",TID";
-            var sql="with tbProject as ( select PUID,UID,Project=@('Project'),Project_Code=@('Project_Code'),Project_Status=@('Project_Status'),Approval_Status=@('Approval_Status') ,[PStart]=@('Start'),[PEnd]=@('End') from [TABLE-"+m.db_pid+"-@S1] where @('Country')=@S2 and @('Project_Code')<>'' )";
-            sql+=",tbBudget as (select PUID,UID,ID,Version=@('Version'),Amount=@('Amount'),Approval_Date=@T('Approval_Date') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-data'].table_id+"] )";
+            var sql="with tbProject as ( select PUID,UID,Information,Project_Code=@('Project_Code') from [TABLE-"+m.db_pid+"-@S1] where @('Country')=@S2 and @('Project_Code')<>'' )";
+            sql+=",tbBudget as (select PUID,UID,ID,Version=@('Version'),bgAmount=@('Amount'),Approval_Date=@T('Approval_Date') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-data'].table_id+"] )";
             sql+=",tbBudget_max_date as ( select PUID,Approval_Date=MAX(Approval_Date) from tbBudget group by PUID )";
-            sql+=",tbBudget2 as (select tbBudget.PUID,UID,ID,Version,Amount from tbBudget join tbBudget_max_date on tbBudget.PUID=tbBudget_max_date.PUID and tbBudget.Approval_Date=tbBudget_max_date.Approval_Date )";
-	        sql+=",tbFY_budget as ( select PUID,FY=@('FY'),FY_Amount=@D('Amount') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-fy-budget-data'].table_id+"] )";
-	        sql+=",tb as ( select Project,Project_Code,Project_Status,PStart,PEnd,Approval_Status,Amount,FY,FY_Amount  from tbProject ";
-		    sql+="left join tbBudget2 on tbBudget2.PUID=tbProject.UID ";
-		    sql+="left join tbFY_budget on tbFY_budget.PUID=tbBudget2.UID ) "
-            sql+="select Project,Project_Code,Project_Status,Approval_Status,[Start]=PStart,[End]=[PEnd],tot_budget=Amount,"+dynamic_fields+" from tb "
-            sql+="PIVOT( Sum(FY_Amount) for FY in("+dynamic_fields+" ) ) p order by Project_Code ";
-            var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1] where @('Country')=@S2";
+            sql+=",tbBudget2 as (select tbBudget.PUID,UID,ID,Version,bgAmount from tbBudget join tbBudget_max_date on tbBudget.PUID=tbBudget_max_date.PUID and tbBudget.Approval_Date=tbBudget_max_date.Approval_Date )";
+	        sql+=",tbFY_spending as ( select PUID,FY=@('FY'),FY_Amount=@D('Amount') from [TABLE-"+$vm.module_list[m.prefix+'project-single-actual-spending-data'].table_id+"] )";
+	        sql+=",tb as ( select Information,tb_Project_Code=Project_Code,bgAmount,FY,FY_Amount  from tbProject ";
+		    sql+="   left join tbBudget2 on tbBudget2.PUID=tbProject.UID ";
+		    sql+="   left join tbFY_spending on tbFY_spending.PUID=tbProject.UID ) "
+            sql+=",tb2 as (select tb.Information,tb2_Project_Code=tb_Project_Code,All_Year_Amount=Sum(FY_Amount) from tb group by Information,tb_Project_Code)"
+            sql+=",tb3 as (select tb.Information,tb_Project_Code,FY,FY_Amount, AYA=All_Year_Amount,BA=bgAmount from tb join tb2 on tb_Project_Code=tb2_Project_Code)";
+            sql+="select Information,tb_Project_Code,tot_budget=BA,tot_exp=AYA,Balance=convert(float,replace(BA,',',''))-convert(float,replace(AYA,',','')),"+dynamic_fields+" from tb3 "
+            sql+="PIVOT( Sum(FY_Amount) for FY in("+dynamic_fields+" ) ) p order by tb_Project_Code ";
+            var sql_n="select count(ID) from [TABLE-"+m.db_pid+"] where @('Country')=@S2 and @('Project_Code')<>''";
             m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,s2:$vm.vm.country}
         }
         //-------------------------------------
         m.set_req_export=function(i1,i2){
             var dynamic_fields=dynamic_columns();
-            var sql="with tbProject as ( select PUID,UID,Project=@('Project'),Project_Code=@('Project_Code'),Project_Status=@('Project_Status'),Approval_Status=@('Approval_Status') ,[PStart]=@('Start'),[PEnd]=@('End') from [TABLE-"+m.db_pid+"-@S1] where @('Country')=@S2 and @('Project_Code')<>'' )";
-            sql+=",tbBudget as (select PUID,UID,ID,Version=@('Version'),Amount=@('Amount'),Approval_Date=@T('Approval_Date') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-data'].table_id+"] )";
+            var sql="with tbProject as ( select PUID,UID,Information,Project_Code=@('Project_Code') from [TABLE-"+m.db_pid+"-@S1] where @('Country')=@S2 and @('Project_Code')<>'' )";
+            sql+=",tbBudget as (select PUID,UID,ID,Version=@('Version'),bgAmount=@('Amount'),Approval_Date=@T('Approval_Date') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-data'].table_id+"] )";
             sql+=",tbBudget_max_date as ( select PUID,Approval_Date=MAX(Approval_Date) from tbBudget group by PUID )";
-            sql+=",tbBudget2 as (select tbBudget.PUID,UID,ID,Version,Amount from tbBudget join tbBudget_max_date on tbBudget.PUID=tbBudget_max_date.PUID and tbBudget.Approval_Date=tbBudget_max_date.Approval_Date )";
-	        sql+=",tbFY_budget as ( select PUID,FY=@('FY'),FY_Amount=@D('Amount') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-fy-budget-data'].table_id+"] )";
-	        sql+=",tb as ( select Project,Project_Code,Project_Status,PStart,PEnd,Approval_Status,Amount,FY,FY_Amount  from tbProject ";
-		    sql+="left join tbBudget2 on tbBudget2.PUID=tbProject.UID ";
-		    sql+="left join tbFY_budget on tbFY_budget.PUID=tbBudget2.UID ) "
-            sql+="select Project,Project_Code,Project_Status,Approval_Status,[Start]=PStart,[End]=[PEnd],tot_budget=Amount,"+dynamic_fields+" from tb "
-            sql+="PIVOT( Sum(FY_Amount) for FY in("+dynamic_fields+" ) ) p order by Project_Code ";
+            sql+=",tbBudget2 as (select tbBudget.PUID,UID,ID,Version,bgAmount from tbBudget join tbBudget_max_date on tbBudget.PUID=tbBudget_max_date.PUID and tbBudget.Approval_Date=tbBudget_max_date.Approval_Date )";
+	        sql+=",tbFY_spending as ( select PUID,FY=@('FY'),FY_Amount=@D('Amount') from [TABLE-"+$vm.module_list[m.prefix+'project-single-actual-spending-data'].table_id+"] )";
+	        sql+=",tb as ( select Information,tb_Project_Code=Project_Code,bgAmount,FY,FY_Amount  from tbProject ";
+		    sql+="   left join tbBudget2 on tbBudget2.PUID=tbProject.UID ";
+		    sql+="   left join tbFY_spending on tbFY_spending.PUID=tbProject.UID ) "
+            sql+=",tb2 as (select tb.Information,tb2_Project_Code=tb_Project_Code,All_Year_Amount=Sum(FY_Amount) from tb group by Information,tb_Project_Code)"
+            sql+=",tb3 as (select tb.Information,tb_Project_Code,FY,FY_Amount, AYA=All_Year_Amount,BA=bgAmount from tb join tb2 on tb_Project_Code=tb2_Project_Code)";
+            sql+="select Information,tb_Project_Code,tot_budget=BA,tot_exp=AYA,Balance=convert(float,replace(BA,',',''))-convert(float,replace(AYA,',','')),"+dynamic_fields+" from tb3 "
+            sql+="PIVOT( Sum(FY_Amount) for FY in("+dynamic_fields+" ) ) p order by tb_Project_Code ";
         	_req={cmd:'query_records',sql:sql,i1:i1,i2:i2,s2:$vm.vm.country};
         }
         //-----------------------------------------------

@@ -76,6 +76,11 @@
 									   </label>
 								   </fieldset>
 								   <fieldset class="subquestions">
+									   <label class=""><span class=""></span>
+										 	<button id=country_budget_and_actual_by_source__ID type="button" class="btn btn-info">Country Budget and Actual by Source</button>
+									   </label>
+								   </fieldset>
+								   <fieldset class="subquestions">
 									   <label class=""><span class="">Financial Year Start</span>
 										   <select class="form-control" name="FY_start" id="FY_start__ID" ></select>
 									   </label>
@@ -86,6 +91,11 @@
 								   <fieldset class="subquestions">
 									   <label class=""><span class=""></span>
 										 	<button id=country_budget_summary__ID type="button" class="btn btn-info">Country Budget Summary</button>
+									   </label>
+								   </fieldset>
+								   <fieldset class="subquestions">
+									   <label class=""><span class=""></span>
+										 	<button id=country_actual_summary__ID type="button" class="btn btn-info">Country Actual Summary</button>
 									   </label>
 								   </fieldset>
 						   		</div>
@@ -194,12 +204,28 @@
 			$vm.vm.country=$('#Country__ID').val();
 			$vm.load_module_v2("country-project-summary",$vm.root_layout_content_slot,{});
 		})
-		$('#country_budget_summary__ID').on('click',function(){
-			//$vm.vm.country=$('#Country__ID').val();
+		$('#quarterly_budget_and_actual__ID').on('click',function(){
+			$vm.vm.country=$('#Country__ID').val();
+			$vm.vm.fy=$('#FY__ID').val();
+			$vm.load_module_v2("quarterly-budget-and-actual",$vm.root_layout_content_slot,{});
+		})
+		$('#country_budget_and_actual_by_source__ID').on('click',function(){
 			$vm.vm.country='Vietnam'
+//			$vm.vm.country=$('#Country__ID').val();
+			$vm.vm.fy=$('#FY__ID').val();
+			$vm.load_module_v2("country-budget-and-actual-by-source",$vm.root_layout_content_slot,{});
+		})
+		$('#country_budget_summary__ID').on('click',function(){
+			$vm.vm.country=$('#Country__ID').val();
 			$vm.vm.fy_start=$('#FY_start__ID').val();
 			$vm.vm.fy_end=$('#FY_end__ID').val();
 			$vm.load_module_v2("country-budget-summary",$vm.root_layout_content_slot,{});
+		})
+		$('#country_actual_summary__ID').on('click',function(){
+			$vm.vm.country=$('#Country__ID').val();
+			$vm.vm.fy_start=$('#FY_start__ID').val();
+			$vm.vm.fy_end=$('#FY_end__ID').val();
+			$vm.load_module_v2("country-actual-summary",$vm.root_layout_content_slot,{});
 		})
 	}
 </script>
