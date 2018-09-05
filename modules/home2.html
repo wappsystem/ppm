@@ -37,7 +37,7 @@
 								   </fieldset>
 								   <fieldset class="subquestions">
 									   <label class=""><span class=""></span>
-										 	<button id=button_pending_funds__ID type="button" class="btn btn-success">Pending Funds</button>
+										 	<button id=button_pending_funds__ID type="button" class="btn btn-success">Pending Funds (Still active?)</button>
 									   </label>
 								   </fieldset>
 								   <fieldset class="subquestions">
@@ -78,6 +78,16 @@
 								   <fieldset class="subquestions">
 									   <label class=""><span class=""></span>
 										 	<button id=country_budget_and_actual_by_source__ID type="button" class="btn btn-info">Country Budget and Actual by Source</button>
+									   </label>
+								   </fieldset>
+								   <fieldset class="subquestions">
+									   <label class=""><span class="">Funding Source</span>
+										   <input class="form-control" data-id="Source" name="Source" id=Source__ID placeholder="Select Funding Source" type="text" >
+									   </label>
+								   </fieldset>
+								   <fieldset class="subquestions">
+									   <label class=""><span class=""></span>
+										 	<button id=summary_of_confirmed_funds__ID type="button" class="btn btn-info">Summary of Confirmed Funds</button>
 									   </label>
 								   </fieldset>
 								   <fieldset class="subquestions">
@@ -134,6 +144,12 @@
 		sql="with tb as (select name=@('Country'),value2=uid from [TABLE-"+$vm.module_list['country-form'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Country__ID'),sql,function(key,value){
+			//$("#F__ID input[name=Country]").val($vm.text(value));
+		})
+		//------------------------
+		sql="with tb as (select name=@('Funding_Source'),value2=uid from [TABLE-"+$vm.module_list['funding-source-data'].table_id+"])";
+		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
+		$vm.autocomplete($('#Source__ID'),sql,function(key,value){
 			//$("#F__ID input[name=Country]").val($vm.text(value));
 		})
 		//------------------------
@@ -215,14 +231,24 @@
 			$vm.vm.fy=$('#FY__ID').val();
 			$vm.load_module_v2("country-budget-and-actual-by-source",$vm.root_layout_content_slot,{});
 		})
+		$('#summary_of_confirmed_funds__ID').on('click',function(){
+			$vm.vm.country='Vietnam'
+//			$vm.vm.country=$('#Country__ID').val();
+			$vm.vm.fy=$('#FY__ID').val();
+			$vm.vm.source='ANCP';
+//			$vm.vm.source=$('#Source__ID').val();
+			$vm.load_module_v2("summary-of-confirmed-funds",$vm.root_layout_content_slot,{});
+		})
 		$('#country_budget_summary__ID').on('click',function(){
-			$vm.vm.country=$('#Country__ID').val();
+			$vm.vm.country='Papua New Guinea'
+//			$vm.vm.country=$('#Country__ID').val();
 			$vm.vm.fy_start=$('#FY_start__ID').val();
 			$vm.vm.fy_end=$('#FY_end__ID').val();
 			$vm.load_module_v2("country-budget-summary",$vm.root_layout_content_slot,{});
 		})
 		$('#country_actual_summary__ID').on('click',function(){
-			$vm.vm.country=$('#Country__ID').val();
+			$vm.vm.country='Papua New Guinea'
+//			$vm.vm.country=$('#Country__ID').val();
 			$vm.vm.fy_start=$('#FY_start__ID').val();
 			$vm.vm.fy_end=$('#FY_end__ID').val();
 			$vm.load_module_v2("country-actual-summary",$vm.root_layout_content_slot,{});

@@ -157,7 +157,8 @@
                 "country-project-summary":	{"table_id" : "20000012","url":"_C_/modules/country-project-summary.html"},
                 "country-budget-summary":	{"table_id" : "20000012","url":"_C_/modules/country-budget-summary.html"},
                 "country-actual-summary":	{"table_id" : "20000012","url":"_C_/modules/country-actual-summary.html"},
-                "country-budget-and-actual-by-source":	{"table_id" : "20000012","url":"_C_/modules/country-budget-and-actual-by-source.html"}
+                "country-budget-and-actual-by-source":	{"table_id" : "20000012","url":"_C_/modules/country-budget-and-actual-by-source.html"},
+                "summary-of-confirmed-funds":	{"table_id" : "20000012","url":"_C_/modules/summary-of-confirmed-funds.html"}
             }
             //------------------------------------
             for(p in $vm.module_list){
@@ -182,12 +183,12 @@
                }})
             }
             //------------------------------------
-            $vm.default_title="PnP";
+            $vm.default_title="P&P";
             $('#text_0').html("Copyright &copy; "+(new Date()).getFullYear()+", Child Fund Australia");
             //------------------------------------
             $vm.show=function(id){
                 document.title=$vm.default_title;
-                $("meta[name='description']").attr("content", "PnP");
+                $("meta[name='description']").attr("content", "P&P");
                 $("body").removeClass();
                 $("body").addClass('body_background_default');
                 if(id!=undefined && $vm.vm[id].show!=undefined){

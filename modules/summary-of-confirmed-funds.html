@@ -1,0 +1,139 @@
+<section>
+    VmInclude:__CURRENT_PATH__/grid/grid.v3.html
+</section>
+<script>
+    function F__ID(){
+        //-------------------------------------
+        VmInclude:__COMPONENT__/module/grid.v1.js
+        VmInclude:__CURRENT_PATH__/task_data.js
+        //-------------------------------------
+        m.xml=1; //Store data as XML - NOT json
+        //-------------------------------------
+/*        var fields="Project,Code|Project_Code,Project_Status,Total Approved Project Budget|tot_budget,Funding_Source,Spending_Source";
+        m.fields=fields;
+        m.form_fields=fields+",TID";
+*/        //-------------------------------------
+        $('#new__ID').hide();
+        $('#save__ID').hide();
+        $('#query__ID').hide();
+        $('#page_size__ID').hide();
+        $('#p__ID').hide();
+        $('#n__ID').hide();
+        $('#keyword__ID').hide();
+        //-------------------------------------
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+        });
+        //-------------------------------------
+        m.cell_render=function(records,I,field,td,set_value,source){
+            switch(field){
+                case 'Project':
+                    records[I].vm_readonly[field]=true;
+                    if(I==records.length-1){
+                         td.css("font-weight","bold");
+                    }
+                    break;
+                case 'Project_Status':
+                case 'Sector':
+                case 'Project_Code':
+                case 'Approval_Status':
+                case 'PStart':
+                case 'PEnd':
+                case 'Source':
+                case 'Country':
+                    records[I].vm_readonly[field]=true;
+                	break;
+                case 'FY_Amount':
+                case 'Amount':
+                case 'ConAmount':
+                //alert(field)
+                    records[I].vm_readonly[field]=true;
+                    //if(I==records.length-1) {td.css('font-weight','bold');td.css('color','#444');}
+                    if(records[I][field]!='' && records[I][field]!=undefined){
+                        if(source=="grid") td.css("text-align","right").css('white-space','nowrap');
+                        records[I][field]=records[I][field].replace('$','').replace(/ /g,'').replace(/,/g,'');
+                        if(records[I][field].substring(0,1)=='-'){td.css("color","red");}
+                        td.html(formatter.format(records[I][field]));
+                        if(I==records.length-1){
+                             td.css("font-weight","bold");
+                        }
+                    }
+                    break;
+            }
+        }
+        //-------------------------------------
+        m.data_process=function(){
+            var fy_amount=0.0;
+            var amount=0.0;
+            var conamount=0.0;
+            var i=0;
+            for (i=0;i<m.records.length;i++){
+                m.records[i].Project=m.records[i].Project.replace(/\n/g,'').trim();
+                if(m.records[i].FY_Amount!='' && m.records[i].FY_Amount!=undefined){
+                    fy_amount+=parseFloat(m.records[i].FY_Amount.replace(/,/g,''));
+                }
+                if(m.records[i].Amount!='' && m.records[i].Amount!=undefined){
+                    amount+=parseFloat(m.records[i].Amount.replace(/,/g,''));
+                }
+                if(m.records[i].ConAmount!='' && m.records[i].ConAmount!=undefined){
+                    conamount+=parseFloat(m.records[i].ConAmount.replace(/,/g,''));
+                }
+            }
+            m.records.push(m.records)
+            m.records[i].Project='Total';
+            m.records[i].FY_Amount=fy_amount.toFixed(0);
+            m.records[i].Amount=amount.toFixed(0);
+            m.records[i].ConAmount=conamount.toFixed(0);
+            m.records=m.records.sort(function(a, b){
+                if(a.Project_Code < b.Project_Code) return -1;
+                if(a.Project_Code > b.Project_Code) return 1;
+                return 0;
+            })
+        }
+        //-------------------------------------
+        m.set_req=function(){
+            $("#title__ID").text("Summary of Confirmed Funds - "+$vm.vm.country+" - "+$vm.vm.fy+" - "+$vm.vm.source);
+            var fields="Project,Status|Project_Status,Sector,Code|Project_Code,Approval_Status,Start|PStart,End|PEnd,Source,Country,Total Approved Project Budget|Amount,FY Approved Project Budget|FY_Amount,FY Budget of Selected Source|ConAmount";
+            m.fields=fields;
+            m.form_fields=fields+",TID";
+            var sql="with project as ( select UID,PUID,Project=@('Project'),Project_Code=@('Project_Code'),Project_Status=@('Project_Status'),[Sector]=@('Sector'),Approval_Status=@('Approval_Status'),\
+				        [PStart]=@('Start'),[PEnd]=@('End') from [TABLE-"+m.db_pid+"-@S1] where @('Country')=@S2 and @('Project_Code')<>''),\
+                    	budget as ( select UID,PUID,Approval_Date=@T('Approval_Date'),Approval_FY=@('Approval_FY'),Version=@('Version'),Amount=@D('Amount') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-data'].table_id+"]),\
+		                budget_max_date as ( select	PUID,Approval_Date_Max=MAX(Approval_Date) from budget group by PUID),\
+                		fy as ( select UID,PUID, FY_Amount=@D('Amount'),fyFY=@('FY') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-fy-budget-data'].table_id+"] where @('FY') like '%'+@S3+'%' ),\
+                		confirmed as ( select UID,PUID,Source=@('Source'),Country=@('Country'),ConAmount=@('Amount') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-fy-budget-source-data'].table_id+"] where @('Source')=@S4 )\
+		                select Project,Project_Status,[Sector],Project_Code,Approval_Status,PStart, PEnd,Source,Country,Amount,FY_Amount,ConAmount\
+		                from project join budget on project.UID=budget.PUID\
+		                join budget_max_date on budget.PUID=budget_max_date.PUID and budget.Approval_Date=budget_max_date.Approval_Date_Max\
+		                join fy on fy.PUID=budget.UID\
+		                join confirmed on confirmed.PUID=fy.UID\
+		                group by Project,PStart,PEnd,Source,Country,ConAmount,Project_Status,[Sector],Project_Code,Approval_Status,FY_Amount,Amount";
+            var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1] where @('Country')=@S2";
+            m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,s2:$vm.vm.country,s3:$vm.vm.fy,s4:$vm.vm.source}
+        }
+        //-------------------------------------
+        m.set_req_export=function(i1,i2){
+            var sql="with project as ( select UID,PUID,Project=@('Project'),Project_Code=@('Project_Code'),Project_Status=@('Project_Status'),[Sector]=@('Sector'),Approval_Status=@('Approval_Status'),\
+				        [PStart]=@('Start'),[PEnd]=@('End') from [TABLE-"+m.db_pid+"-@S1] where @('Country')=@S2 and @('Project_Code')<>''),\
+                    	budget as ( select UID,PUID,Approval_Date=@T('Approval_Date'),Approval_FY=@('Approval_FY'),Version=@('Version'),Amount=@D('Amount') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-variation-data'].table_id+"]),\
+		                budget_max_date as ( select	PUID,Approval_Date_Max=MAX(Approval_Date) from budget group by PUID),\
+                		fy as ( select UID,PUID, FY_Amount=@D('Amount'),fyFY=@('FY') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-fy-budget-data'].table_id+"] where @('FY') like '%'+@S3+'%' ),\
+                		confirmed as ( select UID,PUID,Source=@('Source'),Country=@('Country'),ConAmount=@('Amount') from [TABLE-"+$vm.module_list[m.prefix+'project-single-proposal-fy-budget-source-data'].table_id+"] where @('Source')=@S4 )\
+		                select Project,Project_Status,[Sector],Project_Code,Approval_Status,PStart, PEnd,Source,Country,Amount,FY_Amount,ConAmount\
+		                from project join budget on project.UID=budget.PUID\
+		                join budget_max_date on budget.PUID=budget_max_date.PUID and budget.Approval_Date=budget_max_date.Approval_Date_Max\
+		                join fy on fy.PUID=budget.UID\
+		                join confirmed on confirmed.PUID=fy.UID\
+		                group by Project,PStart,PEnd,Source,Country,ConAmount,Project_Status,[Sector],Project_Code,Approval_Status,FY_Amount,Amount";
+        	_req={cmd:'query_records',sql:sql,i1:i1,i2:i2,s2:$vm.vm.country,s3:$vm.vm.fy};
+        }
+    //-----------------------------------------------
+
+    }
+</script>
+<style>
+    VmInclude:__COMPONENT__/grid/grid.v3.css
+    VmInclude:__CURRENT_PATH__/task-form.css
+</style>

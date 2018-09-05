@@ -20,7 +20,6 @@
         $('#p__ID').hide();
         $('#n__ID').hide();
         $('#keyword__ID').hide();
-
         //-------------------------------------
         var formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -72,13 +71,13 @@
             for (i=0;i<m.records.length;i++){
                 m.records[i].Project=m.records[i].Project.replace(/\n/g,'').trim();
                 if(m.records[i].FY_Amount!='' && m.records[i].FY_Amount!=undefined){
-                    fy_amount+=parseFloat(m.records[i].FY_Amount);
+                    fy_amount+=parseFloat(m.records[i].FY_Amount.replace(/,/g,''));
                 }
                 if(m.records[i].B_Amount!='' && m.records[i].B_Amount!=undefined){
-                    b_amount+=parseFloat(m.records[i].B_Amount);
+                    b_amount+=parseFloat(m.records[i].B_Amount.replace(/,/g,''));
                 }
                 if(m.records[i].S_fy_amount!='' && m.records[i].S_fy_amount!=undefined){
-                    s_fy_amount+=parseFloat(m.records[i].S_fy_amount);
+                    s_fy_amount+=parseFloat(m.records[i].S_fy_amount.replace(/,/g,''));
                 }
             }
             m.records.push(m.records)
@@ -86,6 +85,11 @@
             m.records[i].FY_Amount=fy_amount.toFixed(0);
             m.records[i].B_Amount=b_amount.toFixed(0);
             m.records[i].S_fy_amount=s_fy_amount.toFixed(0);
+            m.records=m.records.sort(function(a, b){
+                if(a.Project_Code < b.Project_Code) return -1;
+                if(a.Project_Code > b.Project_Code) return 1;
+                return 0;
+            })
         }
         //-------------------------------------
         m.set_req=function(){
@@ -109,7 +113,7 @@
 	        sql+=" select Project,Project_Code,Project_Status,FY_Amount,B_Source,B_Country,B_Amount,S_source,S_fy_amount,S_Country  from tbProject ";
 	        sql+=" join budget_fund on prjUID=bfprjUID ";
             sql+=" join spending_fund on prjUID=spPUID ";
-            sql+=" where S_Country=B_Country and S_source=B_Source order by Project_Code"
+            sql+=" where S_Country=B_Country and S_source=B_Source"
             var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1] where @('Country')=@S2";
             m.req={cmd:'query_records',db_pid:m.db_pid,sql:sql,sql_n:sql_n,s2:$vm.vm.country,s3:$vm.vm.fy}
 
