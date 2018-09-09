@@ -184,7 +184,11 @@
                 $('#new__ID').hide();
                 status=" @('Project_Status') = 'Closed'";
             }
-            var sql="with tb as (select Information,B1,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+m.db_pid+"-@S1] where "+status+" ) ";
+            var filter=''
+            if($vm.vm.country!=''){
+                filter="and @('Country')='"+$vm.vm.country+"'";
+            }
+            var sql="with tb as (select Information,B1,ID,UID,PUID,DateTime,Author,RowNum=row_number() over (order by ID DESC) from [TABLE-"+m.db_pid+"-@S1] where "+status+" "+filter+") ";
             sql+=",program as (select Information2=Information,prog_UID=UID from [TABLE-"+$vm.module_list[m.prefix+'program-data'].table_id+"])";
 		    sql+="select Information,Information2,B1,ID,UID,PUID,DateTime,Author,RowNum from tb left join program on PUID=prog_UID where RowNum between @I6 and @I7";
             var sql_n="select count(ID) from [TABLE-"+m.db_pid+"-@S1] where "+status+"";

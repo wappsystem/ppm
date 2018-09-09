@@ -107,6 +107,8 @@
         	    "program-form":{"table_id":"20000013","url":"_C_/modules/program-form.html"},
                 "program-document-data":{"table_id":"20000028","url":"_C_/modules/program-document-data.html","form_module":"program-document-form"},
         	    "program-document-form":{"table_id":"20000028","url":"_C_/modules/program-document-form.html"},
+                "program-single-document-data":{"table_id":"20000028","url":"_C_/modules/program-single-document-data.html","form_module":"program-single-document-form"},
+        	    "program-single-document-form":{"table_id":"20000028","url":"_C_/modules/program-single-document-form.html"},
                 "country-data": {"table_id":"20011479", "url":"_C_/modules/country-data.html","form_module":"country-form"},
         	    "country-form": {"table_id":"20011479", "url":"_C_/modules/country-form.html"},
                 "document-type-data": {"table_id":"20011477", "url":"_C_/modules/document-type-data.html","form_module":"document-type-form"},
@@ -192,7 +194,7 @@
             $('.vm-desk-logo').on('click',function(){ $vm.load_module_v2('home',$vm.root_layout_content_slot,{}) })
             //------------------------------------
             $vm.default_title="P&P";
-            var txt=", Childfund Australia";
+            var txt=", ChildFund Australia";
             $('#text_0').html("Copyright &copy; "+(new Date()).getFullYear()+txt);
             //------------------------------------
             $vm.show=function(id){

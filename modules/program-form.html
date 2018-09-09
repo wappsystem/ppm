@@ -10,7 +10,7 @@
 								<div class="questiongroup ">
 		                           <fieldset>
 		                                <label style="width:100%" class=""><span class="">Program Full Name</span>
-											<textarea class="form-control form-control-sm" name="Program"></textarea>
+											<textarea class="form-control form-control-sm" name="Program" id="Program__ID"></textarea>
 		                                </label>
 		                           </fieldset>
                       			</div>
@@ -20,7 +20,7 @@
 										   <input class="form-control" name="Country" type="text" id="Country__ID" required >
 									   </label><br>
 									   <label class=""><span class="">Code</span>
-										   <input class="form-control" name="Code" type="text" required>
+										   <input class="form-control" name="Code" id="Code__ID" type="text" required>
 									   </label>
 								   </fieldset>
                       			</div>
@@ -38,11 +38,18 @@
 										<div id=DocProgram__ID data-id=DocProgram></div>
                            			</fieldset>
                           		</div>
-								<div class="row">
-									<div class=col>
-										<button id=submit__ID type="submit" class="btn btn-secondary">Submit</button>
-									</div>
-								</div>
+								<div class="questiongroup ">
+		                           <fieldset class="subquestions">
+									   <label class="">
+										   <button id=submit__ID type="submit" class="btn btn-secondary">Submit</button>
+									   </label>
+		                           </fieldset>
+								   <fieldset class="subquestions">
+									   <label class="">
+										   <button id=document__ID type="button" class="btn btn-success">Documents</button>
+									   </label>
+								   </fieldset>
+                      			</div>
 							</div>
 						</form>
 					</div>
@@ -69,6 +76,14 @@ function F__ID(){
 		$("#F__ID input[name="+key+"]").val($vm.text(value));
 	})
 	//-------------------------------------
+	$('#document__ID').on('click',function(){
+		$vm.vm.program=$('#Program__ID').val();
+		$vm.vm.program_code=$('#Code__ID').val();
+		$vm.vm.program_uid=m.input.record.UID
+		$vm.load_module_v2("program-single-document-data",$vm.root_layout_content_slot,{});
+	})
+	//-------------------------------------
+
 }
 </script>
 <style>
