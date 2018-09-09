@@ -1,101 +1,96 @@
 <div id=page__ID>
 	<section id=panel__ID>
 		<div class='nav__ID' style='xfloat:unset;'>
-			<label class=""><h4 class="">Preselect</h4>
-			</label><br>
-			<label class=""><span class="">Country</span>
+			<label class=""><span class="">Select a country</span>
 				<input class="form-control" data-id="Country" name="Country" id=Country__ID placeholder="Country" type="text" >
-			</label><br>
-			<label class=""><span class="">Project code</span>
+			</label>
+			<ul>
+				<li>
+					<a href="?/program-data">Programs - Add/Modify</a>
+                </li>
+				<li>
+					<a href="?/project-open-data">Project - Add/Modify</a>
+                </li>
+				<li>
+					<a href="?/project-closed-data">Project - View Closed</a>
+                </li>
+			</ul>
+        </div>
+		<div class='nav__ID' style='xfloat:unset;'>
+			<label class=""><span class="">Select a project code</span>
 				<input class="form-control" data-id="Project_Code" name="Project_Code" id=Project_Code__ID placeholder="Project Code" type="text" required >
 			</label>
 			<br>
-			<label class=""><span class="">Financial Year</span>
-				<select class="form-control" name="FY" id="FY__ID" ></select>
-			</label><br>
-			<label class=""><span class="">Funding Source</span>
-				<input class="form-control" data-id="Source" name="Source" id=Source__ID placeholder="Funding Source" type="text" >
-			</label><br>
-			<label class=""><span class="">Financial Year Start</span>
-				<select class="form-control" name="FY_start" id="FY_start__ID" ></select>
-			</label><br>
-			<label class=""><span class="">Financial Year End</span>
-				<select class="form-control" name="FY_end" id="FY_end__ID" ></select>
-			</label><br>
-		</div>
-		<div class='nav__ID' style='xfloat:unset;'>
-			<label class=""><h4 class="">Data Entry</h4>
-			</label><br>
-			Country - Optional
-			<br>
+			<label class=""><span class="">Project code</span>
+			</label>
 			<ul>
 				<li>
-					<a href="?/program-data"><label>Programs</label> - Add/Modify</a>
+					<a href="?/project-single-form">Details - Modify/View</a>
                 </li>
 				<li>
-					<a href="?/project-open-data"><label>Project</label> - Add/Modify</a>
+					<a href="?/project-single-proposal-variation-data">Proposal/Variation - Add/Modify</a>
                 </li>
 				<li>
-					<a href="?/project-closed-data"><label>Project (Closed)</label> - View</a>
-                </li>
-			</ul>
-			Project code - Required
-			<ul>
-				<li>
-					<a href="?/project-single-form"><label>Project Details</label> - Modify/View</a>
+					<a href="?/project-single-document-data">Documents - Add/Modify</a>
                 </li>
 				<li>
-					<a href="?/project-single-proposal-variation-data"><label>Project Proposal/Variation</label> - Add/Modify</a>
-                </li>
-				<li>
-					<a href="?/project-single-document-data"><label>Project Documents</label> - Add/Modify</a>
+					<a href="?/budget-history">Budget History - View</a>
                 </li>
 			</ul>
         </div>
 		<div class='nav__ID'>
-			<label class=""><h4 class="">Reports</h4>
+			<label class=""><span class="">Select Financial Year</span>
+				<select class="form-control" name="FY" id="FY__ID" ></select>
 			</label><br>
-			Project code - Required<br>
-			<ul>
-				<li>
-					<a href="?/budget-history">Budget History </a>
-				</li>
-			</ul><br>
-			<label class=""><span class="">Project code + FY - Required</span>
+			<label class=""><span class="">Project code + Financial Year</span>
 			</label>
 			<ul>
 				<li>
-					<a href="?/budget-and-actual-by-source">Budget and Actual by Source</a>
+					<a href="?/budget-and-actual-by-source">Budget and Actual by Source -View</a>
                 </li>
 			</ul><br>
-			<label class=""><span class="">Country + FY - Required</span>
+			<label class=""><span class="">Country + Financial Year</span>
 			</label>
 			<ul>
 				<li>
-					<a href="?/quarterly-budget-and-actual">Quarterly Budget and Actual</a>
+					<a href="?/quarterly-budget-and-actual">Quarterly Budget and Actual - View</a>
                 </li>
 				<li>
-					<a href="?/country-project-summary">Country Project Summary</a>
+					<a href="?/country-project-summary">Country Project Summary - View</a>
                 </li>
 				<li>
-					<a href="?/country-budget-and-actual-by-source">Country Budget and Actual by Source</a>
+					<a href="?/country-budget-and-actual-by-source">Country Budget and Actual by Source - View</a>
                 </li>
-			</ul><br>
-			<label class=""><span class="">Country + FY + Funding Source - Required</span>
+			</ul>
+
+		</div>
+		<div class='nav__ID'>
+			<label class=""><span class="">Select Funding Source</span>
+				<input class="form-control" data-id="Source" name="Source" id=Source__ID placeholder="Funding Source" type="text" >
 			</label><br>
-			<ul>
-				<li>
-					<a href="?/summary-of-confirmed-funds">Summary of Confirmed Funds</a>
-                </li>
-			</ul><br>
-			<label class=""><span class="">Country + FY Start + FY End - Required</span>
+			<label class=""><span class="">Country + Financial Year + Funding Source</span>
 			</label>
 			<ul>
 				<li>
-					<a href="?/country-budget-summary">Country Budget Summary</a>
+					<a href="?/summary-of-confirmed-funds">Summary of Confirmed Funds - View</a>
+                </li>
+			</ul>
+		</div>
+		<div class='nav__ID'>
+			<label class=""><span class="">Financial Year Start</span>
+				<select class="form-control" name="FY_start" id="FY_start__ID" ></select>
+			</label>
+			<label class=""><span class="">Financial Year End</span>
+				<select class="form-control" name="FY_end" id="FY_end__ID" ></select>
+			</label><br>
+			<label class=""><span class="">Country + Financial Year Start + Financial Year End</span>
+			</label>
+			<ul>
+				<li>
+					<a href="?/country-budget-summary">Country Budget Summary - View</a>
                 </li>
 				<li>
-					<a href="?/country-actual-summary">Country Actual Summary</a>
+					<a href="?/country-actual-summary">Country Actual Summary - View</a>
                 </li>
 			</ul>
 		</div>
