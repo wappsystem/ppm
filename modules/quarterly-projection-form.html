@@ -92,7 +92,7 @@
 			update_fy_list();
 		}
 		//-------------------------------------
-		sql="with tb as (select name=@('Country'),value3=@('Country'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'quarterly-projection-country-data'].table_id+"])";
+		sql="with tb as (select name=JSON_VALUE(Information,'$.Country'),value3=JSON_VALUE(Information,'$.Country'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'quarterly-projection-country-data'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2,value3 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Country__ID'),sql,function(key,value,value3){
 			$("#F__ID input[name=PUID]").val($vm.text(value));

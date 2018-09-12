@@ -25,7 +25,7 @@
                     records[I].vm_readonly[field]=true;
                 	break;
                 case 'Type':
-                    var sql="with tb as (select name=@('Type') from [TABLE-"+$vm.module_list[m.prefix+'document-type-data'].table_id+"])";
+                    var sql="with tb as (select name=JSON_VALUE(Information,'$.Type') from [TABLE-"+$vm.module_list[m.prefix+'document-type-data'].table_id+"])";
                     sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
                     VmInclude:__COMPONENT__/grid/field_auto.js
                     break;

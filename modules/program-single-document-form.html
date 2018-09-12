@@ -95,7 +95,7 @@
 			$('#PUID__ID').val($vm.vm.program_uid);
 		}
 	//-------------------------------------
-		var sql="with tb as (select name=@('Type'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'document-type-form'].table_id+"])";
+		var sql="with tb as (select name=JSON_VALUE(Information,'$.Type'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'document-type-form'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Type__ID'),sql,function(key,value){
 			$("#F__ID input[name="+key+"]").val($vm.text(value));

@@ -99,7 +99,7 @@ function F__ID(){
 		$('#Amount__ID').val(formatter.format(amount));
 	})
 	//-------------------------------------
-	var sql="with tb as (select name=@('Country'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'country-data'].table_id+"] )";
+	var sql="with tb as (select name=JSON_VALUE(Information,'$.Country'),value2=uid from [TABLE-"+$vm.module_list[m.prefix+'country-data'].table_id+"] )";
 	sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 	$vm.autocomplete($('#Country__ID'),sql,function(key,value){
 		$("#F__ID input[name="+key+"]").val($vm.text(value));

@@ -100,7 +100,7 @@
     function F__ID(){
 		VmInclude:__CURRENT_PATH__/task_form.js
 		//-------------------------------------
-		sql="with tb as (select name=@('Country'),value2=uid from [TABLE-"+$vm.module_list['country-form'].table_id+"])";
+		sql="with tb as (select name=JSON_VALUE(Information,'$.Country'),value2=uid from [TABLE-"+$vm.module_list['country-form'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Country__ID'),sql,function(key,value){
 			//$("#F__ID input[name=Country]").val($vm.text(value));
