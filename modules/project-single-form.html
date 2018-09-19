@@ -232,7 +232,7 @@
 		$('#Approval_Date__ID').datepicker({dateFormat:'dd/mm/yy', autoclose: true});
 		$('#Creation_Date__ID').datepicker({dateFormat:'dd/mm/yy', autoclose: true});
 		//-------------------------------------
-		var sql="with tb as (select name=@('Sector'),value2=uid from [TABLE-"+$vm.module_list['sector-data'].table_id+"])";
+		var sql="with tb as (select name=JSON_VALUE(Information,'$.Sector'),value2=uid from [TABLE-"+$vm.module_list['sector-data'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Secondary_Sector__ID'),sql,function(key,value){
 			$("#F__ID input[name="+key+"]").val($vm.text(value));
@@ -240,22 +240,22 @@
 		$vm.autocomplete($('#Sector__ID'),sql,function(key,value){
 			$("#F__ID input[name="+key+"]").val($vm.text(value));
 		})
-		sql="with tb as (select name=@('Implementation_Arrangement'),value2=uid from [TABLE-"+$vm.module_list['implementation-arrangement-data'].table_id+"])";
+		sql="with tb as (select name=JSON_VALUE(Information,'$.Implementation_Arrangement'),value2=uid from [TABLE-"+$vm.module_list['implementation-arrangement-data'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Implementation_Arrangement__ID'),sql,function(key,value){
 			$("#F__ID input[name="+key+"]").val($vm.text(value));
 		})
-		sql="with tb as (select name=@('DRR_Mainstreaming'),value2=uid from [TABLE-"+$vm.module_list['drr-mainstreaming-data'].table_id+"])";
+		sql="with tb as (select name=JSON_VALUE(Information,'$.DRR_Mainstreaming'),value2=uid from [TABLE-"+$vm.module_list['drr-mainstreaming-data'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#DRR_Mainstreaming__ID'),sql,function(key,value){
 			$("#F__ID input[name="+key+"]").val($vm.text(value));
 		})
-		sql="with tb as (select name=@('Theme'),value2=uid from [TABLE-"+$vm.module_list['theme-data'].table_id+"])";
+		sql="with tb as (select name=JSON_VALUE(Information,'$.Theme'),value2=uid from [TABLE-"+$vm.module_list['theme-data'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Theme__ID'),sql,function(key,value){
 			$("#F__ID input[name="+key+"]").val($vm.text(value));
 		})
-		sql="with tb as (select name=@('Location'),value2=uid from [TABLE-"+$vm.module_list['location-data'].table_id+"])";
+		sql="with tb as (select name=JSON_VALUE(Information,'$.Location'),value2=uid from [TABLE-"+$vm.module_list['location-data'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Location__ID'),sql,function(key,value){
 			$("#F__ID input[name="+key+"]").val($vm.text(value));
@@ -269,7 +269,7 @@
 		$vm.autocomplete($('#Location_4__ID'),sql,function(key,value){
 			$("#F__ID input[name="+key+"]").val($vm.text(value));
 		})
-		sql="with tb as (select name=@('Approval_Status'),value2=uid from [TABLE-"+$vm.module_list['project-approval-status-data'].table_id+"])";
+		sql="with tb as (select name=JSON_VALUE(Information,'$.Approval_Status'),value2=uid from [TABLE-"+$vm.module_list['project-approval-status-data'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete_split($('#Approval_Status__ID'),sql,function(key,value){
 			$("#F__ID input[name=Approval_Status]").val($vm.text(value));

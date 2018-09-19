@@ -1,5 +1,4 @@
 <div id=D__ID>
-VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 	<div class="container mt-95 mb-3">
     	<div class="row" >
 			<div class="col-12 col-lg-7 col-md-11 col-sm-12 mx-auto formbox">
@@ -10,35 +9,38 @@ VmInclude:__COMPONENT__/toolbar/form-toolbar.html
 							<div class="form-group">
 								<div class="questiongroup ">
 		                           <fieldset>
-		                                <label style="width:100%" class=""><span class="">Approval Status</span>
+			                                <label style="width:100%" class=""><span class="">Approval Status</span>
 											<input class="form-control" name="Approval_Status" placeholder="" type="text" >
 		                                </label>
 		                           </fieldset>
-                      			</div>
-								<div class="row">
-									<div class=col>
-										<button id=submit__ID type="submit" class="btn btn-secondary">Submit</button>
-									</div>
+							   </fieldset>
+							</div>
+							<div class="row">
+								<div class=col>
+									<button id=submit__ID type="submit" class="btn btn-secondary">Submit</button>
 								</div>
 							</div>
-						</form>
-					</div>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 <script>
 	function F__ID(){
 		//-------------------------------------
-		VmInclude:__CURRENT_PATH__/task_form.js
+		VmInclude:__COMPONENT__/module/form.v1.js
+		//-------------------------------------
+		//m.xml=1;
 		//-------------------------------------
 	}
 </script>
 <style>
 #D__ID{
-  height:100%;
-  animation: vm_module_fadein 1.0s;
-  overflow: auto;
+height:100%;
+animation: vm_module_fadein 1.0s;
+overflow: auto;
 }
 </style>
 VmInclude:__CURRENT_PATH__/task-form.css

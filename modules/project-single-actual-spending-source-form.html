@@ -105,7 +105,7 @@ function F__ID(){
 		$("#F__ID input[name="+key+"]").val($vm.text(value));
 	})
 	//-------------------------------------
-	var sql="with tb as (select name=@('Funding_Source') from [TABLE-"+$vm.module_list[m.prefix+'funding-source-data'].table_id+"])";
+	var sql="with tb as (select name=JSON_VALUE(Information,'$.Funding_Source') from [TABLE-"+$vm.module_list[m.prefix+'funding-source-data'].table_id+"])";
 	sql+=" select top 10 name,value=name from tb where name like '%'+@S1+'%' order by name ";
 	$vm.autocomplete($('#Source__ID'),sql,function(key,value){
 		$("#F__ID input[name="+key+"]").val($vm.text(value));

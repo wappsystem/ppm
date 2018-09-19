@@ -147,7 +147,7 @@
 			//$("#F__ID input[name=Country]").val($vm.text(value));
 		})
 		//------------------------
-		sql="with tb as (select name=@('Funding_Source'),value2=uid from [TABLE-"+$vm.module_list['funding-source-data'].table_id+"])";
+		sql="with tb as (select name=JSON_VALUE(Information,'$.Funding_Source'),value2=uid from [TABLE-"+$vm.module_list['funding-source-data'].table_id+"])";
 		sql+=" select top 10 name,value=name,value2 from tb where Name like '%'+@S1+'%' ";
 		$vm.autocomplete($('#Source__ID'),sql,function(key,value){
 			//$("#F__ID input[name=Country]").val($vm.text(value));
