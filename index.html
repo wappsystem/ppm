@@ -94,7 +94,7 @@
         <!----------------------------------------------->
         <script>
             //------------------------------------
-            $vm={};$VmAPI={};$vm.ver=[7,7];
+            $vm={};$VmAPI={};$vm.ver=[8,8];
             $vm.start_time=new Date().getTime();
             $vm.api_path_development="https://cbs.wappsystem.com/dev/";
             $vm.api_path_production="https://cbs.wappsystem.com/pro/";
@@ -174,7 +174,7 @@
             //------------------------------------
             for(p in $vm.module_list){
                 if($vm.localhost) $vm.module_list[p].url=$vm.module_list[p].url.replace('_C_/','http://127.0.0.1:8000/wappsystem/ppm/');
-                else              $vm.module_list[p].url=$vm.module_list[p].url.replace('_C_/','https://wappsystem.com.au/');
+                else              $vm.module_list[p].url=$vm.module_list[p].url.replace('_C_/','https://wappsystem.com.au/ppm/');
             }
             //------------------------------------
             //for(p in $vm.module_links) $vm.module_links[p]=$vm.local_url($vm.module_links[p]);
